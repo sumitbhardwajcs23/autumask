@@ -1,0 +1,117 @@
+version: '3.8'
+
+services:
+  # ============================================================================
+  # PostgreSQL 17 Database with Multi-Tenant Row Level Security
+  # ============================================================================
+  postgres:
+    image: postgres:17-alpine
+    container_name: automask_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: automask_prod
+      POSTGRES_USER: automask_admin
+      POSTGRES_PASSWORD: secure_db_password_change_me
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U automask_admin -d automask_prod"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================================================
+  # Redis 7 In-Memory Store for Distributed BullMQ Message Queues
+  # ============================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: automask_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass secure_redis_password_change_me
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "secure_redis_password_change_me", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # ============================================================================
+  # AutoMask API Server (Express + TypeScript)
+  # ============================================================================
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: automask_api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      DATABASE_URL: postgres://automask_admin:secure_db_password_change_me@postgres:5432/automask_prod
+      REDIS_URL: redis://:secure_redis_password_change_me@redis:6379
+      CORS_ORIGIN: http://localhost:3000,http://127.0.0.1:3000,https://app.automask.io
+      JWT_SECRET: production-minimum-32-chars-cryptographic-jwt-secret
+      JWT_EXPIRES_IN: 7d
+      SESSION_COOKIE_NAME: automask_session
+      META_APP_SECRET: meta_production_app_secret
+      META_WEBHOOK_VERIFY_TOKEN: automask_webhook_verify_token
+      META_ACCESS_TOKEN: EAAB_placeholder_meta_access_token
+      OPENAI_API_KEY: sk-placeholder_openai_api_key
+      RUN_STANDALONE_WORKER: "false" # In production, queue processing is offloaded to the worker service
+    ports:
+      - "5000:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # ============================================================================
+  # AutoMask Dedicated Queue Worker (BullMQ Inbound Webhooks & AI Background Tasks)
+  # Scales independently of HTTP API instances
+  # ============================================================================
+  worker:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: automask_worker
+    restart: unless-stopped
+    command: ["npm", "run", "worker:prod"]
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgres://automask_admin:secure_db_password_change_me@postgres:5432/automask_prod
+      REDIS_URL: redis://:secure_redis_password_change_me@redis:6379
+      JWT_SECRET: production-minimum-32-chars-cryptographic-jwt-secret
+      META_APP_SECRET: meta_production_app_secret
+      META_ACCESS_TOKEN: EAAB_placeholder_meta_access_token
+      OPENAI_API_KEY: sk-placeholder_openai_api_key
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # ============================================================================
+  # AutoMask Frontend Web Client (React + Vite + Nginx)
+  # ============================================================================
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:5000/api/v1
+    container_name: automask_client
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
+  redis_data:

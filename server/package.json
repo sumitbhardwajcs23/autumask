@@ -1,0 +1,52 @@
+{
+  "name": "automask-server",
+  "version": "1.0.0",
+  "description": "AutoMask WhatsApp Automation Platform Backend API",
+  "main": "src/server.ts",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "worker": "tsx src/worker.ts",
+    "worker:prod": "node dist/worker.js",
+    "migrate": "tsx src/database/migrator.ts",
+    "migrate:down": "tsx src/database/migrator.ts --down",
+    "test": "tsx src/tests/runMultiTenantTests.ts && tsx src/tests/runSecurityTests.ts && tsx src/tests/runWorkflowTests.ts",
+    "test:phase2": "tsx src/tests/runPhase2Tests.ts",
+    "test:rbac": "tsx src/tests/runAdvancedRBACTests.ts",
+    "test:platform": "tsx src/tests/runPlatformVsClientTests.ts",
+    "test:all": "tsx src/tests/runMasterTestSuite.ts",
+    "test:security": "tsx src/tests/runSecurityTests.ts",
+    "test:workflows": "tsx src/tests/runWorkflowTests.ts",
+    "test:multitenant": "tsx src/tests/runMultiTenantTests.ts",
+    "verify:rds": "tsx src/database/verifyRdsDeployment.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-sqs": "^3.1152.0",
+    "@codegenie/serverless-express": "^5.0.0",
+    "bcryptjs": "^3.0.3",
+    "bullmq": "^6.3.15",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "ioredis": "^6.0.0",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.23.1",
+    "uuid": "^11.1.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.164",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^22.13.9",
+    "@types/pg": "^8.23.1",
+    "@types/uuid": "^10.0.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}

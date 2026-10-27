@@ -1,0 +1,474 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  AutoMask WhatsApp Automation SaaS - AWS Serverless Production Infrastructure
+  Deploys API Gateway HTTP API v2, Express Backend Lambda, SQS Queues + DLQ,
+  Worker Lambda, EventBridge Schedules, RDS PostgreSQL 17, and Amplify Hosting integration.
+
+Parameters:
+  Environment:
+    Type: String
+    Default: staging
+    AllowedValues: [staging, production]
+    Description: Deployment target environment.
+
+  DBMasterUsername:
+    Type: String
+    Default: automask_admin
+    Description: Master username for RDS PostgreSQL instance.
+
+  DBMasterPassword:
+    Type: String
+    NoEcho: true
+    MinLength: 12
+    Description: Master password for RDS PostgreSQL instance (min 12 chars).
+
+  DBAppPassword:
+    Type: String
+    NoEcho: true
+    MinLength: 12
+    Description: Password for least-privilege automask_app database user.
+
+  JwtSecret:
+    Type: String
+    NoEcho: true
+    MinLength: 32
+    Description: 32+ character cryptographic secret for session JWTs.
+
+  MetaAppSecret:
+    Type: String
+    NoEcho: true
+    Description: Meta App Secret for HMAC-SHA256 WhatsApp webhook signature validation.
+
+  MetaWebhookVerifyToken:
+    Type: String
+    NoEcho: true
+    Description: Secret verify token registered with Meta Developer Portal.
+
+  MetaAccessToken:
+    Type: String
+    NoEcho: true
+    Default: ""
+    Description: Permanent WhatsApp Cloud API access token for outbound dispatch.
+
+  OpenAIApiKey:
+    Type: String
+    NoEcho: true
+    Default: ""
+    Description: OpenAI API key for 1536-dimensional semantic vector embeddings.
+
+  CorsOrigins:
+    Type: String
+    Default: "http://localhost:3000,https://staging.automask.io,https://app.automask.io"
+    Description: Comma-separated list of allowed frontend origins for CORS.
+
+Globals:
+  Function:
+    Runtime: nodejs20.x
+    Timeout: 30
+    MemorySize: 1024
+    Architectures:
+      - x86_64
+    LoggingConfig:
+      LogFormat: JSON
+    Environment:
+      Variables:
+        NODE_ENV: !Ref Environment
+        JWT_SECRET: !Ref JwtSecret
+        META_APP_SECRET: !Ref MetaAppSecret
+        META_WEBHOOK_VERIFY_TOKEN: !Ref MetaWebhookVerifyToken
+        META_ACCESS_TOKEN: !Ref MetaAccessToken
+        OPENAI_API_KEY: !Ref OpenAIApiKey
+        CORS_ORIGIN: !Ref CorsOrigins
+
+Resources:
+  # ============================================================================
+  # 1. NETWORKING (VPC, Subnets, Security Groups)
+  # ============================================================================
+  AutoMaskVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: !Sub automask-vpc-${Environment}
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub automask-igw-${Environment}
+
+  VPCGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref AutoMaskVPC
+      InternetGatewayId: !Ref InternetGateway
+
+  PublicSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref AutoMaskVPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub automask-public-a-${Environment}
+
+  PublicSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref AutoMaskVPC
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: !Select [1, !GetAZs ""]
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub automask-public-b-${Environment}
+
+  PrivateSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref AutoMaskVPC
+      CidrBlock: 10.0.11.0/24
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub automask-private-a-${Environment}
+
+  PrivateSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref AutoMaskVPC
+      CidrBlock: 10.0.12.0/24
+      AvailabilityZone: !Select [1, !GetAZs ""]
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Name
+          Value: !Sub automask-private-b-${Environment}
+
+  NatEIP:
+    Type: AWS::EC2::EIP
+    DependsOn: VPCGatewayAttachment
+    Properties:
+      Domain: vpc
+
+  NatGateway:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt NatEIP.AllocationId
+      SubnetId: !Ref PublicSubnetA
+      Tags:
+        - Key: Name
+          Value: !Sub automask-nat-${Environment}
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref AutoMaskVPC
+      Tags:
+        - Key: Name
+          Value: !Sub automask-public-rt-${Environment}
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: VPCGatewayAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  SubnetRouteTableAssocPubA:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetA
+      RouteTableId: !Ref PublicRouteTable
+
+  SubnetRouteTableAssocPubB:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetB
+      RouteTableId: !Ref PublicRouteTable
+
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref AutoMaskVPC
+      Tags:
+        - Key: Name
+          Value: !Sub automask-private-rt-${Environment}
+
+  PrivateRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatGateway
+
+  SubnetRouteTableAssocPrivA:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnetA
+      RouteTableId: !Ref PrivateRouteTable
+
+  SubnetRouteTableAssocPrivB:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnetB
+      RouteTableId: !Ref PrivateRouteTable
+
+  # Security Groups
+  LambdaSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for AutoMask Lambda functions
+      VpcId: !Ref AutoMaskVPC
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub automask-lambda-sg-${Environment}
+
+  DatabaseSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for AutoMask PostgreSQL database
+      VpcId: !Ref AutoMaskVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 5432
+          ToPort: 5432
+          SourceSecurityGroupId: !Ref LambdaSecurityGroup
+          Description: Allow PostgreSQL connections from Lambda functions
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub automask-db-sg-${Environment}
+
+  # ============================================================================
+  # 2. MANAGED POSTGRESQL DATABASE (Amazon RDS PostgreSQL 17)
+  # ============================================================================
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Subnets for AutoMask PostgreSQL RDS
+      SubnetIds:
+        - !Ref PrivateSubnetA
+        - !Ref PrivateSubnetB
+      Tags:
+        - Key: Name
+          Value: !Sub automask-dbsubnet-${Environment}
+
+  PostgresRDSInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: !Sub automask-db-${Environment}
+      AllocatedStorage: 20
+      MaxAllocatedStorage: 100
+      DBInstanceClass: db.t4g.micro
+      Engine: postgres
+      EngineVersion: "16.4"
+      MasterUsername: !Ref DBMasterUsername
+      MasterUserPassword: !Ref DBMasterPassword
+      DBName: automask_db
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      VPCSecurityGroups:
+        - !Ref DatabaseSecurityGroup
+      StorageType: gp3
+      StorageEncrypted: true
+      PubliclyAccessible: false
+      MultiAZ: false
+      AutoMinorVersionUpgrade: true
+      BackupRetentionPeriod: 7
+      DeletionProtection: false
+      Tags:
+        - Key: Name
+          Value: !Sub automask-db-${Environment}
+
+  # ============================================================================
+  # 3. ASYNCHRONOUS QUEUES & DEAD-LETTER QUEUES (Amazon SQS)
+  # ============================================================================
+  AutoMaskWebhookDLQ:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub automask-webhook-dlq-${Environment}
+      MessageRetentionPeriod: 1209600 # 14 days
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+  AutoMaskWebhookQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub automask-webhook-queue-${Environment}
+      VisibilityTimeout: 180
+      MessageRetentionPeriod: 345600 # 4 days
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt AutoMaskWebhookDLQ.Arn
+        maxReceiveCount: 3
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+  # ============================================================================
+  # 4. API GATEWAY HTTP API (v2)
+  # ============================================================================
+  AutoMaskHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowMethods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - PATCH
+          - OPTIONS
+        AllowHeaders:
+          - Content-Type
+          - Authorization
+          - X-Workspace-Id
+          - X-User-Role
+          - X-User-Id
+          - X-Hub-Signature-256
+        AllowOrigins:
+          - "http://localhost:3000"
+          - "http://127.0.0.1:3000"
+          - "https://*.amplifyapp.com"
+          - "https://staging.automask.io"
+          - "https://app.automask.io"
+        AllowCredentials: true
+        MaxAge: 600
+
+  # ============================================================================
+  # 5. SERVERLESS BACKEND API LAMBDA FUNCTION
+  # ============================================================================
+  AutoMaskApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../server/
+      Handler: dist/lambda.handler
+      Description: AutoMask WhatsApp Automation Express REST API on AWS Lambda
+      Timeout: 30
+      MemorySize: 1024
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSecurityGroup
+        SubnetIds:
+          - !Ref PrivateSubnetA
+          - !Ref PrivateSubnetB
+      Environment:
+        Variables:
+          DATABASE_URL: !Sub "postgresql://${DBMasterUsername}:${DBMasterPassword}@${PostgresRDSInstance.Endpoint.Address}:${PostgresRDSInstance.Endpoint.Port}/automask_db?sslmode=require"
+          DB_SSL: "true"
+          SQS_QUEUE_URL: !Ref AutoMaskWebhookQueue
+      Policies:
+        - VPCAccessPolicy: {}
+        - SQSSendMessagePolicy:
+            QueueName: !GetAtt AutoMaskWebhookQueue.QueueName
+      Events:
+        ProxyRoute:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref AutoMaskHttpApi
+            Path: /{proxy+}
+            Method: ANY
+        RootRoute:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref AutoMaskHttpApi
+            Path: /
+            Method: ANY
+
+  # ============================================================================
+  # 6. SQS EVENT-SOURCE BACKGROUND WORKER LAMBDA FUNCTION
+  # ============================================================================
+  AutoMaskWorkerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../server/
+      Handler: dist/workerLambda.handler
+      Description: AutoMask SQS Event-Driven Background Worker for Webhook AI/RAG & Automation
+      Timeout: 90
+      MemorySize: 1024
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSecurityGroup
+        SubnetIds:
+          - !Ref PrivateSubnetA
+          - !Ref PrivateSubnetB
+      Environment:
+        Variables:
+          DATABASE_URL: !Sub "postgresql://${DBMasterUsername}:${DBMasterPassword}@${PostgresRDSInstance.Endpoint.Address}:${PostgresRDSInstance.Endpoint.Port}/automask_db?sslmode=require"
+          DB_SSL: "true"
+      Policies:
+        - VPCAccessPolicy: {}
+        - SQSPollerPolicy:
+            QueueName: !GetAtt AutoMaskWebhookQueue.QueueName
+      Events:
+        SQSEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt AutoMaskWebhookQueue.Arn
+            BatchSize: 5
+            FunctionResponseTypes:
+              - ReportBatchItemFailures
+
+  # ============================================================================
+  # 7. EVENTBRIDGE SCHEDULED RECURRING MAINTENANCE
+  # ============================================================================
+  SupportGrantExpirySchedule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: Triggers support grant expiry check and demo slot cleanup every 15 minutes
+      ScheduleExpression: rate(15 minutes)
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt AutoMaskApiFunction.Arn
+          Id: TargetMaintenanceApiFunction
+          Input: '{"path":"/api/v1/platform/scheduled-cleanup","httpMethod":"POST"}'
+
+  PermissionForEventsToInvokeLambda:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref AutoMaskApiFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt SupportGrantExpirySchedule.Arn
+
+Outputs:
+  HttpApiUrl:
+    Description: Public HTTPS Endpoint for API Gateway HTTP API v2 (Use as VITE_API_BASE_URL for Amplify)
+    Value: !Sub "https://${AutoMaskHttpApi}.execute-api.${AWS::Region}.amazonaws.com/api/v1"
+    Export:
+      Name: !Sub AutoMaskHttpApiUrl-${Environment}
+
+  MetaWebhookUrl:
+    Description: Public HTTPS WhatsApp Webhook URL to register in Meta App Dashboard
+    Value: !Sub "https://${AutoMaskHttpApi}.execute-api.${AWS::Region}.amazonaws.com/api/v1/whatsapp/webhook"
+    Export:
+      Name: !Sub AutoMaskMetaWebhookUrl-${Environment}
+
+  DatabaseEndpoint:
+    Description: Amazon RDS PostgreSQL Private Endpoint
+    Value: !GetAtt PostgresRDSInstance.Endpoint.Address
+
+  DatabasePort:
+    Description: Amazon RDS PostgreSQL Port
+    Value: !GetAtt PostgresRDSInstance.Endpoint.Port
+
+  WebhookQueueUrl:
+    Description: Amazon SQS Webhook Queue URL
+    Value: !Ref AutoMaskWebhookQueue
+
+  WebhookDLQUrl:
+    Description: Amazon SQS Webhook Dead-Letter Queue URL
+    Value: !Ref AutoMaskWebhookDLQ

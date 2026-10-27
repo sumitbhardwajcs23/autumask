@@ -1,0 +1,122 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AutoMaskAmplifyHostingPermissions",
+      "Effect": "Allow",
+      "Action": [
+        "amplify:CreateApp",
+        "amplify:GetApp",
+        "amplify:ListApps",
+        "amplify:UpdateApp",
+        "amplify:DeleteApp",
+        "amplify:CreateBranch",
+        "amplify:GetBranch",
+        "amplify:ListBranches",
+        "amplify:UpdateBranch",
+        "amplify:DeleteBranch",
+        "amplify:StartJob",
+        "amplify:GetJob",
+        "amplify:ListJobs",
+        "amplify:StopJob",
+        "amplify:CreateDeployment",
+        "amplify:StartDeployment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AutoMaskServerlessComputeAndApiGateway",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:*",
+        "apigateway:*",
+        "cloudformation:*",
+        "events:*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AutoMaskStorageAndMessaging",
+      "Effect": "Allow",
+      "Action": [
+        "s3:CreateBucket",
+        "s3:ListAllMyBuckets",
+        "s3:ListBucket",
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:GetBucketLocation",
+        "sqs:CreateQueue",
+        "sqs:GetQueueUrl",
+        "sqs:GetQueueAttributes",
+        "sqs:SetQueueAttributes",
+        "sqs:ListQueues",
+        "sqs:SendMessage",
+        "sqs:ReceiveMessage",
+        "sqs:DeleteMessage",
+        "sqs:DeleteQueue"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AutoMaskRDSAndSecretsManagement",
+      "Effect": "Allow",
+      "Action": [
+        "rds:*",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:PutSecretValue",
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:ListSecrets"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AutoMaskIAMRoleManagementForServerless",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole",
+        "iam:GetRole",
+        "iam:PassRole",
+        "iam:AttachRolePolicy",
+        "iam:DetachRolePolicy",
+        "iam:PutRolePolicy",
+        "iam:DeleteRolePolicy",
+        "iam:GetRolePolicy",
+        "iam:ListAttachedRolePolicies"
+      ],
+      "Resource": "arn:aws:iam::*:role/automask-*"
+    },
+    {
+      "Sid": "AutoMaskEC2VPCManagement",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcs",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeRouteTables",
+        "ec2:DescribeInternetGateways",
+        "ec2:DescribeNatGateways",
+        "ec2:DescribeAvailabilityZones",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:CreateNetworkInterface",
+        "ec2:DeleteNetworkInterface",
+        "ec2:CreateSecurityGroup",
+        "ec2:AuthorizeSecurityGroupIngress",
+        "ec2:AuthorizeSecurityGroupEgress",
+        "ec2:RevokeSecurityGroupIngress",
+        "ec2:RevokeSecurityGroupEgress",
+        "ec2:CreateVpc",
+        "ec2:CreateSubnet",
+        "ec2:CreateRouteTable",
+        "ec2:CreateRoute",
+        "ec2:AssociateRouteTable",
+        "ec2:CreateInternetGateway",
+        "ec2:AttachInternetGateway",
+        "ec2:AllocateAddress",
+        "ec2:CreateNatGateway"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

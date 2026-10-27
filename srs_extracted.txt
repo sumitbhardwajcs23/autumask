@@ -1,0 +1,2626 @@
+SOFTWARE REQUIREMENTS SPECIFICATION
+
+WhatsApp Automation Platform
+
+MVP Release — Affordable AI-assisted WhatsApp automation for coaching institutes
+
+Version 1.0 (Draft for review)
+
+Document
+
+MVP Software Requirements Specification
+
+Product
+
+WhatsApp Automation SaaS (working title)
+
+Target customers
+
+Coaching institutes and education consultancies (JEE/NEET, SSC, Banking, coding, spoken English, skill training)
+
+Stack
+
+React + Vite + Tailwind · Node.js + TypeScript + Express · PostgreSQL · Redis/BullMQ
+
+Date
+
+13 October 2026
+
+Status
+
+Draft — pending founder review and pilot feedback
+
+Source
+
+Project Summary & Detailed Workflow (v1)
+
+Document control
+
+Version
+
+Date
+
+Author
+
+Change
+
+0.1
+
+—
+
+Founder
+
+Project summary and workflow (source).
+
+1.0
+
+13 Oct 2026
+
+Draft
+
+First MVP SRS: requirements, data model, NFRs, release plan, risks.
+
+Contents
+
+1. Introduction
+
+2. Product overview
+
+3. User roles and permissions
+
+4. End-to-end workflows
+
+5. Functional requirements
+
+6. Data requirements
+
+7. State models
+
+8. External and user interface requirements
+
+9. Non-functional requirements
+
+10. Plans and usage limits
+
+11. Success metrics and acceptance criteria
+
+12. Release plan
+
+13. Risks and mitigations
+
+14. Open questions
+
+Appendix A. Traceability to the source MVP checklist
+
+Appendix B. Improvements made to the source document
+
+Appendix C. Sample default message flow (coaching)
+
+1. Introduction
+
+1.1 Purpose
+
+This Software Requirements Specification (SRS) defines the requirements for the Minimum Viable Product (MVP) of an affordable, AI-assisted WhatsApp automation platform for coaching institutes and education consultancies. It is the single reference for design, development, testing and pilot acceptance of the first release.
+
+1.2 Scope
+
+The MVP lets a coaching institute connect its official WhatsApp Business number, receive and answer student enquiries from a shared inbox, automate repetitive replies with rules and a knowledge-grounded AI assistant, capture student leads, run one consent-compliant follow-up workflow, book demo/counselling slots, and monitor usage, failures and outcomes from a dashboard. Subscription billing with enforced plan limits is included.
+
+Everything not listed in Section 2.3 (In-scope) is out of scope for the MVP and is tracked in the post-MVP backlog.
+
+1.3 Intended audience
+
+Audience
+
+How they use this document
+
+Founder / product owner
+
+Confirms scope, priorities, pricing limits and pilot acceptance criteria.
+
+Developers
+
+Implements the functional, data and non-functional requirements.
+
+QA / testers
+
+Derives test cases from requirement IDs and acceptance criteria (Section 11).
+
+Pilot customers (reviewers)
+
+Validates that workflows match real admission-desk operations.
+
+1.4 Definitions and abbreviations
+
+Term
+
+Meaning
+
+Workspace / Tenant
+
+One institute’s isolated account. All data carries a workspace_id.
+
+WABA
+
+WhatsApp Business Account on the WhatsApp Business Platform (Cloud API).
+
+Customer service window
+
+The 24-hour period after a customer’s last message during which free-form replies are allowed.
+
+Template message
+
+Pre-approved message required to start or resume a conversation outside the service window.
+
+Lead
+
+A prospective student/parent record created from an enquiry.
+
+Handoff / Takeover
+
+Switching a conversation from automation/AI to a human counsellor.
+
+Idempotent
+
+Safe to run more than once with the same effect as running once.
+
+DLQ
+
+Dead-letter queue: failed jobs parked after retries are exhausted.
+
+RAG
+
+Retrieval-augmented generation: AI answers only from retrieved institute knowledge.
+
+MoSCoW
+
+Priority scheme: Must / Should / Could / Won’t (for MVP).
+
+1.5 References
+
+Project Summary & Detailed Workflow (source document, v1).
+
+WhatsApp Business Platform / Cloud API documentation, Business Messaging Policy and pricing pages (Meta) — verify the current version before build.
+
+Digital Personal Data Protection Act, 2023 and applicable Rules (India) — confirm current applicability dates with legal counsel.
+
+OWASP Application Security Verification Standard (ASVS) and Top 10.
+
+1.6 Conventions
+
+Requirement IDs follow GROUP-NN (for example WA-03). Each is uniquely testable.
+
+Must = required for MVP release. Should = target for MVP, may slip to the first patch. Could = only if time remains. Won’t = explicitly excluded from MVP.
+
+The word “shall” marks a binding requirement; “may” marks an option.
+
+Numeric targets (limits, timings) are initial values and must be validated in pilots.
+
+2. Product overview
+
+2.1 Vision and positioning
+
+Positioning: Affordable WhatsApp automation that any small business can set up and manage without a developer.
+
+Differentiation rests on four pillars: (1) affordable, transparent pricing with clear limits; (2) guided onboarding; (3) ready-made coaching workflows (admission enquiry and demo booking); (4) reliability — failure logs, duplicate prevention, opt-out handling and human takeover. Basic chatbot capability is not a differentiator; ease of use, pricing clarity and complete workflow execution are.
+
+2.2 Users and personas
+
+Persona
+
+Description
+
+Primary needs
+
+Institute Owner
+
+Runs a small/medium coaching institute (JEE/NEET, SSC, Banking, coding, spoken English). Often non-technical.
+
+Stop losing enquiries, see leads and bookings, control cost, trust that AI will not misquote fees.
+
+Admin / Counsellor Lead
+
+Manages configuration, staff and follow-ups.
+
+Configure courses, FAQs, rules, slots; review failures.
+
+Counsellor / Agent
+
+Answers students and parents, runs demo calls.
+
+Fast inbox, clear context, easy takeover, booking visibility.
+
+Student / Parent (end customer)
+
+Messages the institute on WhatsApp in Hindi, Hinglish or English. May be a minor.
+
+Quick correct answers, easy booking, ability to stop messages.
+
+Platform Admin (internal)
+
+Founder/support staff operating the SaaS.
+
+Monitor tenants, usage, errors; suspend abusive accounts.
+
+2.3 MVP scope
+
+In scope (MVP)
+
+#
+
+Capability
+
+Requirement group
+
+1
+
+Signup, login, workspace isolation, staff roles
+
+AUTH
+
+2
+
+Official WhatsApp connection and webhook handling
+
+WA
+
+3
+
+Shared inbox and conversation history
+
+INB
+
+4
+
+Keyword rules and conditional automation (form-based)
+
+RUL
+
+5
+
+Approved FAQ responses using AI (knowledge-grounded)
+
+AI
+
+6
+
+Student lead capture and status tracking
+
+LEAD
+
+7
+
+One follow-up workflow with opt-out handling
+
+FUP
+
+8
+
+Controlled in-platform demo-booking flow
+
+BOOK
+
+9
+
+Usage tracking, failure logs, human takeover, dashboard
+
+USG, DASH, INB
+
+10
+
+Subscription limits and basic billing
+
+BILL
+
+Out of scope (post-MVP)
+
+Drag-and-drop visual workflow builder (MVP uses a form-based rule builder).
+
+Multiple CRM and calendar integrations (Google Calendar, Zoho, HubSpot, etc.).
+
+Multiple WhatsApp numbers per workspace; agency / reseller panel.
+
+Instagram, Facebook Messenger, voice AI, SMS or email-channel automation.
+
+Advanced lead scoring, verified revenue attribution, enterprise analytics.
+
+Bulk broadcast campaigns, payment collection inside WhatsApp, native mobile apps.
+
+2.4 Operating environment and technology baseline
+
+Layer
+
+Choice
+
+Notes
+
+Frontend
+
+React + Vite + Tailwind CSS
+
+Responsive web app; inbox must be usable on mobile browsers.
+
+Backend
+
+Node.js + TypeScript + Express
+
+Modular monolith; clear module boundaries for later extraction.
+
+Database
+
+PostgreSQL
+
+Row-level isolation by workspace_id; migrations under version control.
+
+Queue / cache
+
+Redis + BullMQ
+
+Webhook processing, retries, delayed follow-ups, deduplication.
+
+Realtime
+
+WebSocket or Server-Sent Events
+
+Inbox live updates; polling fallback.
+
+AI
+
+Hosted LLM behind a provider-abstraction layer
+
+Select model after Hindi/Hinglish quality and cost tests.
+
+Messaging
+
+WhatsApp Business Platform (Cloud API)
+
+Webhooks + Graph API; Embedded Signup for onboarding.
+
+Payments
+
+Indian gateway with recurring billing (e.g., Razorpay)
+
+Final choice listed in Open Questions.
+
+Hosting
+
+Managed cloud, India region preferred
+
+Single region, containerised, CI/CD, daily backups.
+
+2.5 Design constraints
+
+Production messaging must not be assumed enabled until Meta business verification, number registration and template approvals are complete.
+
+Only Meta-permitted messaging is allowed: business-initiated messages require prior opt-in and an approved template outside the 24-hour window.
+
+AI shall only state fees, discounts, schedules and availability that the institute has entered and authorised.
+
+Low-priced plans must not promise unlimited AI or unlimited messaging.
+
+Small team (likely a single developer) — prefer managed services and simple architecture over custom infrastructure.
+
+2.6 Assumptions and dependencies
+
+Institutes own or can obtain a phone number eligible for the WhatsApp Business Platform and complete Meta business verification.
+
+Meta APIs, pricing and policies may change; the integration is isolated behind an adapter so changes stay local.
+
+Each institute pays Meta messaging charges directly through its own WABA payment method (to be confirmed, see OQ-01). The platform bills only its own subscription.
+
+An LLM provider, email provider (transactional) and payment gateway are available with adequate SLAs.
+
+2.7 Key design decisions added in this SRS
+
+The source document left these points open. This SRS makes a recommended decision so development can start; each can be revisited after pilot feedback.
+
+ID
+
+Decision
+
+Rationale
+
+DD-01
+
+One WhatsApp number per workspace.
+
+Cuts schema and UI complexity; matches the target customer.
+
+DD-02
+
+Booking is handled by a built-in slot engine, not an external calendar.
+
+Fully controllable, testable and avoids integration risk. Google Calendar sync is post-MVP.
+
+DD-03
+
+Rule builder is form-based (trigger → conditions → actions) with a priority order.
+
+Delivers 90% of value at a fraction of the cost of a visual canvas.
+
+DD-04
+
+Rules are evaluated before AI; AI is a fallback and FAQ answerer.
+
+Predictable behaviour, lower cost, fewer hallucination risks.
+
+DD-05
+
+AI has an allow-listed tool set only; no raw DB or arbitrary API access.
+
+Limits blast radius of prompt injection and model error.
+
+DD-06
+
+“Converted” (admitted) is set manually by staff, never inferred.
+
+Admission is an offline event; avoids false revenue claims.
+
+DD-07
+
+Plan limits live in a database table and are enforced centrally.
+
+Allows price/limit changes without redeploying.
+
+DD-08
+
+Raw webhook payloads are stored before processing.
+
+Enables replay, debugging and dispute resolution.
+
+3. User roles, permissions, and management layers
+
+The platform enforces two completely distinct management layers: (1) Platform Management Console for AutoMask internal SaaS operations, and (2) Client Business Workspace for subscribing coaching institute operations.
+
+Permissions are enforced on the server for every request. "Own" means only conversations or records assigned to the user.
+
+3.1 Platform Management Console (AutoMask Internal Operations)
+Exclusively for AutoMask platform administrators, support engineers, and billing operations.
+- Platform Super Admin (`platform_admin`): Global tenant management, plan quotas, controlled suspension, platform staff access, system-wide audit logs.
+- Support Operations (`platform_support`): Webhook failure monitoring, queue status, delivery errors, support tickets.
+- Billing Operations (`platform_billing`): Subscription tiers, pricing, and quota overrides.
+- SRS Line 615 Privacy Safeguard: Platform Admin access to customer message content is strictly disabled by default. Content access is only unlocked via an active, logged, time-boxed support grant issued by the workspace Owner.
+
+3.2 Client Business Workspace (Tenant Operations)
+Each subscribing business operates in an isolated workspace with its own Owner, Admins, Custom Roles, and Agents.
+- Workspace Owner (`owner`): Complete administrative control over workspace, billing, plan upgrades, team roster, custom roles, permission overrides, and support grants.
+- Workspace Admin (`admin`): Manages daily operations: workflows, automations, templates, broadcasts, contacts, and AI knowledge. Client Admins can NEVER access other client workspaces, modify platform subscription plans, or self-escalate privileges.
+- Operations Manager (`manager`): Supervises counsellors, monitors conversations, schedules broadcasts, and manages demo slots.
+- Counsellor / Worker (`agent`): Handles student chats, updates leads, and schedules demo slots.
+- Custom Roles: Tailored roles with granular permissions configured by the Owner.
+
+Role & Privilege Separation Matrix:
+
+Capability | Workspace Owner | Workspace Admin | Agent / Counsellor | Platform Admin
+Manage workspace billing & plan upgrade | Yes | No | No | View only (all tenants)
+Administer platform subscription plans | No | No | No | Yes
+Invite/remove staff, manage custom roles | Yes | Yes (where granted) | No | No
+Connect / disconnect WhatsApp number | Yes | Yes | No | No
+Edit courses, FAQs, knowledge base & RAG | Yes | Yes | No | No
+Create/edit visual workflows & rules | Yes | Yes | No | No
+Manage templates & dispatch broadcasts | Yes | Yes | No | No
+Configure booking slots & capacity | Yes | Yes | No | No
+View inbox, reply, add internal notes | Yes | Yes | Yes | No (Metadata only)
+Read customer message content | Yes | Yes | Yes | Disabled by default (Requires Owner Support Grant per Line 615)
+Assign conversations | Yes | Yes | Own only | No
+Manage leads and CRM contacts | Yes | Yes | Yes | No
+Export leads & contacts (CSV) | Yes | Yes | No | No
+View dashboard & metrics | Yes | Yes | Limited | All tenants (Platform telemetry)
+View audit log | Yes (Workspace) | Yes (Workspace) | No | Yes (Global Platform)
+Suspend delinquent tenant | No | No | No | Yes (With audited justification)
+
+Security Boundaries:
+- Platform-level authorization (`platform:*`) is strictly separated from workspace-level authorization (`workspace:*`).
+- Multi-tenancy is enforced on the server and isolated via PostgreSQL Row-Level Security (RLS).
+- Client-supplied workspace IDs and role claims are never trusted; canonical resolution is performed via verified cryptographic JWT.
+- Client Admins are strictly forbidden from modifying subscription billing, transferring workspace ownership, or granting themselves additional privileges.
+- Platform Admins cannot read customer messages by default.
+- All sensitive operations (suspensions, support grants, permission edits) are immutably logged in audit trails.
+
+4. End-to-end workflows
+
+4.1 Onboarding workflow
+
+Owner signs up with email and password and verifies the email address.
+
+System creates the workspace (workspace_id), owner membership and a default trial/Free plan.
+
+Owner enters business profile: institute name, category, business hours, timezone, admin details.
+
+Owner connects WhatsApp through Meta Embedded Signup; system stores encrypted tokens and subscribes the webhook.
+
+Owner enters courses, fees, batch timings, FAQs and escalation rules (or imports from a template pack).
+
+Owner enables the prebuilt coaching templates, sets booking slots and sends a test message.
+
+Dashboard shows an onboarding checklist and status Connected only when the webhook and send test succeed.
+
+4.2 Inbound message pipeline
+
+Meta calls the webhook. The handler verifies the signature over the raw body, stores the raw event, enqueues a job and returns HTTP 200 immediately.
+
+Worker validates the event and resolves workspace and WhatsApp number from phone_number_id.
+
+Deduplicate by provider message ID (unique constraint). Duplicates are acknowledged and ignored.
+
+Upsert contact and conversation; persist the message; update the 24-hour window timestamp.
+
+Check opt-out: if the customer has opted out, process only the message record and any opt-in request; no automated reply.
+
+Check human takeover: if active, notify the assignee and stop automation and AI.
+
+Check usage limits and business hours; apply rule evaluation (Section 4.3).
+
+Execute actions, send outbound messages, record execution result and usage events.
+
+Push realtime update to the inbox; delivery status webhooks later update message state.
+
+4.3 Response decision order
+
+The router applies the first matching step and stops:
+
+Order
+
+Check
+
+Outcome
+
+1
+
+Opted out or blocked contact
+
+No automated outbound. Log only.
+
+2
+
+Human takeover active
+
+Route to human inbox; AI paused.
+
+3
+
+Opt-out keyword or intent in the message
+
+Record opt-out, send one confirmation, cancel pending follow-ups.
+
+4
+
+Active booking sub-flow for this contact
+
+Continue the booking dialogue (slot selection/confirmation).
+
+5
+
+Matching automation rule (by priority)
+
+Execute configured actions.
+
+6
+
+FAQ/knowledge match and AI quota available
+
+Send grounded AI answer; capture lead details.
+
+7
+
+Sensitive, low-confidence or unknown query
+
+Fallback message and human handoff.
+
+4.4 Lead capture and follow-up workflow
+
+On first inbound message the system creates a contact and a lead with status New.
+
+AI/rules collect name, class, course interest and preferred batch; each field is validated and saved.
+
+When interest is shown (intent or rule), status becomes Interested and the follow-up sequence starts if the booking is not completed.
+
+Before every follow-up step the system checks opt-out, booking, recent reply, sequence completion, messaging window or template, business hours and duplicate job key.
+
+A reply, booking, opt-out, takeover or terminal status (Converted/Lost) stops or updates the sequence.
+
+4.5 Demo/counselling booking workflow
+
+Booking intent is detected, or the student taps a booking button.
+
+System queries real available slots and offers the next three to five choices as buttons or a list.
+
+Student selects a slot; the system attempts to reserve it inside a database transaction.
+
+Only if the reservation succeeds is the booking marked Confirmed; the student receives a confirmation and the counsellor is notified.
+
+Reminders are scheduled; the lead status changes to Demo Booked.
+
+If the slot was just taken, the student is shown the updated availability. The system never claims a booking that did not persist.
+
+4.6 Human handoff workflow
+
+Handoff is triggered by: sensitive topic (discount, refund, fee dispute, complaint), AI confidence below threshold, no knowledge match, student asks for a person, or repeated failure.
+
+System sets the conversation to Needs Human, pauses AI/automation, sends a short holding message in business hours or a callback message after hours.
+
+Assigned agent or all agents are notified in-app and by email.
+
+Agent replies; the dashboard tracks time-to-first-human-reply. Agent may resume automation manually.
+
+5. Functional requirements
+
+Priority legend: Must / Should / Could / Won’t. Each requirement is verifiable and traceable to the MVP checklist in Section 2.3.
+
+5.1 Authentication, workspace and team (AUTH)
+
+ID
+
+Requirement
+
+Priority
+
+AUTH-01
+
+A user shall sign up with email and password; the email address shall be verified before the workspace is activated.
+
+Must
+
+AUTH-02
+
+A user shall log in and out; sessions shall use secure, HttpOnly, SameSite cookies (or short-lived tokens with refresh rotation) and expire after inactivity.
+
+Must
+
+AUTH-03
+
+A user shall reset a forgotten password through a single-use, time-limited emailed link.
+
+Must
+
+AUTH-04
+
+On signup the system shall create a workspace with a unique workspace_id and an Owner membership.
+
+Must
+
+AUTH-05
+
+The Owner shall record business profile data: institute name, category, admin name, email, business hours and timezone (default Asia/Kolkata).
+
+Must
+
+AUTH-06
+
+Owner/Admin shall invite staff by email and assign a role (Admin or Agent); invitations shall expire.
+
+Must
+
+AUTH-07
+
+Every tenant-owned query and mutation shall be scoped by workspace_id and authorised server-side; PostgreSQL row-level security should be used as defence in depth.
+
+Must
+
+AUTH-08
+
+Login, signup and password-reset endpoints shall be rate-limited and shall not reveal whether an email exists.
+
+Must
+
+AUTH-09
+
+Sensitive actions (login, role change, WhatsApp connect/disconnect, plan change, data export, deletion) shall be written to an immutable audit log.
+
+Should
+
+AUTH-10
+
+A guided onboarding checklist shall show progress: profile, WhatsApp, knowledge, rules, booking, test message.
+
+Should
+
+5.2 WhatsApp integration (WA)
+
+ID
+
+Requirement
+
+Priority
+
+WA-01
+
+The system shall connect an institute’s WhatsApp Business number using Meta Embedded Signup and store WABA ID, phone number ID and display number.
+
+Must
+
+WA-02
+
+Access tokens shall be encrypted at rest (for example AES-256-GCM with a managed key), never returned to the browser, and never logged.
+
+Must
+
+WA-03
+
+The webhook endpoint shall answer Meta’s verification challenge and shall validate the X-Hub-Signature-256 header over the raw request body for every POST; invalid requests are rejected with no processing.
+
+Must
+
+WA-04
+
+The webhook shall persist the raw event, enqueue it and return HTTP 200 quickly (target p95 under 500 ms); no AI or external call shall run inside the webhook request.
+
+Must
+
+WA-05
+
+The system shall receive text and interactive (button/list) replies and shall store metadata for media messages (image, document, audio) so they are visible in the inbox.
+
+Must
+
+WA-06
+
+The system shall process status webhooks (sent, delivered, read, failed) and update message state, storing error codes for failures.
+
+Must
+
+WA-07
+
+The system shall send free-form text, buttons and list messages only while the 24-hour customer service window is open.
+
+Must
+
+WA-08
+
+The system shall sync template list and approval status from Meta, and send approved templates with variables outside the window.
+
+Must
+
+WA-09
+
+The UI shall display window status (open/closed with time left) per conversation and block free-form sending when closed, offering template sending instead.
+
+Must
+
+WA-10
+
+The dashboard shall show connection status: Not connected, Pending approval, Connected, Action needed (token expired, permission revoked, quality or limit issue).
+
+Must
+
+WA-11
+
+The system shall not treat production messaging as enabled until the number and business are verified; a sandbox/test mode shall be clearly labelled.
+
+Must
+
+WA-12
+
+Outbound sends shall respect provider rate limits using queued sending with exponential backoff on throttling errors.
+
+Must
+
+WA-13
+
+MVP shall support exactly one WhatsApp number per workspace.
+
+Must
+
+WA-14
+
+Disconnecting WhatsApp shall revoke stored tokens, pause all automations and cancel scheduled follow-ups for that workspace.
+
+Should
+
+5.3 Shared inbox (INB)
+
+ID
+
+Requirement
+
+Priority
+
+INB-01
+
+The inbox shall list conversations with filters: All, Unassigned, Mine, Unanswered, Needs Human, and search by name or phone.
+
+Must
+
+INB-02
+
+A conversation view shall show messages chronologically with direction, timestamp, sender (customer, automation, AI, agent) and delivery state.
+
+Must
+
+INB-03
+
+New messages and status changes shall appear in near real time (WebSocket/SSE, polling fallback every 10 s).
+
+Must
+
+INB-04
+
+An agent shall send manual replies subject to window rules (WA-07/WA-09).
+
+Must
+
+INB-05
+
+Owner/Admin shall assign a conversation to a team member; agents may take unassigned conversations.
+
+Must
+
+INB-06
+
+Staff shall add internal notes that are never sent to the customer and are visually distinct.
+
+Must
+
+INB-07
+
+Human takeover shall pause rules, AI and follow-ups for that conversation until the agent resumes automation.
+
+Must
+
+INB-08
+
+A handoff shall notify the assignee (or all agents if unassigned) in-app and by email.
+
+Must
+
+INB-09
+
+A contact profile shall show name, phone, tags, lead status, course interest, booking and opt-out status.
+
+Must
+
+INB-10
+
+Lead tags/status shall include New, Interested, Follow-up, Demo Booked, Converted, plus Lost and Opted-out.
+
+Must
+
+INB-11
+
+Saved quick replies with variables shall be available to agents.
+
+Could
+
+INB-12
+
+Optional auto-resume of automation after N hours of agent inactivity (default off).
+
+Could
+
+5.4 Automation rules engine (RUL)
+
+ID
+
+Requirement
+
+Priority
+
+RUL-01
+
+Supported triggers: keyword (exact, contains, starts-with; case-insensitive; Hindi, Hinglish, English), first message of a new conversation, button/list reply payload, message outside business hours.
+
+Must
+
+RUL-02
+
+Supported conditions: contact tag, lead status, within/outside business hours, assigned/unassigned, first-time contact, contact has/does not have a booking.
+
+Must
+
+RUL-03
+
+Supported actions: send text, send buttons/list, send template, set tag, set lead status, assign agent, start follow-up sequence, start booking flow, invoke AI answer, hand off to human.
+
+Must
+
+RUL-04
+
+Rules shall have an explicit priority order and a stop-processing flag; by default the first matching rule wins.
+
+Must
+
+RUL-05
+
+Rules can be enabled, disabled, duplicated and deleted; changes take effect for new messages only.
+
+Must
+
+RUL-06
+
+Message bodies shall support variables such as {{contact.name}}, {{lead.course}}, {{institute.name}} with a visible fallback value when data is missing.
+
+Must
+
+RUL-07
+
+A prebuilt coaching template pack shall be provided: Welcome, Fees enquiry, Batch timing, Demo booking, Follow-up, Opt-out confirmation, Out-of-hours reply.
+
+Must
+
+RUL-08
+
+Every execution shall be recorded (rule, contact, trigger message, actions, status, error, duration) and be searchable by owners.
+
+Must
+
+RUL-09
+
+Loop and flood protection: automated replies per contact shall be capped (default 10 per hour); exceeding the cap triggers handoff.
+
+Must
+
+RUL-10
+
+A test simulator shall let an Admin type a sample message and see which rule and reply would fire without sending to WhatsApp.
+
+Should
+
+RUL-11
+
+Rule actions that call external systems shall be retried with bounded attempts and their outcome verified before being reported as successful.
+
+Must
+
+5.5 AI assistant (AI)
+
+ID
+
+Requirement
+
+Priority
+
+AI-01
+
+Admin shall maintain a knowledge base of courses (name, description, fees, duration, batches, eligibility, location/mode) and free-text FAQs.
+
+Must
+
+AI-02
+
+AI answers shall be generated only from retrieved knowledge-base content and the conversation; if no relevant content exists, the AI shall decline to guess and trigger fallback/handoff.
+
+Must
+
+AI-03
+
+AI shall understand and reply in Hindi (Devanagari), Hinglish (Roman script) and English, matching the student’s language.
+
+Must
+
+AI-04
+
+AI shall classify intent into at least: greeting, course_info, fees_enquiry, batch_timing, demo_booking, existing_student_support, discount_or_refund, complaint, opt_out, human_request, unknown.
+
+Must
+
+AI-05
+
+AI shall extract lead fields (name, class, course interest, preferred batch, city, parent/student) into a schema-validated JSON object; invalid output is discarded and retried once.
+
+Must
+
+AI-06
+
+AI shall be limited to an allow-list of tools: search_knowledge, update_lead, get_available_slots, create_booking, handoff_to_human. Tool arguments are validated server-side and workspace-scoped.
+
+Must
+
+AI-07
+
+AI shall never state fees, discounts, offers, seat availability or dates that are not in the knowledge base; discounts, refunds, fee disputes and complaints shall always be handed off.
+
+Must
+
+AI-08
+
+Student messages are untrusted data; system instructions shall not be overridable by message content (prompt-injection resistance), and system prompts shall never be disclosed.
+
+Must
+
+AI-09
+
+A confidence/grounding check shall run before sending; low-confidence answers trigger fallback and handoff.
+
+Must
+
+AI-10
+
+AI shall not run when human takeover is active, when the contact has opted out, or when the AI quota is exhausted.
+
+Must
+
+AI-11
+
+When the monthly AI quota is exhausted the system shall fall back to rule-based replies and handoff, and notify the Owner.
+
+Must
+
+AI-12
+
+Every AI call shall be logged: model, tokens, latency, detected intent, tools called, outcome. Message content in logs shall be minimised and access-restricted.
+
+Must
+
+AI-13
+
+LLM access shall go through a provider-abstraction layer with timeouts, retries and a circuit breaker.
+
+Should
+
+AI-14
+
+Conversation context shall be limited to recent messages (default last 10) plus a stored lead summary to control cost.
+
+Should
+
+AI-15
+
+Staff shall be able to mark an AI reply as helpful/unhelpful, feeding a review list for knowledge-base improvement.
+
+Could
+
+5.6 Lead management (LEAD)
+
+ID
+
+Requirement
+
+Priority
+
+LEAD-01
+
+A contact and lead shall be created automatically on the first inbound message from a new number.
+
+Must
+
+LEAD-02
+
+Lead fields: name, phone (E.164), class/grade, course interest, preferred batch, city, source, status, owner, parent contact (optional), notes, timestamps.
+
+Must
+
+LEAD-03
+
+Lead status pipeline: New → Interested → Follow-up → Demo Booked → Converted, plus Lost and Opted-out; every change is recorded with actor and time.
+
+Must
+
+LEAD-04
+
+Duplicate leads shall be prevented by a unique (workspace_id, phone) constraint; repeat enquiries append to the existing lead.
+
+Must
+
+LEAD-05
+
+Staff shall edit lead fields and status manually; “Converted” is set only by staff.
+
+Must
+
+LEAD-06
+
+A leads list shall support filters (status, course, date, assigned), search and sorting.
+
+Must
+
+LEAD-07
+
+Owner/Admin shall export leads as CSV; exports are audit-logged.
+
+Should
+
+LEAD-08
+
+Up to five custom text/select fields per workspace.
+
+Could
+
+5.7 Follow-up and opt-out (FUP)
+
+ID
+
+Requirement
+
+Priority
+
+FUP-01
+
+MVP provides one configurable follow-up sequence (up to 3 steps; each with delay, message, template fallback). Suggested default: +2 h, +1 day, +3 days after interest without booking.
+
+Must
+
+FUP-02
+
+Before each step the system shall check: opted out, existing/confirmed booking, customer replied since scheduling, sequence completed, takeover active, terminal status, messaging window or approved template available, allowed sending hours (default 09:00–20:00 local), and duplicate job.
+
+Must
+
+FUP-03
+
+A customer reply, booking, opt-out, takeover or terminal lead status shall cancel or update pending follow-up jobs.
+
+Must
+
+FUP-04
+
+Opt-out shall be detected from configurable keywords (STOP, UNSUBSCRIBE, “band karo”, “message mat bhejo”) and AI intent; it shall take effect within one minute, cancel all pending automated sends, and send a single confirmation.
+
+Must
+
+FUP-05
+
+The system shall store consent/context per contact: how the conversation began (customer-initiated, form, other), opt-in source and timestamp, and opt-out timestamp.
+
+Must
+
+FUP-06
+
+Follow-up jobs shall be idempotent using a unique key (workspace, contact, sequence, step).
+
+Must
+
+FUP-07
+
+Failed sends shall be retried up to 3 times with exponential backoff, then moved to a DLQ and shown in the failure log with the reason.
+
+Must
+
+FUP-08
+
+If the window is closed and no approved template exists, the step shall be skipped and logged with the reason; it shall never send non-compliant free-form text.
+
+Must
+
+FUP-09
+
+A contact who opted out may opt back in by sending an explicit keyword (for example START); the system records the event.
+
+Should
+
+5.8 Booking (BOOK)
+
+ID
+
+Requirement
+
+Priority
+
+BOOK-01
+
+Admin shall define availability: weekly schedule, slot duration, capacity per slot, buffer, blackout dates, counsellor assignment, and mode (in-person / online link).
+
+Must
+
+BOOK-02
+
+The system shall offer only genuinely available future slots (default next 5) respecting timezone and lead time.
+
+Must
+
+BOOK-03
+
+A booking becomes Confirmed only after the slot reservation is committed; reservation shall be concurrency-safe (transaction + unique/locking constraint) so overbooking cannot occur.
+
+Must
+
+BOOK-04
+
+Booking creation shall be idempotent (client key or conversation+slot key) so retries never create duplicates.
+
+Must
+
+BOOK-05
+
+On confirmation the student receives a WhatsApp confirmation, the counsellor is notified, and lead status becomes Demo Booked.
+
+Must
+
+BOOK-06
+
+Booking statuses: Pending, Confirmed, Rescheduled, Cancelled, Completed, No-show.
+
+Must
+
+BOOK-07
+
+Students shall cancel or reschedule via chat; staff may do so from the dashboard.
+
+Must
+
+BOOK-08
+
+Reminders shall be sent 24 h and 2 h before the session using templates if the window is closed; reminders obey FUP-02 checks.
+
+Should
+
+BOOK-09
+
+A bookings list and week calendar view shall be available to staff.
+
+Must
+
+BOOK-10
+
+Staff mark outcomes (Completed, No-show) to support follow-up and metrics.
+
+Should
+
+BOOK-11
+
+External calendar synchronisation (Google/Outlook).
+
+Won’t
+
+5.9 Usage metering and logs (USG)
+
+ID
+
+Requirement
+
+Priority
+
+USG-01
+
+A usage ledger shall record events: inbound_message, outbound_message, template_message, ai_request, workflow_execution (workspace, type, quantity, timestamp, reference ID). Writes shall be idempotent.
+
+Must
+
+USG-02
+
+Plan limits shall be enforced: workflow executions per month, AI requests per month, team members, active follow-up sequences, storage of media metadata.
+
+Must
+
+USG-03
+
+Owners shall be warned at 80% and 100% of any limit (in-app and email); at 100% the specific capability degrades gracefully as defined in AI-11 and below.
+
+Must
+
+USG-04
+
+An execution log shall list every automation run with status (success, failed, skipped, retried), reason and link to the conversation.
+
+Must
+
+USG-05
+
+A failure view shall group failures by cause (WhatsApp error, AI error, validation, limit, opt-out) with retry for eligible jobs.
+
+Must
+
+USG-06
+
+The usage page shall show informational Meta message counts by category (service, utility, marketing, authentication); actual Meta charges are billed by Meta to the WABA owner (see OQ-01).
+
+Should
+
+5.10 Billing and subscriptions (BILL)
+
+ID
+
+Requirement
+
+Priority
+
+BILL-01
+
+Plans (Free, Starter, Growth, Pro) and their limits shall be stored in configuration tables, not hard-coded.
+
+Must
+
+BILL-02
+
+The system shall integrate a payment gateway with recurring INR subscriptions and hosted checkout.
+
+Must
+
+BILL-03
+
+Gateway webhooks (payment success, failure, cancel, renewal) shall be signature-verified and processed idempotently.
+
+Must
+
+BILL-04
+
+On failed payment: notify the Owner, allow a 7-day grace period, then downgrade to Free limits while keeping data (read access).
+
+Must
+
+BILL-05
+
+Upgrade is effective immediately; downgrade is effective at the next cycle; the UI shows what will change.
+
+Should
+
+BILL-06
+
+The billing page shall show current plan, usage versus limits, next renewal and invoices; GST-compliant invoices shall be available.
+
+Must
+
+BILL-07
+
+Managed setup fees are invoiced manually outside the platform in MVP.
+
+Won’t
+
+5.11 Dashboard and analytics (DASH)
+
+ID
+
+Requirement
+
+Priority
+
+DASH-01
+
+Overview metrics: enquiries received, unanswered and pending conversations, leads created, qualified leads, follow-ups due/completed, bookings confirmed, automation success/failure rate, AI usage, human handoffs.
+
+Must
+
+DASH-02
+
+Date filters: today, 7 days, 30 days, custom range, in the workspace timezone.
+
+Must
+
+DASH-03
+
+Outcome metrics shall be kept distinct: message sent, message delivered, booking confirmed, student admitted (manual). They shall never be summed or conflated.
+
+Must
+
+DASH-04
+
+“Unanswered” means the last message is inbound with no outbound reply for more than N minutes during business hours (default 15).
+
+Must
+
+DASH-05
+
+Internal admin view: tenants, plan, status, usage, error rate, suspend/unsuspend.
+
+Should
+
+6. Data requirements
+
+6.1 Core entities
+
+All tenant tables include workspace_id, created_at and updated_at. The list below extends the nine-plus tables from the source document with the entities the requirements need.
+
+Entity
+
+Key fields
+
+Notes
+
+users
+
+id, email, password_hash, email_verified_at, status
+
+Global identity.
+
+workspaces
+
+id, name, category, timezone, business_hours, plan_id, status
+
+Tenant root.
+
+workspace_members
+
+workspace_id, user_id, role, invited_by, status
+
+Roles: owner, admin, agent.
+
+whatsapp_accounts
+
+workspace_id, waba_id, phone_number_id, display_number, token_encrypted, status, connected_at
+
+One per workspace in MVP.
+
+message_templates
+
+workspace_id, name, language, category, body, variables, status, provider_id
+
+Synced from Meta.
+
+webhook_events
+
+id, source, signature_valid, payload_json, received_at, processed_at, status
+
+Raw event store for replay (DD-08).
+
+contacts
+
+workspace_id, phone_e164, name, tags, opt_in_status, opt_in_source, opted_out_at
+
+Unique (workspace_id, phone_e164).
+
+conversations
+
+workspace_id, contact_id, status, assignee_id, window_expires_at, takeover_active, last_message_at
+
+One open conversation per contact.
+
+messages
+
+conversation_id, direction, provider_message_id, type, body, sender_type, status, error_code, timestamp
+
+Unique (whatsapp_account_id, provider_message_id).
+
+leads
+
+workspace_id, contact_id, class, course, preferred_batch, city, status, source, owner_id
+
+Status history in lead_events.
+
+lead_events
+
+lead_id, from_status, to_status, actor, reason, at
+
+Audit trail of status changes.
+
+knowledge_items
+
+workspace_id, type (course/faq/policy), title, content, fees, batches, active
+
+Source of truth for AI.
+
+automation_rules
+
+workspace_id, name, trigger, conditions_json, actions_json, priority, stop_flag, enabled
+
+Form-based rules.
+
+workflow_executions
+
+workspace_id, rule_id, conversation_id, status, error, started_at, finished_at
+
+Execution history.
+
+followup_sequences / followup_jobs
+
+sequence steps; job: contact_id, step_no, run_at, status, attempts, job_key
+
+Unique (workspace, contact, sequence, step).
+
+availability_rules / slots
+
+weekly rules, blackout dates, slot start/end, capacity, booked_count
+
+Powers booking engine.
+
+appointments
+
+slot_id, contact_id, lead_id, status, idempotency_key, confirmed_at, reminder_state
+
+Unique idempotency_key; capacity-safe.
+
+ai_calls
+
+workspace_id, conversation_id, model, tokens_in/out, latency_ms, intent, tools_called, outcome
+
+Cost and quality tracking.
+
+usage_events
+
+workspace_id, type, qty, ref_id, at
+
+Unique (workspace, type, ref_id).
+
+plans / subscriptions / invoices
+
+limits_json, price; gateway IDs, status, period, grace_until
+
+Config-driven limits.
+
+audit_logs
+
+workspace_id, actor, action, target, ip, at
+
+Append-only.
+
+6.2 Integrity and security rules
+
+Provider message IDs, booking idempotency keys, follow-up job keys and usage reference IDs shall have database uniqueness constraints.
+
+Foreign keys and indexes shall support workspace-scoped lookups (workspace_id leading column).
+
+Phone numbers are stored in E.164 format; free text fields are length-limited and sanitised on output.
+
+Secrets (WhatsApp tokens, gateway keys) are encrypted or held in a secrets manager and excluded from logs and exports.
+
+6.3 Retention, backup and deletion
+
+Messages and leads are retained while the subscription is active; default message retention 12 months (configurable per plan).
+
+After cancellation, data is kept 30 days for reactivation, then deleted or anonymised; Owner can request earlier deletion.
+
+A contact’s data shall be deletable on request (right to erasure) while preserving anonymised usage counts.
+
+Automated daily backups with point-in-time recovery where available; backup restore tested at least once before pilot launch.
+
+7. State models
+
+7.1 Message status
+
+From
+
+To
+
+Trigger
+
+(new outbound)
+
+queued
+
+Message accepted into send queue.
+
+queued
+
+sent
+
+Provider API accepted and returned a message ID.
+
+sent
+
+delivered → read
+
+Status webhooks from Meta.
+
+queued / sent
+
+failed
+
+Provider error or retries exhausted; error code stored.
+
+7.2 Lead status
+
+From
+
+Allowed to
+
+Who/what changes it
+
+New
+
+Interested, Lost, Opted-out
+
+AI/rule, staff, opt-out.
+
+Interested
+
+Follow-up, Demo Booked, Lost, Opted-out
+
+Follow-up engine, booking engine, staff.
+
+Follow-up
+
+Interested, Demo Booked, Lost, Opted-out
+
+Reply, booking, staff.
+
+Demo Booked
+
+Converted, Follow-up, Lost
+
+Staff after session outcome.
+
+Converted
+
+(terminal)
+
+Staff only (DD-06).
+
+Lost / Opted-out
+
+Interested (re-engaged)
+
+Staff, or contact opt-in.
+
+7.3 Follow-up job
+
+State
+
+Meaning
+
+scheduled
+
+Waiting for run_at.
+
+running
+
+Pre-send checks and send in progress.
+
+sent
+
+Message accepted by provider.
+
+skipped
+
+A check failed (opt-out, reply, booking, no template, outside hours). Reason stored.
+
+cancelled
+
+Sequence stopped by reply, booking, takeover or status.
+
+failed → dead
+
+Retries exhausted; moved to DLQ.
+
+7.4 Appointment
+
+From
+
+To
+
+Condition
+
+Pending
+
+Confirmed
+
+Reservation committed.
+
+Confirmed
+
+Rescheduled / Cancelled
+
+Student or staff action; slot released.
+
+Confirmed
+
+Completed / No-show
+
+Staff outcome after the session time.
+
+8. External and user interface requirements
+
+8.1 User interface
+
+Screen
+
+Purpose
+
+Sign up / Login / Reset
+
+Authentication and email verification.
+
+Onboarding checklist
+
+Guided setup with progress.
+
+Inbox
+
+Conversation list, thread, contact panel, notes, takeover, window status.
+
+Leads
+
+Table and detail view, status history, CSV export.
+
+Knowledge
+
+Courses, fees, batches, FAQs.
+
+Automations
+
+Rule list, form-based editor, simulator, template pack, follow-up sequence.
+
+Bookings
+
+Availability settings, list and calendar, reminders.
+
+Dashboard
+
+KPIs, date filters, failures, usage.
+
+Settings
+
+Business profile, WhatsApp connection, team, notifications.
+
+Billing
+
+Plan, usage, invoices, upgrade/downgrade.
+
+UI shall be responsive from 360 px width, keyboard accessible, and meet WCAG 2.1 AA contrast for core screens (Should).
+
+UI shall render Devanagari and Roman scripts and emoji correctly; MVP UI language is English.
+
+8.2 WhatsApp Business Platform (Cloud API)
+
+Inbound: HTTPS webhook (verification GET, event POST with signature).
+
+Outbound: Graph API messages endpoint (text, interactive, template), templates management, phone number and WABA info.
+
+The integration shall be wrapped in an adapter module; version, base URL and limits are configuration values.
+
+8.3 LLM provider
+
+Server-to-server HTTPS with API keys held in a secrets manager; request timeout 15 s, one retry, circuit breaker.
+
+Structured (JSON) outputs validated before use; no raw model text is executed or trusted for authorisation.
+
+8.4 Payment gateway and email
+
+Hosted checkout and subscription APIs; webhooks verified and idempotent.
+
+Transactional email for verification, invites, password reset, alerts and invoices; SPF/DKIM configured.
+
+8.5 Internal REST API (summary)
+
+Area
+
+Representative endpoints
+
+Auth
+
+POST /auth/signup, /auth/login, /auth/logout, /auth/forgot, /auth/reset
+
+Workspace
+
+GET/PATCH /workspace, POST /members/invite, PATCH /members/:id
+
+WhatsApp
+
+POST /whatsapp/connect/callback, GET /whatsapp/status, POST /webhooks/whatsapp
+
+Inbox
+
+GET /conversations, GET /conversations/:id/messages, POST /conversations/:id/messages, POST /conversations/:id/takeover, POST /conversations/:id/notes
+
+Leads
+
+GET/PATCH /leads, GET /leads/export
+
+Knowledge
+
+CRUD /knowledge
+
+Automations
+
+CRUD /rules, POST /rules/simulate, GET /executions
+
+Follow-ups
+
+GET/PUT /followups/sequence, GET /followups/jobs
+
+Booking
+
+GET/PUT /availability, GET /slots, CRUD /appointments
+
+Billing
+
+GET /billing, POST /billing/checkout, POST /webhooks/payments
+
+Dashboard
+
+GET /metrics/overview, GET /usage
+
+All endpoints are authenticated (except public webhooks and auth), authorised by role and workspace, validated with a schema library, versioned (/api/v1) and documented in OpenAPI.
+
+9. Non-functional requirements
+
+9.1 Performance and capacity
+
+ID
+
+Requirement
+
+Priority
+
+NFR-01
+
+Webhook acknowledgement p95 shall be under 500 ms.
+
+Must
+
+NFR-02
+
+Rule-based replies shall be sent within 5 s (p95) of receipt; AI replies within 15 s (p95), excluding Meta delivery time.
+
+Must
+
+NFR-03
+
+Dashboard and inbox pages shall load in under 3 s on a typical 4G connection for workspaces up to 50,000 messages.
+
+Should
+
+NFR-04
+
+The MVP architecture shall sustain at least 100 active workspaces and a burst of 20 inbound messages per second without message loss.
+
+Should
+
+9.2 Reliability and availability
+
+ID
+
+Requirement
+
+Priority
+
+NFR-05
+
+Target availability 99.5% monthly for webhook intake and dashboard (MVP target, no contractual SLA).
+
+Should
+
+NFR-06
+
+No inbound message accepted by the webhook shall be lost: raw events are persisted before processing and are replayable.
+
+Must
+
+NFR-07
+
+Queue jobs shall be idempotent; replaying 1,000 recorded events shall produce zero duplicate outbound messages.
+
+Must
+
+NFR-08
+
+Failed jobs shall use bounded retries with exponential backoff and DLQ with alerting.
+
+Must
+
+NFR-09
+
+Recovery objectives: RPO of 1 hour or better, RTO of 4 hours.
+
+Should
+
+9.3 Security
+
+ID
+
+Requirement
+
+Priority
+
+NFR-10
+
+All traffic shall use TLS 1.2+; HSTS enabled; passwords hashed with Argon2id or bcrypt.
+
+Must
+
+NFR-11
+
+Cross-tenant access shall be impossible: automated tests shall prove that every endpoint returns 403/404 for another workspace’s IDs.
+
+Must
+
+NFR-12
+
+Defend against OWASP Top 10: input validation, output encoding, CSRF protection, secure headers, dependency scanning.
+
+Must
+
+NFR-13
+
+Secrets are managed outside the repository; keys are rotatable; tokens are encrypted at rest.
+
+Must
+
+NFR-14
+
+Staff access follows least privilege; production database access is restricted and logged.
+
+Must
+
+NFR-15
+
+AI safety controls: allow-listed tools, schema validation, no direct data access, output filtering for secrets and system prompt leakage.
+
+Must
+
+9.4 Privacy and compliance
+
+ID
+
+Requirement
+
+Priority
+
+NFR-16
+
+The platform acts as a data processor for the institute (data fiduciary). A Terms of Service, Privacy Policy and Data Processing Agreement shall be published before the first paid pilot.
+
+Must
+
+NFR-17
+
+Consent and opt-out records shall be stored and honoured; follow-ups shall only go to contacts with a valid messaging basis.
+
+Must
+
+NFR-18
+
+Because many leads are under 18, the design shall support recording the parent/guardian contact and shall not use student data for purposes beyond the institute’s enquiry and admission handling; legal advice on verifiable guardian consent under DPDP shall be obtained before launch.
+
+Must
+
+NFR-19
+
+Data subject requests (access, correction, erasure) shall be completed within 30 days; the process shall be documented.
+
+Should
+
+NFR-20
+
+Personal data shall be hosted in an Indian region where practicable; sub-processors (cloud, LLM, email, payments) shall be listed.
+
+Should
+
+NFR-21
+
+The LLM provider contract shall prohibit training on customer data; message content sent to the LLM shall be minimised (no unnecessary identifiers).
+
+Must
+
+9.5 Observability and maintainability
+
+ID
+
+Requirement
+
+Priority
+
+NFR-22
+
+Structured logs with correlation IDs (workspace, conversation, job); error tracking (for example Sentry); uptime and health endpoints.
+
+Must
+
+NFR-23
+
+Alerts on: webhook failure rate, queue depth/age, DLQ growth, WhatsApp token errors, LLM error rate, payment webhook failures.
+
+Must
+
+NFR-24
+
+Automated tests: unit tests for rules/booking/limits, integration tests for webhooks and queues, end-to-end smoke test for the main flow; CI must pass before deploy.
+
+Must
+
+NFR-25
+
+Database migrations are versioned and reversible; staging environment mirrors production.
+
+Should
+
+9.6 Usability
+
+ID
+
+Requirement
+
+Priority
+
+NFR-26
+
+A new institute shall be able to reach a first live automation within 30 minutes with guided setup (target; measured as time to first automation).
+
+Should
+
+NFR-27
+
+Error messages shall be plain-language and say what to do next (for example how to fix a disconnected WhatsApp number).
+
+Should
+
+NFR-28
+
+Supported browsers: latest two versions of Chrome, Edge, Safari and Firefox; mobile Chrome and Safari for the inbox.
+
+Must
+
+10. Plans and usage limits
+
+Pricing is a launch hypothesis, not validated pricing. The limits below are illustrative starting values; calibrate them using real LLM, infrastructure and payment-fee costs from the pilots (target gross margin to be agreed, for example 70%+ on paid plans).
+
+Plan
+
+Price (INR/mo)
+
+Team members
+
+Workflow executions / mo
+
+AI replies / mo
+
+Capabilities
+
+Free
+
+0
+
+1
+
+100
+
+30
+
+Inbox, basic keyword rules; no follow-ups; test and discovery.
+
+Starter
+
+499
+
+2
+
+1,000
+
+300
+
+Rules, FAQ AI, lead capture, 1 follow-up sequence.
+
+Growth
+
+999
+
+5
+
+3,000
+
+1,000
+
+Starter + booking, reminders, CSV export, priority email support.
+
+Pro
+
+2,499
+
+15
+
+10,000
+
+4,000
+
+Growth + extended retention, team workflows, early access to integrations.
+
+Managed setup
+
+Custom (one-time)
+
+—
+
+—
+
+—
+
+Hands-on implementation; invoiced manually.
+
+Prices exclude GST. Meta messaging charges and taxes are separate and billed by Meta to the institute’s WABA (OQ-01). The earlier ₹5,999 managed offer is deferred until the true onboarding and integration cost is known from pilots.
+
+Limit behaviour: at 80% a warning is shown; at 100% of AI replies the system switches to rule-based replies and handoff; at 100% of workflow executions new automations pause and conversations route to humans, while inbound messages continue to be received and stored.
+
+11. Success metrics and acceptance criteria
+
+11.1 Product metrics
+
+Metric
+
+Definition
+
+Initial target (to validate)
+
+Time to first automation
+
+Signup → first rule/AI reply sent to a real student
+
+≤ 30 minutes assisted, ≤ 1 day self-serve
+
+Activation rate
+
+Workspaces with at least one live automation within 7 days
+
+≥ 60% of pilots
+
+Workflow success rate
+
+Executions completed without error / total
+
+≥ 98%
+
+Human handoff rate
+
+Conversations needing a human / total
+
+Track; target decreasing over time
+
+Median first response time
+
+Student message → first reply (automated or human)
+
+< 1 minute automated
+
+Paid conversion
+
+Pilots converting to paid
+
+≥ 50% of pilots
+
+Monthly churn
+
+Cancelled / active paying
+
+≤ 8%
+
+Gross margin
+
+(Revenue − variable cost) / revenue
+
+≥ 70%
+
+Revenue attribution shall not be introduced until bookings and admissions can be verified from reliable records.
+
+11.2 MVP acceptance (go-live) criteria
+
+#
+
+Criterion
+
+Verified by
+
+AC-01
+
+A test workspace completes signup → WhatsApp connection → knowledge setup → live reply without developer help.
+
+End-to-end test + pilot observation
+
+AC-02
+
+Replaying 1,000 recorded webhook events (including duplicates) creates no duplicate messages, leads or replies.
+
+Replay test (NFR-07)
+
+AC-03
+
+Automated tests prove tenant isolation on all endpoints.
+
+CI test suite (NFR-11)
+
+AC-04
+
+Opt-out stops all automated outbound within one minute and cancels pending follow-ups.
+
+Integration test
+
+AC-05
+
+50 concurrent booking attempts on one slot produce exactly one confirmation up to capacity.
+
+Concurrency test
+
+AC-06
+
+On a golden set of at least 100 Hindi/Hinglish/English questions, 0 invented fees/discounts and at least 90% correct-or-handed-off.
+
+AI evaluation run
+
+AC-07
+
+Plan limits block or degrade as specified and the owner is notified.
+
+Billing/usage tests
+
+AC-08
+
+Payment failure, grace period and downgrade work in the gateway test mode.
+
+Billing tests
+
+AC-09
+
+Backup restore completed successfully in staging.
+
+Ops checklist
+
+AC-10
+
+Meta business verification, number registration and required templates approved for at least one pilot.
+
+Meta dashboard
+
+AC-11
+
+ToS, Privacy Policy and DPA published; sub-processor list prepared.
+
+Legal checklist
+
+11.3 Pilot exit criteria
+
+3–5 institutes paying (even at an introductory price) and using the product weekly.
+
+Measured cost per customer and gross margin per plan.
+
+A documented list of top failure causes and support requests with owners and fixes.
+
+12. Release plan
+
+Timeline adjustment: the source plan allots Days 8–30 to build and pilot. For one developer, the full MVP in about three weeks is unlikely. This SRS proposes a two-stage release so pilots can begin early while billing and booking are completed.
+
+Stage / sprint
+
+Weeks
+
+Deliverables
+
+S0 Discovery and Meta setup
+
+1
+
+10–15 owner interviews; Meta app, business verification, test numbers, template drafts; final workflow choice.
+
+S1 Foundation
+
+2
+
+Repo, CI/CD, DB schema, auth, workspaces, roles, tenant isolation tests.
+
+S2 WhatsApp core
+
+3–4
+
+Embedded Signup, webhook, raw event store, queue, send API, status updates, templates sync.
+
+S3 Inbox and rules
+
+5–6
+
+Inbox UI, notes, assignment, takeover, rule builder, coaching template pack. MVP-α pilot-ready (assisted, free/discounted pilots).
+
+S4 AI and leads
+
+7–8
+
+Knowledge base, grounded AI, intent/entity extraction, lead pipeline, handoff rules, AI quotas.
+
+S5 Follow-up and booking
+
+9–10
+
+Follow-up sequence with opt-out and checks; slot engine, bookings, reminders.
+
+S6 Usage, billing, hardening
+
+11–12
+
+Usage ledger, limits, gateway subscriptions, dashboard, monitoring, backups, security review. MVP-β (paid pilots).
+
+S7 Pilot and iterate
+
+13–16
+
+3–5 paid pilots, feedback loop, cost and margin analysis, pricing review.
+
+Dates depend on Meta approvals, development capacity and customer availability. Customer discovery and demos run in parallel with development, as in the source go-to-market plan (target: 100 researched prospects → 25 conversations → 12 demos → 3–5 paid pilots; illustrative).
+
+13. Risks and mitigations
+
+ID
+
+Risk
+
+Impact
+
+Mitigation
+
+R-01
+
+Meta verification or template approval delays
+
+High
+
+Start in week 1; prepare documents; use test numbers; keep onboarding assisted.
+
+R-02
+
+Meta policy or pricing changes (including rules on AI assistants and business-initiated messages)
+
+High
+
+Task-specific customer-support use only; adapter layer; monitor policy updates; re-verify before launch.
+
+R-03
+
+AI states wrong fees or promises
+
+High
+
+Grounded answers only, confidence gate, mandatory handoff for sensitive topics, golden-set tests, owner-approved knowledge.
+
+R-04
+
+Message quality / spam complaints leading to number restrictions
+
+High
+
+Opt-in tracking, easy opt-out, send-hour limits, capped sequences, quality monitoring.
+
+R-05
+
+Handling minors’ personal data (DPDP)
+
+High
+
+Parent contact fields, data minimisation, legal review, clear DPA and deletion process.
+
+R-06
+
+Variable costs exceed low plan prices (LLM, Meta, infra)
+
+Medium
+
+Quotas, cheaper model for FAQs, caching, per-plan margin tracking, revisit limits.
+
+R-07
+
+Scope creep (Instagram, voice, many CRMs)
+
+Medium
+
+Strict Section 2.3 scope; change control with written trade-off.
+
+R-08
+
+Single-developer capacity and availability
+
+Medium
+
+Managed services, staged release, automated tests, document runbooks.
+
+R-09
+
+Customers find setup too hard
+
+Medium
+
+Template pack, onboarding checklist, assisted onboarding for pilots, measure time to first automation.
+
+R-10
+
+Webhook outage or duplicate processing
+
+Medium
+
+Raw-event store, replay, idempotency constraints, alerts.
+
+R-11
+
+Competition from established platforms
+
+Medium
+
+Niche focus (coaching), price clarity, ready workflows, local support.
+
+14. Open questions
+
+ID
+
+Question
+
+Owner / by when
+
+OQ-01
+
+Who pays Meta messaging charges: institute directly via WABA, or does the platform resell/bill them? (MVP assumes the institute pays Meta directly.)
+
+Founder — before pricing page
+
+OQ-02
+
+Connect as a Meta Tech Provider using Embedded Signup, or via a BSP? Compare cost, control and onboarding speed.
+
+Founder — S0
+
+OQ-03
+
+Which LLM gives the best Hindi/Hinglish quality at acceptable cost? Run a 100-question bake-off.
+
+Developer — S3
+
+OQ-04
+
+Payment gateway choice and GST invoicing approach.
+
+Founder — S5
+
+OQ-05
+
+Should the Free plan include a live WhatsApp connection or only a sandbox, given cost and abuse risk?
+
+Founder — S2
+
+OQ-06
+
+Hosting provider and region; data residency expectations of institutes.
+
+Developer — S1
+
+OQ-07
+
+Exact opt-in wording and when students (or parents) are told about follow-ups.
+
+Founder + legal — S4
+
+OQ-08
+
+Message retention period per plan and export format on cancellation.
+
+Founder — S6
+
+OQ-09
+
+Which single booking mode do pilots need first: in-person counselling, online demo link, or phone call?
+
+Customer interviews — S0
+
+Appendix A. Traceability to the source MVP checklist
+
+Source checklist item
+
+Requirement IDs
+
+Signup, login and workspace isolation
+
+AUTH-01 to AUTH-10, NFR-11
+
+Official WhatsApp connection and webhook handling
+
+WA-01 to WA-14, NFR-01, NFR-06
+
+Shared inbox and conversation history
+
+INB-01 to INB-12
+
+Keyword rules and conditional automation
+
+RUL-01 to RUL-11
+
+Approved FAQ responses using AI
+
+AI-01 to AI-15
+
+Student lead capture and status tracking
+
+LEAD-01 to LEAD-08
+
+One follow-up workflow with opt-out handling
+
+FUP-01 to FUP-09
+
+One booking integration or controlled demo-booking flow
+
+BOOK-01 to BOOK-11
+
+Usage tracking, failure logs and human takeover
+
+USG-01 to USG-06, INB-07, INB-08, DASH-01 to DASH-05
+
+Subscription limits and basic billing
+
+BILL-01 to BILL-07, Section 10
+
+Appendix B. Improvements made to the source document
+
+This table lists what this SRS adds or tightens compared with the project summary, so the founder can accept or reject each change.
+
+Area
+
+Change
+
+Why
+
+Requirement quality
+
+Numbered, testable requirements with priorities and acceptance criteria.
+
+Source was narrative; development and QA need verifiable statements.
+
+Booking
+
+Chose a built-in slot engine for MVP; external calendars deferred.
+
+Removes the biggest integration risk; still delivers demo booking.
+
+Rule builder
+
+Specified a form-based builder; drag-and-drop deferred.
+
+Matches the “do not overbuild” warning in the source.
+
+WhatsApp rules
+
+Added 24-hour window handling, template fallback, status webhooks, rate-limit handling.
+
+Source mentioned them briefly; they drive core behaviour.
+
+Opt-in / opt-out
+
+Added consent records, multilingual opt-out keywords, 1-minute enforcement, send-hour limits.
+
+Reduces ban and complaint risk.
+
+AI safety
+
+Allow-listed tools, schema validation, prompt-injection and confidence rules, quotas and fallback.
+
+Prevents wrong fees and runaway cost.
+
+Privacy
+
+Added DPDP considerations, guardian contact, data processor role, retention and deletion.
+
+Many leads are minors; legal exposure for institutes and the platform.
+
+Billing
+
+Config-driven plans, grace period, downgrade rules, GST invoices, Meta charges assumption.
+
+Source left charges ambiguous.
+
+Data model
+
+Added webhook_events, message_templates, slots, lead_events, ai_calls, plans, constraints.
+
+Needed for replay, booking, audit and billing.
+
+Non-functional
+
+Added measurable performance, reliability, security and observability targets.
+
+Needed to call the MVP “reliable”.
+
+Timeline
+
+Two-stage release (pilot-ready at about week 6, paid-ready at about week 12).
+
+Three weeks for the full MVP is unrealistic for one developer.
+
+Plans and pricing
+
+Illustrative per-plan limits with explicit validation caveat.
+
+Source asked for limits but did not define them.
+
+Appendix C. Sample default message flow (coaching)
+
+Step
+
+Message / system action
+
+Student
+
+“Hello, mujhe NEET course ki fees aur next batch ke baare mein jaana hai.”
+
+System
+
+Intent: fees_enquiry + batch_timing; lead created (New); AI quota checked.
+
+Bot
+
+Greets, shares only the fee and batch details present in the knowledge base, and asks current class and preferred batch.
+
+Student
+
+Replies with class and batch; system saves fields, sets status Interested.
+
+Bot
+
+Offers real demo slots as buttons; student picks one.
+
+System
+
+Reserves slot; on success sends confirmation, sets Demo Booked, schedules reminders, notifies counsellor.
+
+If no booking
+
+Follow-up sequence starts, subject to checks in FUP-02; stops on reply, booking or opt-out.
+
+If fee dispute or discount request
+
+Conversation set to Needs Human; AI paused; counsellor notified.
