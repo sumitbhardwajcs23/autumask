@@ -72,17 +72,51 @@ import { Loader2, RefreshCw, CheckCircle2, AlertCircle, Wifi, WifiOff } from 'lu
 export type PageView = 'landing' | 'user-login' | 'admin-login' | 'app';
 
 export const App: React.FC = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    return !!localStorage.getItem('automask_token');
+  });
+
   const [activeView, setActiveView] = useState<PageView>(() => {
     const params = new URLSearchParams(window.location.search);
     const view = params.get('view');
-    if (view === 'admin' || view === 'platform') {
+    const token = localStorage.getItem('automask_token');
+
+    // Only allow entering 'app' if token exists
+    if ((view === 'app' || view === 'admin' || view === 'platform') && token) {
       return 'app';
     }
-    if (view === 'app' || view === 'user-login' || view === 'admin-login' || view === 'landing') {
+    if (view === 'user-login' || view === 'admin-login') {
       return view as PageView;
     }
-    return 'landing';
+    // If not authenticated, default to user-login (or landing)
+    return token ? 'app' : 'user-login';
   });
+
+  // Verify existing session on mount
+  useEffect(() => {
+    const token = localStorage.getItem('automask_token');
+    if (token) {
+      authApi.getMe().then((res) => {
+        if (res?.user) {
+          setCurrentUser(res.user);
+          setIsAuthenticated(true);
+          if (res.workspace) {
+            setActiveWorkspace(res.workspace);
+          }
+        } else {
+          setIsAuthenticated(false);
+          localStorage.removeItem('automask_token');
+          setActiveView('user-login');
+        }
+      }).catch(() => {
+        setIsAuthenticated(false);
+        localStorage.removeItem('automask_token');
+        setActiveView('user-login');
+      });
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, []);
 
   const [currentUser, setCurrentUser] = useState<User>(() => {
     const params = new URLSearchParams(window.location.search);
@@ -443,9 +477,13 @@ export const App: React.FC = () => {
   };
 
   const handleLoginSuccess = (user: User, token: string) => {
+    setIsAuthenticated(true);
     setCurrentUser(user);
+    if (token) {
+      localStorage.setItem('automask_token', token);
+    }
     setApiAuthContext({
-      token,
+      token: token || localStorage.getItem('automask_token') || undefined,
       role: user.role,
       userId: user.id,
       workspaceId: '11111111-1111-4111-8111-111111111111',
@@ -490,17 +528,9 @@ export const App: React.FC = () => {
     }
   }, []);
 
-  const handleLaunchDemo = (role?: UserRole) => {
-    const targetRole = role || 'admin';
-    const demoUser = USERS_BY_ROLE[targetRole] || USERS_BY_ROLE.admin;
-    setCurrentUser(demoUser);
-    setApiAuthContext({
-      role: demoUser.role,
-      userId: demoUser.id,
-      workspaceId: '11111111-1111-4111-8111-111111111111',
-    });
-    setActiveView('app');
-    fetchAllData(demoUser.role);
+  const handleLaunchDemo = () => {
+    // Strictly protect dashboard: require authentication via UserLoginPage
+    setActiveView('user-login');
   };
 
   const handleLogout = async () => {
@@ -509,8 +539,21 @@ export const App: React.FC = () => {
     } catch {
       // Ignore
     }
-    setActiveView('landing');
+    setIsAuthenticated(false);
+    localStorage.removeItem('automask_token');
+    setActiveView('user-login');
   };
+
+  // Strict Auth Guard: Nobody can access 'app' without being authenticated!
+  if (!isAuthenticated && activeView === 'app') {
+    return (
+      <UserLoginPage
+        onLoginSuccess={handleLoginSuccess}
+        onNavigateToAdminLogin={() => setActiveView('admin-login')}
+        onBackToHome={() => setActiveView('user-login')}
+      />
+    );
+  }
 
   // Top-Level Page Views
   if (activeView === 'landing') {

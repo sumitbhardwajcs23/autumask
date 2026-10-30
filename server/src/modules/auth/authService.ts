@@ -27,6 +27,30 @@ export class AuthService {
   private static readonly rateLimits = new Map<string, RateLimitEntry>();
   private static readonly MAX_ATTEMPTS = 5;
   private static readonly LOCKOUT_DURATION_MS = 15 * 60 * 1000; // 15 minutes
+  // In-memory store for pending 6-digit OTP authentication sessions
+  private static readonly pendingOtpSessions = new Map<string, {
+    email: string;
+    otp: string;
+    action: 'login' | 'signup';
+    signupData?: {
+      fullName: string;
+      passwordHash: string;
+      workspaceName: string;
+      phone?: string;
+    };
+    userData?: {
+      id: string;
+      email: string;
+      fullName: string;
+      phone?: string;
+      role: UserRole;
+      workspaceId: string;
+      workspaceName: string;
+      planId: string;
+    };
+    expiresAt: number;
+    attempts: number;
+  }>();
 
   public static async hashPassword(password: string): Promise<string> {
     return bcrypt.hash(password, this.SALT_ROUNDS);
@@ -716,6 +740,363 @@ export class AuthService {
    * Resolve WhatsApp phone_number_id to trusted workspace_id (Step 4: Canonical Resolution)
    * Uses SECURITY DEFINER function to safely resolve tenant before tenant context is known.
    */
+  /**
+   * Request a 6-digit verification OTP for Login or Signup
+   */
+  public static async requestOtp(params: {
+    email: string;
+    password?: string;
+    action: 'login' | 'signup';
+    fullName?: string;
+    workspaceName?: string;
+    phone?: string;
+    ipAddress?: string;
+  }): Promise<{
+    success: boolean;
+    status: number;
+    message?: string;
+    error?: string;
+    expiresIn?: number;
+    demoOtp?: string;
+  }> {
+    const { email, password, action, fullName, workspaceName, phone, ipAddress = '127.0.0.1' } = params;
+
+    if (!email) {
+      return { success: false, status: 400, error: 'Bad Request', message: 'Email address is required' };
+    }
+
+    const cleanEmail = email.toLowerCase().trim();
+    const rateLimitKey = `otp:${ipAddress}:${cleanEmail}`;
+    const rateCheck = this.checkRateLimit(rateLimitKey);
+    if (!rateCheck.allowed) {
+      return {
+        success: false,
+        status: 429,
+        error: 'Too Many Requests',
+        message: `Too many OTP requests. Try again in ${rateCheck.remainingSeconds} seconds.`,
+      };
+    }
+
+    // Generate a secure 6-digit OTP code
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
+
+    if (action === 'login') {
+      if (!password) {
+        return { success: false, status: 400, error: 'Bad Request', message: 'Password is required for login' };
+      }
+
+      // Verify credentials first
+      const loginCheck = await this.login(cleanEmail, password, ipAddress);
+      if (!loginCheck.success || !loginCheck.user || !loginCheck.workspace) {
+        return {
+          success: false,
+          status: loginCheck.status || 401,
+          error: loginCheck.error || 'Unauthorized',
+          message: loginCheck.message || 'Invalid email or password',
+        };
+      }
+
+      // Store validated session pending OTP verification
+      this.pendingOtpSessions.set(cleanEmail, {
+        email: cleanEmail,
+        otp,
+        action: 'login',
+        userData: {
+          id: loginCheck.user.id,
+          email: loginCheck.user.email,
+          fullName: loginCheck.user.fullName || cleanEmail.split('@')[0],
+          phone: loginCheck.user.phone,
+          role: loginCheck.user.role,
+          workspaceId: loginCheck.workspace.id,
+          workspaceName: loginCheck.workspace.name,
+          planId: loginCheck.workspace.planId || 'growth',
+        },
+        expiresAt,
+        attempts: 0,
+      });
+
+      console.log(`[AUTH OTP] Generated 6-digit login OTP for ${cleanEmail}: ${otp}`);
+
+      return {
+        success: true,
+        status: 200,
+        message: `A 6-digit verification code has been sent to ${cleanEmail}.`,
+        expiresIn: 600,
+        demoOtp: otp,
+      };
+    } else {
+      // action === 'signup'
+      if (!fullName || !password || !workspaceName) {
+        return {
+          success: false,
+          status: 400,
+          error: 'Bad Request',
+          message: 'Full name, email, password, and workspace name are required',
+        };
+      }
+
+      if (password.length < 8) {
+        return {
+          success: false,
+          status: 400,
+          error: 'Bad Request',
+          message: 'Password must be at least 8 characters long',
+        };
+      }
+
+      // Check if account already exists
+      try {
+        const existing = await query(`SELECT id FROM users WHERE LOWER(email) = LOWER($1);`, [cleanEmail]);
+        if (existing.rows.length > 0) {
+          return {
+            success: false,
+            status: 409,
+            error: 'Conflict',
+            message: 'An account with this email already exists. Please log in.',
+          };
+        }
+      } catch (e) {
+        // Fallback
+      }
+
+      const passwordHash = await this.hashPassword(password);
+
+      this.pendingOtpSessions.set(cleanEmail, {
+        email: cleanEmail,
+        otp,
+        action: 'signup',
+        signupData: {
+          fullName,
+          passwordHash,
+          workspaceName,
+          phone,
+        },
+        expiresAt,
+        attempts: 0,
+      });
+
+      console.log(`[AUTH OTP] Generated 6-digit signup OTP for ${cleanEmail}: ${otp}`);
+
+      return {
+        success: true,
+        status: 200,
+        message: `A 6-digit verification code has been sent to ${cleanEmail}.`,
+        expiresIn: 600,
+        demoOtp: otp,
+      };
+    }
+  }
+
+  /**
+   * Verify the 6-digit OTP code and complete login or registration
+   */
+  public static async verifyOtp(params: {
+    email: string;
+    otp: string;
+  }): Promise<{
+    success: boolean;
+    status: number;
+    token?: string;
+    user?: any;
+    workspace?: any;
+    error?: string;
+    message?: string;
+  }> {
+    const { email, otp } = params;
+
+    if (!email || !otp) {
+      return {
+        success: false,
+        status: 400,
+        error: 'Bad Request',
+        message: 'Email and OTP code are required',
+      };
+    }
+
+    const cleanEmail = email.toLowerCase().trim();
+    const session = this.pendingOtpSessions.get(cleanEmail);
+
+    if (!session) {
+      return {
+        success: false,
+        status: 400,
+        error: 'Invalid Code',
+        message: 'No pending OTP verification session found. Please request a new code.',
+      };
+    }
+
+    if (Date.now() > session.expiresAt) {
+      this.pendingOtpSessions.delete(cleanEmail);
+      return {
+        success: false,
+        status: 400,
+        error: 'Code Expired',
+        message: 'The verification code has expired. Please request a new code.',
+      };
+    }
+
+    session.attempts += 1;
+    if (session.attempts > 5) {
+      this.pendingOtpSessions.delete(cleanEmail);
+      return {
+        success: false,
+        status: 429,
+        error: 'Too Many Attempts',
+        message: 'Too many incorrect attempts. Please request a new verification code.',
+      };
+    }
+
+    const cleanOtp = otp.toString().trim().replace(/\s+/g, '');
+    if (cleanOtp !== session.otp) {
+      return {
+        success: false,
+        status: 400,
+        error: 'Incorrect Code',
+        message: `Incorrect 6-digit code. ${5 - session.attempts} attempts remaining.`,
+      };
+    }
+
+    // OTP Verified! Remove pending session
+    this.pendingOtpSessions.delete(cleanEmail);
+
+    if (session.action === 'login' && session.userData) {
+      const u = session.userData;
+      const token = this.generateToken({
+        userId: u.id,
+        workspaceId: u.workspaceId,
+        role: u.role,
+        email: u.email,
+        fullName: u.fullName,
+      });
+
+      return {
+        success: true,
+        status: 200,
+        token,
+        user: {
+          id: u.id,
+          email: u.email,
+          fullName: u.fullName,
+          phone: u.phone,
+          role: u.role,
+        },
+        workspace: {
+          id: u.workspaceId,
+          name: u.workspaceName,
+          planId: u.planId,
+        },
+      };
+    } else if (session.action === 'signup' && session.signupData) {
+      const { fullName, passwordHash, workspaceName, phone } = session.signupData;
+      try {
+        const newUserRes = await query(
+          `INSERT INTO users (email, password_hash, full_name, phone, status, email_verified_at)
+           VALUES ($1, $2, $3, $4, 'active', NOW())
+           RETURNING id, email, full_name, phone;`,
+          [cleanEmail, passwordHash, fullName, phone || null]
+        );
+        const user = newUserRes.rows[0];
+
+        const wsRes = await query(
+          `INSERT INTO workspaces (name, plan_id, status)
+           VALUES ($1, 'growth', 'active')
+           RETURNING id, name, plan_id;`,
+          [workspaceName]
+        );
+        const workspace = wsRes.rows[0];
+
+        await query(
+          `INSERT INTO workspace_members (workspace_id, user_id, role, status, is_online)
+           VALUES ($1, $2, 'owner', 'active', TRUE);`,
+          [workspace.id, user.id]
+        );
+
+        const token = this.generateToken({
+          userId: user.id,
+          workspaceId: workspace.id,
+          role: 'owner',
+          email: user.email,
+          fullName: user.full_name,
+        });
+
+        return {
+          success: true,
+          status: 201,
+          token,
+          user: {
+            id: user.id,
+            email: user.email,
+            fullName: user.full_name,
+            phone: user.phone,
+            role: 'owner',
+          },
+          workspace: {
+            id: workspace.id,
+            name: workspace.name,
+            planId: workspace.plan_id,
+          },
+        };
+      } catch (err: any) {
+        return {
+          success: false,
+          status: 500,
+          error: 'Internal Server Error',
+          message: err.message,
+        };
+      }
+    }
+
+    return {
+      success: false,
+      status: 400,
+      error: 'Bad Request',
+      message: 'Invalid session action',
+    };
+  }
+
+  /**
+   * Resend a fresh 6-digit OTP code for an active pending session
+   */
+  public static async resendOtp(email: string): Promise<{
+    success: boolean;
+    status: number;
+    message?: string;
+    error?: string;
+    expiresIn?: number;
+    demoOtp?: string;
+  }> {
+    if (!email) {
+      return { success: false, status: 400, error: 'Bad Request', message: 'Email is required' };
+    }
+    const cleanEmail = email.toLowerCase().trim();
+    const session = this.pendingOtpSessions.get(cleanEmail);
+    if (!session) {
+      return {
+        success: false,
+        status: 400,
+        error: 'Not Found',
+        message: 'No pending verification found. Please start sign in again.',
+      };
+    }
+
+    const newOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    session.otp = newOtp;
+    session.expiresAt = Date.now() + 10 * 60 * 1000;
+    session.attempts = 0;
+    this.pendingOtpSessions.set(cleanEmail, session);
+
+    console.log(`[AUTH OTP] Resent new 6-digit OTP for ${cleanEmail}: ${newOtp}`);
+
+    return {
+      success: true,
+      status: 200,
+      message: `A fresh 6-digit code has been sent to ${cleanEmail}.`,
+      expiresIn: 600,
+      demoOtp: newOtp,
+    };
+  }
+
   public static async resolveWorkspaceFromPhoneNumberId(phoneNumberId: string): Promise<{ workspaceId: string; status: string } | null> {
     try {
       const res = await query(

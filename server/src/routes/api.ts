@@ -93,6 +93,75 @@ apiRouter.post('/auth/signup', async (req: Request, res: Response) => {
   });
 });
 
+// 1. Request 6-digit verification OTP (for Login or Signup)
+apiRouter.post('/auth/request-otp', async (req: Request, res: Response) => {
+  const { email, password, action = 'login', fullName, workspaceName, phone } = req.body;
+  const ip = req.ip || req.socket.remoteAddress || '127.0.0.1';
+
+  const result = await AuthService.requestOtp({
+    email,
+    password,
+    action,
+    fullName,
+    workspaceName,
+    phone,
+    ipAddress: ip,
+  });
+
+  if (!result.success) {
+    return res.status(result.status).json({
+      error: result.error,
+      message: result.message,
+    });
+  }
+
+  return res.status(result.status).json(result);
+});
+
+// 2. Verify 6-digit OTP code and authenticate
+apiRouter.post('/auth/verify-otp', async (req: Request, res: Response) => {
+  const { email, otp } = req.body;
+
+  const result = await AuthService.verifyOtp({ email, otp });
+  if (!result.success || !result.token) {
+    return res.status(result.status).json({
+      error: result.error,
+      message: result.message,
+    });
+  }
+
+  // Set secure HttpOnly session cookie
+  res.cookie(env.SESSION_COOKIE_NAME, result.token, {
+    httpOnly: true,
+    secure: env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    path: '/',
+  });
+
+  return res.status(result.status).json({
+    token: result.token,
+    user: result.user,
+    workspace: result.workspace,
+    role: result.user?.role || 'owner',
+  });
+});
+
+// 3. Resend fresh 6-digit OTP
+apiRouter.post('/auth/resend-otp', async (req: Request, res: Response) => {
+  const { email } = req.body;
+  const result = await AuthService.resendOtp(email);
+
+  if (!result.success) {
+    return res.status(result.status).json({
+      error: result.error,
+      message: result.message,
+    });
+  }
+
+  return res.status(result.status).json(result);
+});
+
 // Google OAuth Authentication (GIS Credential or Code Exchange)
 apiRouter.post('/auth/google', async (req: Request, res: Response) => {
   const { credential, code, redirectUri, workspaceName } = req.body;

@@ -58,6 +58,44 @@ export const authApi = {
     return res;
   },
 
+  requestOtp: async (data: {
+    email: string;
+    password?: string;
+    action?: 'login' | 'signup';
+    fullName?: string;
+    workspaceName?: string;
+    phone?: string;
+  }) => {
+    return apiClient.post<{
+      success: boolean;
+      message: string;
+      expiresIn: number;
+      demoOtp?: string;
+    }>('/auth/request-otp', data);
+  },
+
+  verifyOtp: async (data: { email: string; otp: string }) => {
+    const res = await apiClient.post<{
+      token: string;
+      user: User;
+      workspace: any;
+      role: string;
+    }>('/auth/verify-otp', data);
+    if (res.token) {
+      setApiAuthContext({ token: res.token, role: res.user.role, userId: res.user.id });
+    }
+    return res;
+  },
+
+  resendOtp: async (email: string) => {
+    return apiClient.post<{
+      success: boolean;
+      message: string;
+      expiresIn: number;
+      demoOtp?: string;
+    }>('/auth/resend-otp', { email });
+  },
+
   loginWithGoogle: async (data: { credential?: string; code?: string; redirectUri?: string; workspaceName?: string }) => {
     const res = await apiClient.post<{
       token: string;
