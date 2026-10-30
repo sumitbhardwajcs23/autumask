@@ -224,7 +224,7 @@ export const BroadcastTemplatesView: React.FC<BroadcastTemplatesViewProps> = ({
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
+    <div className="p-6 sm:p-8 max-w-[1550px] w-full mx-auto space-y-6">
       {/* Top Banner & Quick Metrics */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>

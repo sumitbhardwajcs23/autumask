@@ -103,7 +103,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const workspaceTitle = workspace?.name || currentIndustry.demoAccount.workspaceName;
 
   return (
-    <div className="p-6 space-y-6 max-w-7xl mx-auto">
+    <div className="p-6 sm:p-8 space-y-7 max-w-[1550px] w-full mx-auto">
       {/* WhatsApp Cloud API Command Center & Connectivity Status */}
       <WhatsAppConnectivityHero
         onNavigate={onNavigate}
@@ -119,24 +119,24 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       />
 
       {/* Multi-Industry Agency Customization Bar */}
-      <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
-          <div className="flex items-center gap-2">
-            <span className="p-1.5 rounded-lg bg-emerald-50 text-emerald-600 font-bold text-xs flex items-center gap-1.5">
-              <Layers className="w-3.5 h-3.5" />
+      <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3.5">
+          <div className="flex items-center gap-2.5">
+            <span className="p-1.5 rounded-xl bg-emerald-50 text-emerald-700 font-bold text-xs sm:text-sm flex items-center gap-1.5 border border-emerald-200/60">
+              <Layers className="w-4 h-4 text-emerald-600" />
               <span>Agency Customizer:</span>
             </span>
-            <span className="text-xs text-slate-500 font-medium">
+            <span className="text-xs sm:text-sm text-slate-600 font-medium">
               Dashboard customized for <strong>{currentIndustry.name}</strong> ({currentIndustry.customerTerm})
             </span>
           </div>
-          <span className="text-[11px] text-slate-400">
-            Active Bot: <strong className="text-slate-700">{currentIndustry.botRole}</strong>
+          <span className="text-xs text-slate-500">
+            Active Bot: <strong className="text-slate-800">{currentIndustry.botRole}</strong>
           </span>
         </div>
 
         {/* 6 Industry Tabs */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
           {(Object.keys(INDUSTRIES) as IndustryType[]).map((indKey) => {
             const ind = INDUSTRIES[indKey];
             const isSelected = selectedIndustry === indKey;
@@ -145,13 +145,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 key={indKey}
                 type="button"
                 onClick={() => setSelectedIndustry(indKey)}
-                className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border text-center cursor-pointer ${
+                className={`px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 border text-center cursor-pointer ${
                   isSelected
-                    ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
+                    ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
                     : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200/80'
                 }`}
               >
-                <span>{ind.icon}</span>
+                <span className="text-base">{ind.icon}</span>
                 <span className="truncate">{ind.shortLabel}</span>
               </button>
             );
@@ -160,17 +160,17 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       </div>
 
       {/* Welcome Greeting */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2 font-['Outfit']">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2.5 font-['Outfit']">
             Good Morning, {userName} 👋
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">
             Here's what's happening with your <strong>{workspaceTitle}</strong> ({currentIndustry.name}) WhatsApp automation today.
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span className="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
             {currentIndustry.icon} {currentIndustry.customerTerm} Focused
           </span>
         </div>

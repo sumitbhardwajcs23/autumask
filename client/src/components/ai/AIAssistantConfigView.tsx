@@ -191,7 +191,7 @@ export const AIAssistantConfigView: React.FC<AIAssistantConfigViewProps> = ({
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
+    <div className="p-6 sm:p-8 max-w-[1550px] w-full mx-auto space-y-6">
       {/* Top Banner */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>

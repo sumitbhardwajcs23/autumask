@@ -218,14 +218,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
   const onlineMembersCount = team.filter(m => m.isOnline).length;
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6 animate-in fade-in">
+    <div className="p-6 sm:p-8 max-w-[1550px] w-full mx-auto space-y-7 animate-in fade-in">
       {/* Title */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-extrabold text-slate-800 tracking-tight font-['Outfit'] flex items-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight font-['Outfit'] flex items-center gap-2.5">
             Settings & Workspace Preferences
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-sm text-slate-500 mt-1">
             Configure Meta WhatsApp Cloud API credentials, automated lead routing switches, staff alerts, and security policies.
           </p>
         </div>
@@ -248,73 +248,73 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
           <button
             onClick={handleSaveSettings}
             disabled={isSaving}
-            className="flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition-colors"
+            className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer"
           >
-            <Save className={`w-3.5 h-3.5 ${isSaving ? 'animate-spin' : ''}`} />
+            <Save className={`w-4 h-4 ${isSaving ? 'animate-spin' : ''}`} />
             <span>{isSaving ? 'Saving...' : 'Save All Settings'}</span>
           </button>
         </div>
       </div>
 
       {/* Sub-Tabs Navigation */}
-      <div className="flex items-center gap-2 border-b border-slate-200 pb-2 overflow-x-auto">
+      <div className="flex items-center gap-2.5 border-b border-slate-200 pb-2.5 overflow-x-auto">
         <button
           onClick={() => setActiveSubTab('whatsapp')}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-colors whitespace-nowrap ${
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
             activeSubTab === 'whatsapp'
-              ? 'bg-emerald-500 text-white shadow-xs'
+              ? 'bg-emerald-500 text-white shadow-sm'
               : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
-          <Phone className="w-3.5 h-3.5" />
+          <Phone className="w-4 h-4" />
           <span>WhatsApp Cloud API</span>
         </button>
 
         <button
           onClick={() => setActiveSubTab('general')}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-colors whitespace-nowrap ${
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
             activeSubTab === 'general'
-              ? 'bg-emerald-500 text-white shadow-xs'
+              ? 'bg-emerald-500 text-white shadow-sm'
               : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
-          <Building className="w-3.5 h-3.5" />
+          <Building className="w-4 h-4" />
           <span>General Profile</span>
         </button>
 
         <button
           onClick={() => setActiveSubTab('notifications')}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-colors whitespace-nowrap ${
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
             activeSubTab === 'notifications'
-              ? 'bg-emerald-500 text-white shadow-xs'
+              ? 'bg-emerald-500 text-white shadow-sm'
               : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
-          <Bell className="w-3.5 h-3.5" />
+          <Bell className="w-4 h-4" />
           <span>Notification Switches</span>
         </button>
 
         <button
           onClick={() => setActiveSubTab('routing')}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-colors whitespace-nowrap ${
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
             activeSubTab === 'routing'
-              ? 'bg-emerald-500 text-white shadow-xs'
+              ? 'bg-emerald-500 text-white shadow-sm'
               : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
-          <Sliders className="w-3.5 h-3.5" />
+          <Sliders className="w-4 h-4" />
           <span>Routing & Auto-Assignment</span>
         </button>
 
         <button
           onClick={() => setActiveSubTab('security')}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-colors whitespace-nowrap ${
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
             activeSubTab === 'security'
-              ? 'bg-emerald-500 text-white shadow-xs'
+              ? 'bg-emerald-500 text-white shadow-sm'
               : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
-          <ShieldCheck className="w-3.5 h-3.5" />
+          <ShieldCheck className="w-4 h-4" />
           <span>Security & RLS Isolation</span>
         </button>
       </div>
@@ -323,17 +323,17 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
       {activeSubTab === 'whatsapp' && (
         <div className="space-y-6">
           {/* Main Account Connection Card */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-5">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-              <div className="flex items-center gap-3.5">
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm ${
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs space-y-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+              <div className="flex items-center gap-4">
+                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm shrink-0 ${
                   account?.status === 'CONNECTED' ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-500'
                 }`}>
-                  <Phone className="w-6 h-6 fill-white/20" />
+                  <Phone className="w-7 h-7 fill-white/20" />
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-bold text-slate-800">WhatsApp Business Account (Cloud API)</h3>
+                  <div className="flex items-center gap-2.5">
+                    <h3 className="text-base sm:text-lg font-bold text-slate-800">WhatsApp Business Account (Cloud API)</h3>
                     <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1 ${
                       account?.status === 'CONNECTED' 
                         ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' 
@@ -351,31 +351,31 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs font-mono font-bold bg-slate-100 px-3 py-1.5 rounded-xl text-slate-800">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <span className="text-sm font-mono font-bold bg-slate-100 px-3.5 py-2 rounded-xl text-slate-800">
                   {account?.displayPhoneNumber || account?.displayNumber || '+1 555-660-3701'}
                 </span>
 
                 <button
                   onClick={() => setShowConnectModal(true)}
-                  className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer"
                 >
-                  <RefreshCw className="w-3.5 h-3.5" />
+                  <RefreshCw className="w-4 h-4" />
                   <span>{account?.status === 'CONNECTED' ? 'Change / Reconnect Number' : 'Connect WhatsApp Number'}</span>
                 </button>
 
                 <button
                   onClick={() => setShowTestMessageDrawer(!showTestMessageDrawer)}
-                  className="px-3 py-1.5 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5"
+                  className="px-4 py-2 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs sm:text-sm font-bold transition-colors flex items-center gap-2 cursor-pointer"
                 >
-                  <Send className="w-3.5 h-3.5" />
+                  <Send className="w-4 h-4" />
                   <span>Send Test Message</span>
                 </button>
 
                 {account?.status === 'CONNECTED' && (
                   <button
                     onClick={handleDisconnect}
-                    className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
+                    className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer"
                     title="Disconnect number"
                   >
                     <LogOut className="w-4 h-4" />
@@ -385,20 +385,20 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
             </div>
 
             {/* WABA Details Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-              <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-                <span className="text-slate-400 block text-[11px] mb-1">Phone Number ID</span>
-                <span className="font-mono font-bold text-slate-700">{account?.phoneNumberId || '1317971801407031'}</span>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                <span className="text-slate-500 block text-xs font-semibold mb-1">Phone Number ID</span>
+                <span className="font-mono font-bold text-slate-800 text-sm sm:text-base">{account?.phoneNumberId || '1317971801407031'}</span>
               </div>
 
-              <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-                <span className="text-slate-400 block text-[11px] mb-1">WABA Account ID</span>
-                <span className="font-mono font-bold text-slate-700">{account?.wabaId || '1789873612251308'}</span>
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                <span className="text-slate-500 block text-xs font-semibold mb-1">WABA Account ID</span>
+                <span className="font-mono font-bold text-slate-800 text-sm sm:text-base">{account?.wabaId || '1789873612251308'}</span>
               </div>
 
-              <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-                <span className="text-slate-400 block text-[11px] mb-1">Phone Quality Rating</span>
-                <span className="font-bold text-emerald-600 flex items-center gap-1.5">
+              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                <span className="text-slate-500 block text-xs font-semibold mb-1">Phone Quality Rating</span>
+                <span className="font-bold text-emerald-600 text-sm sm:text-base flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
                   {account?.qualityRating || 'GREEN'} (HIGH • Verified)
                 </span>
@@ -406,57 +406,57 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
             </div>
 
             {/* Webhook Configuration Section */}
-            <div className="pt-2 border-t border-slate-100 space-y-3">
+            <div className="pt-3 border-t border-slate-100 space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="text-xs font-bold text-slate-800">Meta Webhook Configuration</h4>
-                  <p className="text-[11px] text-slate-500">Enter these exact credentials in Meta Developer Dashboard ➔ WhatsApp ➔ Configuration ➔ Webhooks</p>
+                  <h4 className="text-sm font-bold text-slate-800">Meta Webhook Configuration</h4>
+                  <p className="text-xs text-slate-500">Enter these exact credentials in Meta Developer Dashboard ➔ WhatsApp ➔ Configuration ➔ Webhooks</p>
                 </div>
                 <a
                   href="https://developers.facebook.com/"
                   target="_blank"
                   rel="noreferrer"
-                  className="text-[11px] text-emerald-600 hover:underline flex items-center gap-1 font-semibold"
+                  className="text-xs text-emerald-600 hover:underline flex items-center gap-1 font-semibold"
                 >
                   <span>Meta Developers Portal</span>
-                  <ExternalLink className="w-3 h-3" />
+                  <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-sm">
                 <div>
-                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Callback URL</label>
+                  <label className="text-xs font-bold text-slate-700 block mb-1.5">Callback URL</label>
                   <div className="flex items-center gap-2">
                     <input
                       type="text"
                       readOnly
                       value={webhookUrl}
-                      className="flex-1 bg-slate-50 font-mono text-[11px] px-3 py-2 rounded-xl border border-slate-200 text-slate-700 focus:outline-none"
+                      className="flex-1 bg-slate-50 font-mono text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 text-slate-800 focus:outline-none"
                     />
                     <button
                       onClick={copyWebhook}
-                      className="px-3 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-2xs"
+                      className="px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-colors shadow-xs cursor-pointer"
                     >
-                      {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
+                      {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-slate-400" />}
                       <span>{copied ? 'Copied' : 'Copy'}</span>
                     </button>
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Verify Token</label>
+                  <label className="text-xs font-bold text-slate-700 block mb-1.5">Verify Token</label>
                   <div className="flex items-center gap-2">
                     <input
                       type="text"
                       readOnly
                       value={verifyToken}
-                      className="flex-1 bg-slate-50 font-mono text-[11px] px-3 py-2 rounded-xl border border-slate-200 text-slate-700 focus:outline-none"
+                      className="flex-1 bg-slate-50 font-mono text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 text-slate-800 focus:outline-none"
                     />
                     <button
                       onClick={copyVerifyToken}
-                      className="px-3 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-2xs"
+                      className="px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-colors shadow-xs cursor-pointer"
                     >
-                      {copiedToken ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
+                      {copiedToken ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-slate-400" />}
                       <span>{copiedToken ? 'Copied' : 'Copy'}</span>
                     </button>
                   </div>
@@ -708,37 +708,37 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
           <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-bold text-slate-800">Institute Counselling Staff</h3>
-                <p className="text-xs text-slate-500">{team.length} members assigned to manage inbound WhatsApp chats</p>
+                <h3 className="text-base sm:text-lg font-bold text-slate-800">Institute Counselling Staff</h3>
+                <p className="text-xs sm:text-sm text-slate-500 mt-0.5">{team.length} members assigned to manage inbound WhatsApp chats</p>
               </div>
-              <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+              <span className="text-xs sm:text-sm font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200">
                 {onlineMembersCount} Online Now
               </span>
             </div>
 
-            <div className="divide-y divide-slate-100 text-xs">
+            <div className="divide-y divide-slate-100">
               {team.map((member) => (
-                <div key={member.id} className="py-3 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+                <div key={member.id} className="py-3.5 flex items-center justify-between">
+                  <div className="flex items-center gap-3.5">
                     <div className="relative">
-                      <div className="w-8 h-8 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-full bg-slate-800 text-white font-bold text-sm flex items-center justify-center">
                         {member.fullName.charAt(0)}
                       </div>
                       {member.isOnline && (
-                        <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white"></span>
+                        <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-white"></span>
                       )}
                     </div>
                     <div>
-                      <h4 className="font-bold text-slate-800">{member.fullName}</h4>
-                      <p className="text-[11px] text-slate-400">{member.email}</p>
+                      <h4 className="font-bold text-slate-800 text-sm sm:text-base">{member.fullName}</h4>
+                      <p className="text-xs text-slate-400">{member.email}</p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <span className="text-[11px] font-semibold uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-600">
+                    <span className="text-xs font-semibold uppercase px-2.5 py-1 rounded-md bg-slate-100 text-slate-600">
                       {member.role}
                     </span>
-                    <span className={`text-[11px] font-medium ${member.isOnline ? 'text-emerald-600' : 'text-slate-400'}`}>
+                    <span className={`text-xs font-semibold ${member.isOnline ? 'text-emerald-600' : 'text-slate-400'}`}>
                       {member.isOnline ? 'Active' : 'Offline'}
                     </span>
                   </div>

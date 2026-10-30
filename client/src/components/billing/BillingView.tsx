@@ -167,7 +167,7 @@ export const BillingView: React.FC<BillingViewProps> = ({ usage }) => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
+    <div className="p-6 sm:p-8 max-w-[1550px] w-full mx-auto space-y-6">
       {/* Title */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
