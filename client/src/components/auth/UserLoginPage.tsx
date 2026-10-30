@@ -172,6 +172,8 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
     setIsGoogleLoading(true);
     setErrorMessage(null);
 
+    const redirectUri = window.location.origin;
+
     // 1. Prefer Google Identity Services OAuth2 code client (popup)
     if (typeof window !== 'undefined' && (window as any).google?.accounts?.oauth2) {
       try {
@@ -218,7 +220,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
       try {
         (window as any).google.accounts.id.prompt((notification: any) => {
           if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-            authApi.getGoogleAuthUrl().then(({ url }) => {
+            authApi.getGoogleAuthUrl(redirectUri).then(({ url }) => {
               window.location.href = url;
             }).catch(() => {
               setErrorMessage('Failed to launch Google sign-in window.');
@@ -234,7 +236,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
 
     // 3. Fallback: redirect directly to Google OAuth URL
     try {
-      const { url } = await authApi.getGoogleAuthUrl();
+      const { url } = await authApi.getGoogleAuthUrl(redirectUri);
       window.location.href = url;
     } catch (err: any) {
       setErrorMessage(err?.message || 'Google sign-in service unavailable.');

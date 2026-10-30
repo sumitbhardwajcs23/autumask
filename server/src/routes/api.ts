@@ -135,6 +135,32 @@ apiRouter.get('/auth/google/url', (req: Request, res: Response) => {
   });
 });
 
+// Google OAuth Callback Handler for Direct Server Redirects
+apiRouter.get('/auth/google/callback', async (req: Request, res: Response) => {
+  const code = req.query.code as string;
+  const redirectUri = `${req.protocol}://${req.get('host')}/auth/google/callback`;
+  const frontendOrigin = process.env.CORS_ORIGIN?.split(',')[0] || `${req.protocol}://${req.get('host')}`;
+
+  if (!code) {
+    return res.redirect(`${frontendOrigin}/?error=google_auth_failed`);
+  }
+
+  const result = await AuthService.loginWithGoogle({ code, redirectUri });
+  if (!result.success || !result.token) {
+    return res.redirect(`${frontendOrigin}/?error=${encodeURIComponent(result.message || 'google_auth_failed')}`);
+  }
+
+  res.cookie(env.SESSION_COOKIE_NAME, result.token, {
+    httpOnly: true,
+    secure: env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    path: '/',
+  });
+
+  return res.redirect(`${frontendOrigin}/?login=google_success&token=${encodeURIComponent(result.token)}`);
+});
+
 apiRouter.post('/auth/logout', (req: Request, res: Response) => {
   res.clearCookie(env.SESSION_COOKIE_NAME, { path: '/' });
   return res.status(200).json({ success: true, message: 'Logged out successfully' });

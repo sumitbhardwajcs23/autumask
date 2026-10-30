@@ -454,11 +454,21 @@ export const App: React.FC = () => {
     fetchAllData(user.role);
   };
 
-  // Handle Google OAuth redirect callback (?code=...)
+  // Handle Google OAuth redirect callback (?code=... or ?token=...)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
-    if (code) {
+    const token = params.get('token');
+    const login = params.get('login');
+
+    if (token) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+      authApi.getMe().then((res) => {
+        if (res?.user) {
+          handleLoginSuccess(res.user, token);
+        }
+      }).catch(console.error);
+    } else if (code) {
       window.history.replaceState({}, document.title, window.location.pathname);
       authApi.loginWithGoogle({
         code,
@@ -470,6 +480,13 @@ export const App: React.FC = () => {
       }).catch((err) => {
         console.error('Google OAuth URL code exchange error:', err);
       });
+    } else if (login === 'google_success') {
+      window.history.replaceState({}, document.title, window.location.pathname);
+      authApi.getMe().then((res) => {
+        if (res?.user) {
+          handleLoginSuccess(res.user, '');
+        }
+      }).catch(console.error);
     }
   }, []);
 
