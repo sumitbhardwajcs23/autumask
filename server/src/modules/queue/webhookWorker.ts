@@ -6,6 +6,7 @@ import { WebhookPipeline } from '../../services/webhookPipeline';
 import { AuthService } from '../auth/authService';
 import { mockStore } from '../../models/mockStore';
 import { env } from '../../config/env';
+import { DataService } from '../../database/dataService';
 
 export class WebhookWorker {
   private static worker: Worker | null = null;
@@ -98,7 +99,30 @@ export class WebhookWorker {
       // 3. Execute 7-Stage Response Decision Pipeline
       const results = WebhookPipeline.processWebhookEvent(payload);
 
-      // 4. Mark status as processed
+      // 4. Persist in real PostgreSQL database (contacts, conversations, messages, leads)
+      for (const entry of payload.entry || []) {
+        for (const change of entry.changes || []) {
+          const val = change.value;
+          for (const msg of val.messages || []) {
+            const studentPhone = `+${msg.from}`;
+            const studentName = val.contacts?.[0]?.profile?.name || 'Prospective Student';
+            const textBody = msg.text?.body || '';
+            const matchedResult = results.find(r => r.providerMessageId === msg.id);
+            const botReply = matchedResult?.routeResult?.replyText;
+
+            await DataService.recordInboundMessage({
+              workspaceId,
+              phone: studentPhone,
+              studentName,
+              body: textBody,
+              providerMessageId: msg.id,
+              botReply,
+            });
+          }
+        }
+      }
+
+      // 5. Mark status as processed
       await query(
         `UPDATE webhook_events 
          SET status = 'PROCESSED', processed_at = NOW() 
