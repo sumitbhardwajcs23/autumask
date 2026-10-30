@@ -384,3 +384,4 @@ export const getIndustryConfig = (type?: string): IndustryConfig => {
   if (normalized.includes('saas') || normalized.includes('tech') || normalized.includes('agency')) return INDUSTRIES.saas;
   return INDUSTRIES.education;
 };
+
