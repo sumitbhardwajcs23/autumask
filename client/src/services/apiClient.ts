@@ -75,8 +75,12 @@ class ApiClient {
   private defaultTimeoutMs: number;
 
   constructor(config: ApiClientConfig = {}) {
-    const envBase = (import.meta as any).env?.VITE_API_BASE_URL as string | undefined;
-    this.baseUrl = (config.baseUrl || envBase || '/api/v1').replace(/\/+$/, '');
+    let envBase = (import.meta as any).env?.VITE_API_BASE_URL as string | undefined;
+    // Automatically normalize stale API Gateway domains to same-origin reverse-proxy (/api)
+    if (!envBase || envBase.includes('o3uz7g00bg') || (typeof window !== 'undefined' && envBase.includes('execute-api'))) {
+      envBase = '/api';
+    }
+    this.baseUrl = (config.baseUrl || envBase || '/api').replace(/\/+$/, '');
     this.defaultTimeoutMs = config.defaultTimeoutMs || 12000;
   }
 
