@@ -36,18 +36,18 @@ export const SourceDonut: React.FC<SourceDonutProps> = ({
   let accumulatedPercent = 0;
 
   return (
-    <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs flex flex-col justify-between h-full">
+    <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between h-full">
       {/* Title */}
       <div className="flex items-center justify-between mb-2">
         <div>
-          <h3 className="text-sm font-bold text-slate-800">Lead Sources</h3>
-          <p className="text-[11px] text-slate-400">Attribution across acquisition channels</p>
+          <h3 className="text-base font-bold text-slate-800">Lead Sources</h3>
+          <p className="text-xs text-slate-500">Attribution across acquisition channels</p>
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-4 py-2">
+      <div className="flex items-center justify-between gap-5 py-2">
         {/* Donut Chart SVG */}
-        <div className="relative w-40 h-40 flex-shrink-0 flex items-center justify-center">
+        <div className="relative w-44 h-44 flex-shrink-0 flex items-center justify-center">
           <svg className="w-full h-full -rotate-90 transform" viewBox={`0 0 ${size} ${size}`}>
             {items.map((item) => {
               const strokeDasharray = `${(item.percentage / 100) * circumference} ${circumference}`;
@@ -73,25 +73,25 @@ export const SourceDonut: React.FC<SourceDonutProps> = ({
 
           {/* Center text */}
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-            <span className="text-2xl font-black text-slate-800 tracking-tight font-['Outfit']">
+            <span className="text-3xl font-black text-slate-800 tracking-tight font-['Outfit']">
               {total}
             </span>
-            <span className="text-[11px] text-slate-400 font-medium">Total</span>
+            <span className="text-xs text-slate-400 font-semibold">Total</span>
           </div>
         </div>
 
         {/* Legend List */}
-        <div className="flex-1 grid grid-cols-1 gap-2">
+        <div className="flex-1 grid grid-cols-1 gap-2.5">
           {items.map((item) => (
-            <div key={item.name} className="flex items-center justify-between text-xs hover:bg-slate-50 p-1 rounded-lg transition-colors">
-              <div className="flex items-center gap-2 min-w-0">
+            <div key={item.name} className="flex items-center justify-between text-xs hover:bg-slate-50 p-1.5 rounded-xl transition-colors">
+              <div className="flex items-center gap-2.5 min-w-0">
                 <span
-                  className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                  className="w-3 h-3 rounded-full flex-shrink-0"
                   style={{ backgroundColor: item.color }}
                 ></span>
-                <span className="text-slate-600 font-medium text-[11px] truncate">{item.name}</span>
+                <span className="text-slate-700 font-medium text-xs truncate">{item.name}</span>
               </div>
-              <span className="font-bold text-slate-700 text-[11px] font-['Outfit']">
+              <span className="font-bold text-slate-800 text-xs font-['Outfit']">
                 {item.percentage}%
               </span>
             </div>

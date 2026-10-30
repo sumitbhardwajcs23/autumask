@@ -103,7 +103,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const workspaceTitle = workspace?.name || currentIndustry.demoAccount.workspaceName;
 
   return (
-    <div className="p-6 sm:p-8 space-y-7 max-w-[1550px] w-full mx-auto">
+    <div className="p-6 sm:p-8 lg:p-10 space-y-8 w-full max-w-[1750px] mx-auto">
       {/* WhatsApp Cloud API Command Center & Connectivity Status */}
       <WhatsAppConnectivityHero
         onNavigate={onNavigate}
@@ -119,24 +119,24 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       />
 
       {/* Multi-Industry Agency Customization Bar */}
-      <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3.5">
-          <div className="flex items-center gap-2.5">
-            <span className="p-1.5 rounded-xl bg-emerald-50 text-emerald-700 font-bold text-xs sm:text-sm flex items-center gap-1.5 border border-emerald-200/60">
-              <Layers className="w-4 h-4 text-emerald-600" />
+      <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 mb-4">
+          <div className="flex items-center gap-3">
+            <span className="p-2 rounded-xl bg-emerald-50 text-emerald-700 font-bold text-xs sm:text-sm flex items-center gap-2 border border-emerald-200/60 shadow-2xs">
+              <Layers className="w-4.5 h-4.5 text-emerald-600" />
               <span>Agency Customizer:</span>
             </span>
             <span className="text-xs sm:text-sm text-slate-600 font-medium">
-              Dashboard customized for <strong>{currentIndustry.name}</strong> ({currentIndustry.customerTerm})
+              Dashboard customized for <strong className="text-slate-800">{currentIndustry.name}</strong> ({currentIndustry.customerTerm})
             </span>
           </div>
-          <span className="text-xs text-slate-500">
+          <span className="text-xs sm:text-sm text-slate-500">
             Active Bot: <strong className="text-slate-800">{currentIndustry.botRole}</strong>
           </span>
         </div>
 
         {/* 6 Industry Tabs */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {(Object.keys(INDUSTRIES) as IndustryType[]).map((indKey) => {
             const ind = INDUSTRIES[indKey];
             const isSelected = selectedIndustry === indKey;
@@ -145,13 +145,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 key={indKey}
                 type="button"
                 onClick={() => setSelectedIndustry(indKey)}
-                className={`px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 border text-center cursor-pointer ${
+                className={`px-4 py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2.5 border text-center cursor-pointer ${
                   isSelected
-                    ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
+                    ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
                     : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200/80'
                 }`}
               >
-                <span className="text-base">{ind.icon}</span>
+                <span className="text-lg">{ind.icon}</span>
                 <span className="truncate">{ind.shortLabel}</span>
               </button>
             );
@@ -162,7 +162,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       {/* Welcome Greeting */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight flex items-center gap-2.5 font-['Outfit']">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3 font-['Outfit']">
             Good Morning, {userName} 👋
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
@@ -170,14 +170,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span className="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
             {currentIndustry.icon} {currentIndustry.customerTerm} Focused
           </span>
         </div>
       </div>
 
       {/* 4 Stat Cards Customized to the Selected Industry */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4.5">
         <StatCard
           title={currentIndustry.metrics.stat1.title}
           value={currentIndustry.metrics.stat1.value}
@@ -213,49 +213,49 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       </div>
 
       {/* Industry-Specific Capabilities Showcase Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 rounded-2xl p-5 border border-slate-800 text-white shadow-xs">
+      <div className="bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 rounded-3xl p-6 border border-slate-800 text-white shadow-xs">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <span className="text-xl">{currentIndustry.icon}</span>
-              <h3 className="text-sm font-bold font-['Outfit']">{currentIndustry.name} Automation Workflows Active</h3>
-              <span className="px-2 py-0.5 rounded-md text-[10px] bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30">
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2.5">
+              <span className="text-2xl">{currentIndustry.icon}</span>
+              <h3 className="text-base sm:text-lg font-bold font-['Outfit']">{currentIndustry.name} Automation Workflows Active</h3>
+              <span className="px-2.5 py-1 rounded-lg text-xs bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">
                 {currentIndustry.botRole}
               </span>
             </div>
-            <p className="text-xs text-slate-300">
+            <p className="text-xs sm:text-sm text-slate-300">
               {currentIndustry.tagline}
             </p>
           </div>
 
-          <div className="flex items-center gap-2.5 shrink-0">
+          <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={onOpenBroadcastModal}
-              className="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-md shadow-emerald-600/30 flex items-center gap-1.5 cursor-pointer"
+              className="px-4.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-md shadow-emerald-600/30 flex items-center gap-2 cursor-pointer"
             >
-              <Sparkles className="w-3.5 h-3.5" />
+              <Sparkles className="w-4 h-4" />
               <span>{currentIndustry.primaryAction}</span>
             </button>
             <button
               onClick={() => onNavigate('automation')}
-              className="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all flex items-center gap-1 cursor-pointer"
+              className="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <span>View Rules</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-4 border-t border-slate-800/80">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mt-5 pt-5 border-t border-slate-800/80">
           {currentIndustry.features.map((feat, idx) => (
-            <div key={idx} className="p-3 rounded-xl bg-slate-800/50 border border-slate-700/60">
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-xs font-bold text-white">{feat.title}</span>
-                <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">
+            <div key={idx} className="p-3.5 rounded-2xl bg-slate-800/50 border border-slate-700/60">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs sm:text-sm font-bold text-white">{feat.title}</span>
+                <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md">
                   {feat.badge}
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 leading-snug">{feat.desc}</p>
+              <p className="text-xs text-slate-300 leading-snug">{feat.desc}</p>
             </div>
           ))}
         </div>
