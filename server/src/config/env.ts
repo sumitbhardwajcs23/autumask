@@ -36,7 +36,13 @@ const envSchema = z.object({
   OPENAI_API_KEY: z.string().optional(),
   GROQ_API_KEY: z.string().optional(),
   GEMINI_API_KEY: z.string().optional(),
-  DEFAULT_AI_PROVIDER: z.enum(['groq', 'gemini', 'openai', 'local']).default('groq'),
+  DEFAULT_AI_PROVIDER: z.string().default('gemini').transform(v => {
+    const val = (v || '').toLowerCase();
+    if (['groq', 'gemini', 'openai', 'local'].includes(val)) {
+      return val as 'groq' | 'gemini' | 'openai' | 'local';
+    }
+    return 'gemini';
+  }),
 
   // Razorpay Payment Gateway
   RAZORPAY_KEY_ID: z.string().optional(),
