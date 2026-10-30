@@ -49,6 +49,10 @@ const envSchema = z.object({
   RAZORPAY_KEY_SECRET: z.string().optional(),
   RAZORPAY_WEBHOOK_SECRET: z.string().optional(),
 
+  // Google OAuth 2.0 Credentials
+  GOOGLE_CLIENT_ID: z.string().optional(),
+  GOOGLE_CLIENT_SECRET: z.string().optional(),
+
   // Production CORS Origin Allow-list
   CORS_ORIGIN: z.string().default('http://localhost:3000,http://127.0.0.1:3000'),
 });

@@ -93,6 +93,48 @@ apiRouter.post('/auth/signup', async (req: Request, res: Response) => {
   });
 });
 
+// Google OAuth Authentication (GIS Credential or Code Exchange)
+apiRouter.post('/auth/google', async (req: Request, res: Response) => {
+  const { credential, code, redirectUri, workspaceName } = req.body;
+  const result = await AuthService.loginWithGoogle({ credential, code, redirectUri, workspaceName });
+
+  if (!result.success) {
+    return res.status(result.status).json({
+      error: result.error,
+      message: result.message,
+    });
+  }
+
+  // Set secure HttpOnly session cookie
+  res.cookie(env.SESSION_COOKIE_NAME, result.token, {
+    httpOnly: true,
+    secure: env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    path: '/',
+  });
+
+  return res.status(result.status).json({
+    token: result.token,
+    user: result.user,
+    workspace: result.workspace,
+    role: result.user?.role || 'owner',
+  });
+});
+
+// Google OAuth URL generator
+apiRouter.get('/auth/google/url', (req: Request, res: Response) => {
+  const clientId = env.GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID || '';
+  const redirectUri = (req.query.redirectUri as string) || `${req.protocol}://${req.get('host')}/auth/google/callback`;
+  const scope = encodeURIComponent('openid email profile');
+  const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}&access_type=offline&prompt=consent`;
+
+  res.json({
+    url: googleAuthUrl,
+    clientId,
+  });
+});
+
 apiRouter.post('/auth/logout', (req: Request, res: Response) => {
   res.clearCookie(env.SESSION_COOKIE_NAME, { path: '/' });
   return res.status(200).json({ success: true, message: 'Logged out successfully' });

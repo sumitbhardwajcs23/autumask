@@ -58,6 +58,25 @@ export const authApi = {
     return res;
   },
 
+  loginWithGoogle: async (data: { credential?: string; code?: string; redirectUri?: string; workspaceName?: string }) => {
+    const res = await apiClient.post<{
+      token: string;
+      user: User;
+      workspace: any;
+      role: string;
+    }>('/auth/google', data);
+    if (res.token) {
+      setApiAuthContext({ token: res.token, role: res.user.role, userId: res.user.id });
+    }
+    return res;
+  },
+
+  getGoogleAuthUrl: async (redirectUri?: string) => {
+    return apiClient.get<{ url: string; clientId: string }>('/auth/google/url', {
+      params: redirectUri ? { redirectUri } : undefined,
+    });
+  },
+
   logout: async () => {
     try {
       await apiClient.post('/auth/logout');

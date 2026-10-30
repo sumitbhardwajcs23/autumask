@@ -440,6 +440,279 @@ export class AuthService {
   }
 
   /**
+   * Google OAuth Login / Signup:
+   * Supports Google ID Token (from Google Identity Services credential response)
+   * OR Authorization Code (from Google OAuth2 redirect / popup flow)
+   */
+  public static async loginWithGoogle(params: {
+    credential?: string;
+    code?: string;
+    redirectUri?: string;
+    workspaceName?: string;
+  }): Promise<{
+    success: boolean;
+    status: number;
+    token?: string;
+    user?: any;
+    workspace?: any;
+    error?: string;
+    message?: string;
+  }> {
+    const { credential, code, redirectUri, workspaceName } = params;
+
+    let googleProfile: {
+      email: string;
+      name: string;
+      sub: string;
+      picture?: string;
+      email_verified?: boolean | string;
+    } | null = null;
+
+    if (credential) {
+      // 1. Verify Google ID Token via Google's tokeninfo API
+      try {
+        const verifyRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${credential}`);
+        if (!verifyRes.ok) {
+          const errData = await verifyRes.text();
+          return {
+            success: false,
+            status: 401,
+            error: 'Unauthorized',
+            message: `Google token verification failed: ${errData}`,
+          };
+        }
+        const data = await verifyRes.json() as any;
+        if (!data.email) {
+          return {
+            success: false,
+            status: 400,
+            error: 'Bad Request',
+            message: 'No email address found in Google account profile',
+          };
+        }
+        googleProfile = {
+          email: data.email,
+          name: data.name || data.email.split('@')[0],
+          sub: data.sub,
+          picture: data.picture,
+          email_verified: data.email_verified,
+        };
+      } catch (err: any) {
+        return {
+          success: false,
+          status: 500,
+          error: 'Internal Server Error',
+          message: `Failed to contact Google authentication service: ${err.message}`,
+        };
+      }
+    } else if (code) {
+      // 2. Exchange authorization code for tokens
+      try {
+        const clientId = env.GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID || '';
+        const clientSecret = env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SECRET || '';
+        
+        const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            code,
+            client_id: clientId,
+            client_secret: clientSecret,
+            redirect_uri: redirectUri || 'postmessage',
+            grant_type: 'authorization_code',
+          }),
+        });
+
+        if (!tokenRes.ok) {
+          const errData = await tokenRes.text();
+          return {
+            success: false,
+            status: 401,
+            error: 'Unauthorized',
+            message: `Google authorization code exchange failed: ${errData}`,
+          };
+        }
+
+        const tokenData = await tokenRes.json() as any;
+        
+        // Fetch userinfo with access token
+        const userInfoRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: `Bearer ${tokenData.access_token}` },
+        });
+        
+        if (!userInfoRes.ok) {
+          return {
+            success: false,
+            status: 401,
+            error: 'Unauthorized',
+            message: 'Failed to retrieve user profile from Google',
+          };
+        }
+
+        const data = await userInfoRes.json() as any;
+        googleProfile = {
+          email: data.email,
+          name: data.name || data.email.split('@')[0],
+          sub: data.sub,
+          picture: data.picture,
+          email_verified: data.email_verified,
+        };
+      } catch (err: any) {
+        return {
+          success: false,
+          status: 500,
+          error: 'Internal Server Error',
+          message: `Failed to exchange Google OAuth code: ${err.message}`,
+        };
+      }
+    } else {
+      return {
+        success: false,
+        status: 400,
+        error: 'Bad Request',
+        message: 'Google credential (ID token) or authorization code is required',
+      };
+    }
+
+    if (!googleProfile || !googleProfile.email) {
+      return {
+        success: false,
+        status: 400,
+        error: 'Bad Request',
+        message: 'Could not obtain email from Google authentication',
+      };
+    }
+
+    const email = googleProfile.email.toLowerCase().trim();
+    const fullName = googleProfile.name || email.split('@')[0];
+
+    try {
+      // 1. Check if user already exists in Neon PostgreSQL
+      const userRes = await query(
+        `SELECT id, email, full_name, phone, status FROM users WHERE LOWER(email) = LOWER($1) LIMIT 1;`,
+        [email]
+      );
+
+      let user: any;
+      let workspaceId = '';
+      let workspaceNameResult = '';
+      let role: UserRole = 'owner';
+      let planId = 'growth';
+
+      if (userRes.rows.length > 0) {
+        user = userRes.rows[0];
+        if (user.status !== 'active') {
+          return {
+            success: false,
+            status: 403,
+            error: 'Forbidden',
+            message: 'User account is suspended or inactive',
+          };
+        }
+
+        // Find existing workspace
+        const memberRes = await query(
+          `SELECT wm.workspace_id, wm.role, wm.status, w.name as workspace_name, w.plan_id
+           FROM workspace_members wm
+           JOIN workspaces w ON w.id = wm.workspace_id
+           WHERE wm.user_id = $1 AND wm.status = 'active'
+           ORDER BY wm.created_at ASC
+           LIMIT 1;`,
+          [user.id]
+        );
+
+        if (memberRes.rows.length > 0) {
+          const m = memberRes.rows[0];
+          workspaceId = m.workspace_id;
+          role = m.role as UserRole;
+          workspaceNameResult = m.workspace_name;
+          planId = m.plan_id || 'growth';
+        } else {
+          // If no active workspace, create one
+          const wsRes = await query(
+            `INSERT INTO workspaces (name, plan_id, status)
+             VALUES ($1, 'growth', 'active')
+             RETURNING id, name, plan_id;`,
+            [workspaceName || `${fullName}'s Academy`]
+          );
+          workspaceId = wsRes.rows[0].id;
+          workspaceNameResult = wsRes.rows[0].name;
+          planId = wsRes.rows[0].plan_id;
+
+          await query(
+            `INSERT INTO workspace_members (workspace_id, user_id, role, status, is_online)
+             VALUES ($1, $2, 'owner', 'active', TRUE);`,
+            [workspaceId, user.id]
+          );
+          role = 'owner';
+        }
+      } else {
+        // 2. New User Signup via Google OAuth
+        const newUserRes = await query(
+          `INSERT INTO users (email, password_hash, full_name, status, email_verified_at)
+           VALUES ($1, 'GOOGLE_AUTH', $2, 'active', NOW())
+           RETURNING id, email, full_name, phone;`,
+          [email, fullName]
+        );
+        user = newUserRes.rows[0];
+
+        const defaultWsName = workspaceName || (fullName ? `${fullName}'s Academy` : 'My Coaching Institute');
+        const wsRes = await query(
+          `INSERT INTO workspaces (name, plan_id, status)
+           VALUES ($1, 'growth', 'active')
+           RETURNING id, name, plan_id;`,
+          [defaultWsName]
+        );
+        workspaceId = wsRes.rows[0].id;
+        workspaceNameResult = wsRes.rows[0].name;
+        planId = wsRes.rows[0].plan_id;
+
+        await query(
+          `INSERT INTO workspace_members (workspace_id, user_id, role, status, is_online)
+           VALUES ($1, $2, 'owner', 'active', TRUE);`,
+          [workspaceId, user.id]
+        );
+        role = 'owner';
+      }
+
+      // Generate AutoMask session token
+      const token = this.generateToken({
+        userId: user.id,
+        workspaceId,
+        role,
+        email: user.email,
+        fullName: user.full_name,
+      });
+
+      return {
+        success: true,
+        status: 200,
+        token,
+        user: {
+          id: user.id,
+          email: user.email,
+          fullName: user.full_name,
+          phone: user.phone,
+          picture: googleProfile.picture,
+          role,
+        },
+        workspace: {
+          id: workspaceId,
+          name: workspaceNameResult,
+          planId,
+        },
+      };
+    } catch (err: any) {
+      return {
+        success: false,
+        status: 500,
+        error: 'Internal Server Error',
+        message: err.message,
+      };
+    }
+  }
+
+  /**
    * Resolve WhatsApp phone_number_id to trusted workspace_id (Step 4: Canonical Resolution)
    * Uses SECURITY DEFINER function to safely resolve tenant before tenant context is known.
    */

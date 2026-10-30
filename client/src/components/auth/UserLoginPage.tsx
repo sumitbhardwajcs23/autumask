@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Bot, 
   Lock, 
@@ -117,6 +117,131 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
     }
   };
 
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+
+  // Initialize Google Identity Services (GIS)
+  useEffect(() => {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+
+    const handleCredentialResponse = async (response: any) => {
+      if (!response?.credential) return;
+      setIsGoogleLoading(true);
+      setErrorMessage(null);
+      try {
+        const res = await authApi.loginWithGoogle({ credential: response.credential });
+        if (res?.user && res?.token) {
+          onLoginSuccess(res.user, res.token);
+        } else {
+          throw new Error('Google sign-in did not return a valid session.');
+        }
+      } catch (err: any) {
+        console.error('Google credential login error:', err);
+        setErrorMessage(err?.response?.data?.message || err?.message || 'Google sign-in failed');
+      } finally {
+        setIsGoogleLoading(false);
+      }
+    };
+
+    const initGis = () => {
+      if (typeof window !== 'undefined' && (window as any).google?.accounts?.id) {
+        try {
+          (window as any).google.accounts.id.initialize({
+            client_id: clientId,
+            callback: handleCredentialResponse,
+            auto_select: false,
+          });
+        } catch (e) {
+          console.warn('GIS initialize notice:', e);
+        }
+      }
+    };
+
+    initGis();
+    const interval = setInterval(() => {
+      if ((window as any).google?.accounts?.id) {
+        initGis();
+        clearInterval(interval);
+      }
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [onLoginSuccess]);
+
+  const handleGoogleSignIn = async () => {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+    setIsGoogleLoading(true);
+    setErrorMessage(null);
+
+    // 1. Prefer Google Identity Services OAuth2 code client (popup)
+    if (typeof window !== 'undefined' && (window as any).google?.accounts?.oauth2) {
+      try {
+        const client = (window as any).google.accounts.oauth2.initCodeClient({
+          client_id: clientId,
+          scope: 'openid email profile',
+          ux_mode: 'popup',
+          callback: async (response: any) => {
+            if (response.code) {
+              try {
+                const res = await authApi.loginWithGoogle({
+                  code: response.code,
+                  redirectUri: 'postmessage',
+                });
+                if (res?.user && res?.token) {
+                  onLoginSuccess(res.user, res.token);
+                } else {
+                  throw new Error('Google sign-in did not return a valid session.');
+                }
+              } catch (err: any) {
+                setErrorMessage(err?.response?.data?.message || err?.message || 'Google sign-in failed');
+              } finally {
+                setIsGoogleLoading(false);
+              }
+            } else if (response.error) {
+              setErrorMessage(`Google sign-in cancelled or failed: ${response.error}`);
+              setIsGoogleLoading(false);
+            }
+          },
+          error_callback: (err: any) => {
+            console.error('Google popup client error:', err);
+            setIsGoogleLoading(false);
+          },
+        });
+        client.requestCode();
+        return;
+      } catch (err) {
+        console.warn('OAuth2 code client failed, falling back:', err);
+      }
+    }
+
+    // 2. Try GIS Prompt
+    if (typeof window !== 'undefined' && (window as any).google?.accounts?.id) {
+      try {
+        (window as any).google.accounts.id.prompt((notification: any) => {
+          if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+            authApi.getGoogleAuthUrl().then(({ url }) => {
+              window.location.href = url;
+            }).catch(() => {
+              setErrorMessage('Failed to launch Google sign-in window.');
+              setIsGoogleLoading(false);
+            });
+          }
+        });
+        return;
+      } catch (err) {
+        console.warn('GIS prompt error:', err);
+      }
+    }
+
+    // 3. Fallback: redirect directly to Google OAuth URL
+    try {
+      const { url } = await authApi.getGoogleAuthUrl();
+      window.location.href = url;
+    } catch (err: any) {
+      setErrorMessage(err?.message || 'Google sign-in service unavailable.');
+      setIsGoogleLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#070b14] flex flex-col justify-between font-['Inter'] relative overflow-hidden">
       {/* Background Gradients */}
@@ -223,8 +348,55 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
             <div className="mb-6">
               <h3 className="text-xl font-bold text-white font-['Outfit']">Sign In to Your Workspace</h3>
               <p className="text-xs text-slate-400 mt-1">
-                Enter your credentials or select a 1-click team member below.
+                Enter your credentials or continue instantly with your Google account.
               </p>
+            </div>
+
+            {/* Google Authentication Button */}
+            <div className="mb-6">
+              <button
+                type="button"
+                onClick={handleGoogleSignIn}
+                disabled={isGoogleLoading || isLoading}
+                className="w-full py-3 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-xs transition-all shadow-md flex items-center justify-center gap-3 border border-slate-200 hover:shadow-lg active:scale-98 disabled:opacity-60 cursor-pointer"
+              >
+                {isGoogleLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin text-slate-700" />
+                    <span>Connecting with Google...</span>
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" viewBox="0 0 24 24">
+                      <path
+                        fill="#4285F4"
+                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                      />
+                      <path
+                        fill="#34A853"
+                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                      />
+                      <path
+                        fill="#FBBC05"
+                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                      />
+                      <path
+                        fill="#EA4335"
+                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+                      />
+                    </svg>
+                    <span>Continue with Google</span>
+                  </>
+                )}
+              </button>
+
+              <div className="relative flex py-4 items-center">
+                <div className="flex-grow border-t border-slate-800"></div>
+                <span className="flex-shrink mx-3 text-[10px] text-slate-500 uppercase tracking-widest font-semibold">
+                  or sign in with email
+                </span>
+                <div className="flex-grow border-t border-slate-800"></div>
+              </div>
             </div>
 
             {/* 1-Click Team Member Quick Selectors */}

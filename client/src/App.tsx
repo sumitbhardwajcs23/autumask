@@ -454,6 +454,25 @@ export const App: React.FC = () => {
     fetchAllData(user.role);
   };
 
+  // Handle Google OAuth redirect callback (?code=...)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    if (code) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+      authApi.loginWithGoogle({
+        code,
+        redirectUri: window.location.origin,
+      }).then((res) => {
+        if (res?.user && res?.token) {
+          handleLoginSuccess(res.user, res.token);
+        }
+      }).catch((err) => {
+        console.error('Google OAuth URL code exchange error:', err);
+      });
+    }
+  }, []);
+
   const handleLaunchDemo = (role?: UserRole) => {
     const targetRole = role || 'admin';
     const demoUser = USERS_BY_ROLE[targetRole] || USERS_BY_ROLE.admin;
