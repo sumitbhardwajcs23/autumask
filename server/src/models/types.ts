@@ -463,4 +463,6 @@ export interface UsageQuota {
   executionsLimit: number;
   templateMessagesUsed: number;
   templateMessagesLimit: number;
+  teamMembersLimit?: number;
+  monthlyActiveStudentsLimit?: number;
 }

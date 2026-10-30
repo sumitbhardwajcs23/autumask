@@ -10,22 +10,24 @@ dotenv.config();
 
 const app = express();
 
-// Production CORS with explicit frontend-origin allow-list
-const allowedOrigins = env.CORS_ORIGIN
-  ? env.CORS_ORIGIN.split(',').map(o => o.trim())
-  : ['http://localhost:3000', 'http://127.0.0.1:3000'];
+// Unconditional bulletproof CORS Middleware
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Cookie, X-Requested-With, X-Hub-Signature-256, Accept');
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  }
 
-app.use(cors({
-  origin: (origin, callback) => {
-    // Allow non-browser requests (e.g. mobile apps, curl, Meta webhooks)
-    if (!origin) return callback(null, true);
-    if (env.NODE_ENV !== 'production' || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
-      return callback(null, true);
-    }
-    return callback(new Error(`Origin '${origin}' is not permitted by AutoMask CORS policy`));
-  },
-  credentials: true,
-}));
+  // Preflight OPTIONS requests must terminate immediately with 204 No Content
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end();
+  }
+  next();
+});
 
 app.use(cookieParser());
 
@@ -35,6 +37,25 @@ app.use(express.json({
     req.rawBody = buf.toString('utf8');
   }
 }));
+
+// Normalize API Gateway stage and proxy prefixes (e.g. /default/automask-backend-api, /automask-backend-api, /default)
+app.use((req, res, next) => {
+  const prefixes = [
+    '/default/automask-backend-api',
+    '/automask-backend-api',
+    '/default'
+  ];
+  for (const prefix of prefixes) {
+    if (req.url === prefix) {
+      req.url = '/';
+      break;
+    } else if (req.url.startsWith(`${prefix}/`)) {
+      req.url = req.url.slice(prefix.length);
+      break;
+    }
+  }
+  next();
+});
 
 // Request logging middleware
 app.use((req, res, next) => {
@@ -145,9 +166,15 @@ app.use('/api/platform', platformRouter);
 // Workspace API Routes (Subscribing Business Workspace Operations)
 app.use('/api/v1', apiRouter);
 app.use('/api', apiRouter);
+app.use('/', apiRouter);
 
-// Global error handler
+// Global error handler with guaranteed CORS headers
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  const origin = req.headers.origin;
+  if (origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
   console.error('Unhandled Server Error:', err);
   res.status(500).json({ error: 'Internal Server Error', message: err?.message || 'Unknown error' });
 });

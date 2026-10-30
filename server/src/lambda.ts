@@ -23,15 +23,47 @@ async function setupServerlessExpress() {
 }
 
 export const handler = async (
-  event: APIGatewayProxyEvent,
-  context: Context
-): Promise<APIGatewayProxyResult> => {
+  event: any,
+  context: any
+): Promise<any> => {
   // Allow open database pool sockets without keeping Lambda execution waiting
   context.callbackWaitsForEmptyEventLoop = false;
+
+  // Resolve request method and origin
+  const httpMethod = event?.requestContext?.http?.method || event?.httpMethod || 'GET';
+  const origin = event?.headers?.origin || event?.headers?.Origin || '*';
+
+  // Immediate Lambda-level preflight handling for CORS
+  if (httpMethod.toUpperCase() === 'OPTIONS') {
+    return {
+      statusCode: 204,
+      headers: {
+        'Access-Control-Allow-Origin': origin,
+        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization, Cookie, X-Requested-With, X-Hub-Signature-256, Accept',
+        'Access-Control-Max-Age': '86400',
+        'Vary': 'Origin'
+      },
+      body: ''
+    };
+  }
 
   if (!serverlessExpressInstance) {
     await setupServerlessExpress();
   }
 
-  return serverlessExpressInstance(event, context);
+  const result = await serverlessExpressInstance(event, context);
+
+  // Guarantee CORS headers on EVERY response
+  if (result) {
+    result.headers = result.headers || {};
+    result.headers['Access-Control-Allow-Origin'] = origin;
+    result.headers['Access-Control-Allow-Credentials'] = 'true';
+    result.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, PATCH, DELETE, OPTIONS';
+    result.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, Cookie, X-Requested-With, X-Hub-Signature-256, Accept';
+    result.headers['Vary'] = 'Origin';
+  }
+
+  return result;
 };

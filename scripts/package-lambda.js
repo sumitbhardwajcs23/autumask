@@ -22,9 +22,9 @@ try {
   }
   console.log('✅ Lambda handler verified at dist/lambda.js');
 
-  // 3. Create deployment zip using native PowerShell on Windows
+  // 3. Create deployment zip using native PowerShell with progress suppressed
   console.log('2. Creating lambda.zip archive...');
-  const powershellCmd = `Compress-Archive -Path "${distDir}\\*", "${serverDir}\\node_modules" -DestinationPath "${zipFile}" -Force`;
+  const powershellCmd = `$ProgressPreference = 'SilentlyContinue'; Compress-Archive -Path "${distDir}\\*", "${serverDir}\\node_modules" -DestinationPath "${zipFile}" -Force`;
   
   // Note: For lean production deployments, omit devDependencies
   console.log(`Executing: ${powershellCmd}`);

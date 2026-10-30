@@ -8,13 +8,15 @@ export const getPool = (): Pool => {
     const isLambda = !!process.env.AWS_LAMBDA_FUNCTION_NAME;
     const maxConnections = isLambda ? 2 : 20;
 
+    const isSsl = env.DB_SSL || (env.DATABASE_URL ? (env.DATABASE_URL.includes('sslmode=require') || env.DATABASE_URL.includes('neon.tech')) : false);
+
     if (env.DATABASE_URL) {
       pool = new Pool({
         connectionString: env.DATABASE_URL,
-        ssl: env.DB_SSL ? { rejectUnauthorized: false } : false,
+        ssl: isSsl ? { rejectUnauthorized: false } : false,
         max: maxConnections,
         idleTimeoutMillis: isLambda ? 10000 : 30000,
-        connectionTimeoutMillis: 5000,
+        connectionTimeoutMillis: 10000,
       });
     } else {
       pool = new Pool({
