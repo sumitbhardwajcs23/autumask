@@ -19,9 +19,17 @@ export class WebhookQueueService {
 
   public static async initQueue(): Promise<void> {
     try {
-      this.redisClient = new Redis(process.env.REDIS_URL || 'redis://127.0.0.1:6379', {
+      let redisUrl = process.env.REDIS_URL || env.REDIS_URL;
+      if (!redisUrl && (process.env.UPSTASH_REDIS_REST_URL || env.UPSTASH_REDIS_REST_URL) && (process.env.UPSTASH_REDIS_REST_TOKEN || env.UPSTASH_REDIS_REST_TOKEN)) {
+        const restUrl = process.env.UPSTASH_REDIS_REST_URL || env.UPSTASH_REDIS_REST_URL || '';
+        const restToken = process.env.UPSTASH_REDIS_REST_TOKEN || env.UPSTASH_REDIS_REST_TOKEN || '';
+        const host = restUrl.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+        redisUrl = `rediss://default:${restToken}@${host}:6379`;
+      }
+
+      this.redisClient = new Redis(redisUrl || 'redis://127.0.0.1:6379', {
         maxRetriesPerRequest: 1,
-        connectTimeout: 1000,
+        connectTimeout: 5000,
         lazyConnect: true,
         enableOfflineQueue: false,
       });

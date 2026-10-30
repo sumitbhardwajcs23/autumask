@@ -28,6 +28,8 @@ const envSchema = z.object({
 
   // Redis & BullMQ Queue Configuration
   REDIS_URL: z.string().optional(),
+  UPSTASH_REDIS_REST_URL: z.string().optional(),
+  UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
   RUN_STANDALONE_WORKER: z.string().transform(v => v === 'true').default('false'),
 
   // AI & Semantic Grounding (Groq, Gemini, OpenAI)
