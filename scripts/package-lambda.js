@@ -22,13 +22,14 @@ try {
   }
   console.log('✅ Lambda handler verified at dist/lambda.js');
 
-  // 3. Create deployment zip using native PowerShell with progress suppressed
-  console.log('2. Creating lambda.zip archive...');
-  const powershellCmd = `$ProgressPreference = 'SilentlyContinue'; Compress-Archive -Path "${distDir}\\*", "${serverDir}\\node_modules" -DestinationPath "${zipFile}" -Force`;
-  
-  // Note: For lean production deployments, omit devDependencies
-  console.log(`Executing: ${powershellCmd}`);
-  execSync(`powershell -Command "${powershellCmd}"`, { stdio: 'inherit' });
+  // 3. Create deployment zip using native tar.exe (fast)
+  console.log('2. Creating lambda.zip archive with tar.exe...');
+  if (fs.existsSync(zipFile)) {
+    fs.unlinkSync(zipFile);
+  }
+  const tarCmd = `tar.exe -a -c -f "${zipFile}" -C "${distDir}" . -C "${serverDir}" node_modules`;
+  console.log(`Executing: ${tarCmd}`);
+  execSync(tarCmd, { stdio: 'inherit' });
 
   const stats = fs.statSync(zipFile);
   const sizeMb = (stats.size / (1024 * 1024)).toFixed(2);

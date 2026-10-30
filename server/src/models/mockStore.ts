@@ -644,12 +644,12 @@ export class MockDataStore {
 
   whatsappAccount: WhatsAppAccount = {
     id: 'wa-acc-01',
-    workspaceId: 'ws-prakash-01',
-    displayNumber: '+91 98765 43210',
-    phoneNumberId: 'phone-prakash-01',
+    workspaceId: '11111111-1111-4111-8111-111111111111',
+    displayNumber: '+1 555-660-3701',
+    phoneNumberId: '1317971801407031',
     status: 'CONNECTED',
     qualityRating: 'GREEN',
-    wabaId: 'waba_99281746210',
+    wabaId: '1789873612251308',
   };
 
   usage: UsageQuota = {

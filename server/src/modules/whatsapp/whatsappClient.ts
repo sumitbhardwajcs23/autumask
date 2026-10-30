@@ -254,7 +254,10 @@ export class WhatsAppClient {
     } catch {}
 
     // 5. Submit to Meta Cloud API (or simulate in test environments)
-    const isLiveMetaToken = env.META_ACCESS_TOKEN && env.META_ACCESS_TOKEN.startsWith('EAA');
+    const isLiveMetaToken = Boolean(
+      (creds.accessToken && creds.accessToken.startsWith('EAA')) ||
+      (env.META_ACCESS_TOKEN && env.META_ACCESS_TOKEN.startsWith('EAA'))
+    );
 
     try {
       let providerMessageId: string;
@@ -394,7 +397,10 @@ export class WhatsAppClient {
     }
 
     const cleanPhone = toPhone.replace(/\D/g, '');
-    const isLiveMetaToken = env.META_ACCESS_TOKEN && env.META_ACCESS_TOKEN.startsWith('EAA');
+    const isLiveMetaToken = Boolean(
+      (creds.accessToken && creds.accessToken.startsWith('EAA')) ||
+      (env.META_ACCESS_TOKEN && env.META_ACCESS_TOKEN.startsWith('EAA'))
+    );
 
     try {
       let providerMessageId: string;
