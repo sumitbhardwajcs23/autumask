@@ -9,9 +9,15 @@ interface FunnelStep {
 
 interface FunnelChartProps {
   data?: FunnelStep[];
+  title?: string;
+  subtitle?: string;
 }
 
-export const FunnelChart: React.FC<FunnelChartProps> = ({ data }) => {
+export const FunnelChart: React.FC<FunnelChartProps> = ({ 
+  data, 
+  title = 'Enquiries to Admission Funnel', 
+  subtitle = 'End-to-end conversion pipeline' 
+}) => {
   const [timeRange, setTimeRange] = useState('Last 30 Days');
 
   const defaultData: FunnelStep[] = [
@@ -31,8 +37,8 @@ export const FunnelChart: React.FC<FunnelChartProps> = ({ data }) => {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-sm font-bold text-slate-800">Enquiries to Admission Funnel</h3>
-          <p className="text-[11px] text-slate-400 mt-0.5">End-to-end coaching conversion pipeline</p>
+          <h3 className="text-sm font-bold text-slate-800">{title}</h3>
+          <p className="text-[11px] text-slate-400 mt-0.5">{subtitle}</p>
         </div>
         <div className="relative">
           <button className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 text-[11px] font-semibold text-slate-600 hover:bg-slate-100 transition-colors">

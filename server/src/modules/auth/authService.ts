@@ -37,6 +37,7 @@ export class AuthService {
       passwordHash: string;
       workspaceName: string;
       phone?: string;
+      category?: string;
     };
     userData?: {
       id: string;
@@ -47,6 +48,7 @@ export class AuthService {
       workspaceId: string;
       workspaceName: string;
       planId: string;
+      category?: string;
     };
     expiresAt: number;
     attempts: number;
@@ -217,6 +219,51 @@ export class AuthService {
             fullName: mockUser.fullName,
           });
 
+          let demoWorkspace = {
+            id: mockStore.workspace.id,
+            name: mockStore.workspace.name,
+            planId: mockStore.workspace.planId,
+            category: 'education',
+          };
+
+          const em = mockUser.email.toLowerCase();
+          if (em.includes('glowaura') || em.includes('ecom') || em.includes('neha')) {
+            demoWorkspace = {
+              id: 'ws-ecom-01',
+              name: 'GlowAura Beauty D2C',
+              planId: 'growth',
+              category: 'ecommerce',
+            };
+          } else if (em.includes('urbannest') || em.includes('realty') || em.includes('vikram')) {
+            demoWorkspace = {
+              id: 'ws-re-01',
+              name: 'UrbanNest Luxury Realty',
+              planId: 'pro',
+              category: 'real_estate',
+            };
+          } else if (em.includes('apexcare') || em.includes('health') || (em.includes('ananya') && !em.includes('prakashinstitute'))) {
+            demoWorkspace = {
+              id: 'ws-health-01',
+              name: 'ApexCare Multi-Speciality Clinic',
+              planId: 'pro',
+              category: 'healthcare',
+            };
+          } else if (em.includes('stratagem') || em.includes('advisory') || em.includes('karan')) {
+            demoWorkspace = {
+              id: 'ws-serv-01',
+              name: 'Stratagem Global Advisory',
+              planId: 'growth',
+              category: 'services',
+            };
+          } else if (em.includes('scaleops') || em.includes('saas') || em.includes('arjun')) {
+            demoWorkspace = {
+              id: 'ws-saas-01',
+              name: 'ScaleOps Growth Agency',
+              planId: 'pro',
+              category: 'saas',
+            };
+          }
+
           return {
             success: true,
             status: 200,
@@ -229,11 +276,7 @@ export class AuthService {
               customRoleId: mockUser.customRoleId,
               customRoleName: mockUser.customRoleName,
             },
-            workspace: {
-              id: mockStore.workspace.id,
-              name: mockStore.workspace.name,
-              planId: mockStore.workspace.planId,
-            },
+            workspace: demoWorkspace,
           };
         }
 
@@ -281,18 +324,21 @@ export class AuthService {
       let workspaceName = '';
       let planId = 'pro';
 
+      let category = 'education';
+
       // Check if user is platform admin
       if (user.email === 'ops@automask.io') {
         role = 'platform_admin';
-        const wsRes = await query(`SELECT id, name, plan_id FROM workspaces ORDER BY created_at ASC LIMIT 1;`);
+        const wsRes = await query(`SELECT id, name, plan_id, category FROM workspaces ORDER BY created_at ASC LIMIT 1;`);
         if (wsRes.rows.length > 0) {
           workspaceId = wsRes.rows[0].id;
           workspaceName = wsRes.rows[0].name;
           planId = wsRes.rows[0].plan_id;
+          category = wsRes.rows[0].category || 'education';
         }
       } else {
         const memberRes = await query(
-          `SELECT wm.workspace_id, wm.role, wm.status, w.name as workspace_name, w.plan_id
+          `SELECT wm.workspace_id, wm.role, wm.status, w.name as workspace_name, w.plan_id, w.category
            FROM workspace_members wm
            JOIN workspaces w ON w.id = wm.workspace_id
            WHERE wm.user_id = $1 AND wm.status = 'active'
@@ -315,6 +361,7 @@ export class AuthService {
         role = member.role as UserRole;
         workspaceName = member.workspace_name;
         planId = member.plan_id;
+        category = member.category || 'education';
       }
 
       const token = this.generateToken({
@@ -340,6 +387,7 @@ export class AuthService {
           id: workspaceId,
           name: workspaceName,
           planId,
+          category,
         },
       };
     } catch (err: any) {
@@ -361,6 +409,7 @@ export class AuthService {
     fullName: string;
     phone?: string;
     workspaceName: string;
+    category?: string;
   }): Promise<{
     success: boolean;
     status: number;
@@ -370,7 +419,7 @@ export class AuthService {
     error?: string;
     message?: string;
   }> {
-    const { email, password, fullName, phone, workspaceName } = params;
+    const { email, password, fullName, phone, workspaceName, category } = params;
 
     if (!email || !password || !fullName || !workspaceName) {
       return {
@@ -414,10 +463,10 @@ export class AuthService {
 
       // Create workspace
       const wsRes = await query(
-        `INSERT INTO workspaces (name, plan_id, status)
-         VALUES ($1, 'growth', 'active')
-         RETURNING id, name, plan_id;`,
-        [workspaceName.trim()]
+        `INSERT INTO workspaces (name, plan_id, status, category)
+         VALUES ($1, 'growth', 'active', $2)
+         RETURNING id, name, plan_id, category;`,
+        [workspaceName.trim(), category || 'education']
       );
       const workspace = wsRes.rows[0];
 
@@ -451,6 +500,7 @@ export class AuthService {
           id: workspace.id,
           name: workspace.name,
           planId: workspace.plan_id,
+          category: workspace.category || category || 'education',
         },
       };
     } catch (err: any) {
@@ -750,6 +800,7 @@ export class AuthService {
     fullName?: string;
     workspaceName?: string;
     phone?: string;
+    category?: string;
     ipAddress?: string;
   }): Promise<{
     success: boolean;
@@ -759,7 +810,7 @@ export class AuthService {
     expiresIn?: number;
     demoOtp?: string;
   }> {
-    const { email, password, action, fullName, workspaceName, phone, ipAddress = '127.0.0.1' } = params;
+    const { email, password, action, fullName, workspaceName, phone, category, ipAddress = '127.0.0.1' } = params;
 
     if (!email) {
       return { success: false, status: 400, error: 'Bad Request', message: 'Email address is required' };
@@ -811,6 +862,7 @@ export class AuthService {
           workspaceId: loginCheck.workspace.id,
           workspaceName: loginCheck.workspace.name,
           planId: loginCheck.workspace.planId || 'growth',
+          category: loginCheck.workspace?.category || 'education',
         },
         expiresAt,
         attempts: 0,
@@ -871,6 +923,7 @@ export class AuthService {
           passwordHash,
           workspaceName,
           phone,
+          category: category || 'education',
         },
         expiresAt,
         attempts: 0,
@@ -985,10 +1038,11 @@ export class AuthService {
           id: u.workspaceId,
           name: u.workspaceName,
           planId: u.planId,
+          category: u.category || 'education',
         },
       };
     } else if (session.action === 'signup' && session.signupData) {
-      const { fullName, passwordHash, workspaceName, phone } = session.signupData;
+      const { fullName, passwordHash, workspaceName, phone, category } = session.signupData;
       try {
         const newUserRes = await query(
           `INSERT INTO users (email, password_hash, full_name, phone, status, email_verified_at)
@@ -999,10 +1053,10 @@ export class AuthService {
         const user = newUserRes.rows[0];
 
         const wsRes = await query(
-          `INSERT INTO workspaces (name, plan_id, status)
-           VALUES ($1, 'growth', 'active')
-           RETURNING id, name, plan_id;`,
-          [workspaceName]
+          `INSERT INTO workspaces (name, plan_id, status, category)
+           VALUES ($1, 'growth', 'active', $2)
+           RETURNING id, name, plan_id, category;`,
+          [workspaceName, category || 'education']
         );
         const workspace = wsRes.rows[0];
 
@@ -1035,6 +1089,7 @@ export class AuthService {
             id: workspace.id,
             name: workspace.name,
             planId: workspace.plan_id,
+            category: workspace.category || category || 'education',
           },
         };
       } catch (err: any) {

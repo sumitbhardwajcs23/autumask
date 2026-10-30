@@ -476,9 +476,16 @@ export const App: React.FC = () => {
     fetchAllData();
   };
 
-  const handleLoginSuccess = (user: User, token: string) => {
+  const handleLoginSuccess = (user: User, token: string, workspace?: any) => {
     setIsAuthenticated(true);
     setCurrentUser(user);
+    if (workspace) {
+      setActiveWorkspace((prev: any) => ({
+        ...prev,
+        ...workspace,
+        category: workspace.category || prev?.category,
+      }));
+    }
     if (token) {
       localStorage.setItem('automask_token', token);
     }
@@ -486,7 +493,7 @@ export const App: React.FC = () => {
       token: token || localStorage.getItem('automask_token') || undefined,
       role: user.role,
       userId: user.id,
-      workspaceId: '11111111-1111-4111-8111-111111111111',
+      workspaceId: workspace?.id || '11111111-1111-4111-8111-111111111111',
     });
     setActiveView('app');
     fetchAllData(user.role);
@@ -503,7 +510,7 @@ export const App: React.FC = () => {
       window.history.replaceState({}, document.title, window.location.pathname);
       authApi.getMe().then((res) => {
         if (res?.user) {
-          handleLoginSuccess(res.user, token);
+          handleLoginSuccess(res.user, token, res.workspace);
         }
       }).catch(console.error);
     } else if (code) {
@@ -513,7 +520,7 @@ export const App: React.FC = () => {
         redirectUri: window.location.origin,
       }).then((res) => {
         if (res?.user && res?.token) {
-          handleLoginSuccess(res.user, res.token);
+          handleLoginSuccess(res.user, res.token, res.workspace);
         }
       }).catch((err) => {
         console.error('Google OAuth URL code exchange error:', err);
@@ -522,7 +529,7 @@ export const App: React.FC = () => {
       window.history.replaceState({}, document.title, window.location.pathname);
       authApi.getMe().then((res) => {
         if (res?.user) {
-          handleLoginSuccess(res.user, '');
+          handleLoginSuccess(res.user, '', res.workspace);
         }
       }).catch(console.error);
     }

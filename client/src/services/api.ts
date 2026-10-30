@@ -45,7 +45,7 @@ export const authApi = {
     return res;
   },
 
-  signup: async (data: { email: string; password: string; fullName: string; phone?: string; workspaceName?: string }) => {
+  signup: async (data: { email: string; password: string; fullName: string; phone?: string; workspaceName?: string; category?: string }) => {
     const res = await apiClient.post<{
       token: string;
       user: User;
@@ -65,6 +65,7 @@ export const authApi = {
     fullName?: string;
     workspaceName?: string;
     phone?: string;
+    category?: string;
   }) => {
     return apiClient.post<{
       success: boolean;

@@ -66,8 +66,8 @@ apiRouter.post('/auth/login', async (req: Request, res: Response) => {
 });
 
 apiRouter.post('/auth/signup', async (req: Request, res: Response) => {
-  const { email, password, fullName, phone, workspaceName } = req.body;
-  const result = await AuthService.signup({ email, password, fullName, phone, workspaceName });
+  const { email, password, fullName, phone, workspaceName, category } = req.body;
+  const result = await AuthService.signup({ email, password, fullName, phone, workspaceName, category });
 
   if (!result.success) {
     return res.status(result.status).json({
@@ -95,7 +95,7 @@ apiRouter.post('/auth/signup', async (req: Request, res: Response) => {
 
 // 1. Request 6-digit verification OTP (for Login or Signup)
 apiRouter.post('/auth/request-otp', async (req: Request, res: Response) => {
-  const { email, password, action = 'login', fullName, workspaceName, phone } = req.body;
+  const { email, password, action = 'login', fullName, workspaceName, phone, category } = req.body;
   const ip = req.ip || req.socket.remoteAddress || '127.0.0.1';
 
   const result = await AuthService.requestOtp({
@@ -105,6 +105,7 @@ apiRouter.post('/auth/request-otp', async (req: Request, res: Response) => {
     fullName,
     workspaceName,
     phone,
+    category,
     ipAddress: ip,
   });
 

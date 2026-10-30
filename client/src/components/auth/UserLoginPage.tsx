@@ -17,18 +17,20 @@ import {
   ArrowLeft,
   MessageSquare,
   Zap,
-  Calendar,
-  Layers,
-  Database,
   Check,
   RefreshCw,
-  Phone
+  Phone,
+  Layers,
+  ChevronRight,
+  TrendingUp,
+  ShoppingBag
 } from 'lucide-react';
 import { authApi } from '../../services/api';
-import { User, UserRole } from '../../types';
+import { User } from '../../types';
+import { IndustryType, INDUSTRIES, getIndustryConfig } from '../../config/industries';
 
 interface UserLoginPageProps {
-  onLoginSuccess: (user: User, token: string) => void;
+  onLoginSuccess: (user: User, token: string, workspace?: any) => void;
   onNavigateToAdminLogin: () => void;
   onBackToHome: () => void;
 }
@@ -43,6 +45,10 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
   // Step: Credentials input vs 6-digit OTP verification
   const [step, setStep] = useState<'credentials' | 'otp'>('credentials');
 
+  // Selected agency vertical for features showcase & registration
+  const [activeIndustry, setActiveIndustry] = useState<IndustryType>('education');
+  const [signupCategory, setSignupCategory] = useState<IndustryType>('education');
+
   // Form Fields
   const [email, setEmail] = useState('dr.prakash@prakashinstitute.edu.in');
   const [password, setPassword] = useState('AutoMask@2026');
@@ -52,7 +58,6 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
   const [otp, setOtp] = useState('');
 
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true);
 
   // Status & Feedback
   const [isLoading, setIsLoading] = useState(false);
@@ -62,40 +67,80 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
   const [demoOtpCode, setDemoOtpCode] = useState<string | null>(null);
   const [resendCooldown, setResendCooldown] = useState<number>(0);
 
-  // Quick One-Click Demo Role Accounts
-  const demoUsers: Array<{
+  // 6 Vertical Demo Accounts
+  const agencyDemoAccounts: Array<{
+    industry: IndustryType;
     name: string;
     roleLabel: string;
-    role: UserRole;
+    workspaceName: string;
     email: string;
     icon: string;
+    shortTitle: string;
     desc: string;
   }> = [
     {
+      industry: 'ecommerce',
+      name: 'Neha Gupta',
+      roleLabel: 'Growth Head',
+      workspaceName: 'GlowAura Beauty D2C',
+      email: 'neha@glowaura.in',
+      icon: '🛍️',
+      shortTitle: 'D2C E-Com',
+      desc: 'Shopify recovery & COD bot',
+    },
+    {
+      industry: 'real_estate',
+      name: 'Vikram Oberoi',
+      roleLabel: 'Managing Broker',
+      workspaceName: 'UrbanNest Luxury Realty',
+      email: 'vikram@urbannest.com',
+      icon: '🏢',
+      shortTitle: 'Real Estate',
+      desc: 'Brochures & site visits',
+    },
+    {
+      industry: 'healthcare',
+      name: 'Dr. Ananya Roy',
+      roleLabel: 'Medical Director',
+      workspaceName: 'ApexCare Clinic',
+      email: 'ananya@apexcare.health',
+      icon: '🏥',
+      shortTitle: 'Healthcare',
+      desc: 'OPD appointments & lab tests',
+    },
+    {
+      industry: 'education',
       name: 'Dr. Prakash Sharma',
-      roleLabel: 'Workspace Owner',
-      role: 'owner',
+      roleLabel: 'Founder & Director',
+      workspaceName: 'Prakash Institute Kota',
       email: 'dr.prakash@prakashinstitute.edu.in',
-      icon: '👑',
-      desc: 'Full institute authority, billing, team & audit logs',
+      icon: '🎓',
+      shortTitle: 'Education',
+      desc: 'Admissions & 24/7 syllabus bot',
     },
     {
-      name: 'Sumit Bhardwaj',
-      roleLabel: 'Workspace Admin',
-      role: 'admin',
-      email: 'sumit@prakashinstitute.edu.in',
-      icon: '🛡️',
-      desc: 'Automation rules, broadcasts & lead export',
+      industry: 'services',
+      name: 'Karan Singhania',
+      roleLabel: 'Senior Partner',
+      workspaceName: 'Stratagem Global Advisory',
+      email: 'karan@stratagem.co',
+      icon: '⚖️',
+      shortTitle: 'Legal & CA',
+      desc: 'KYC collection & retainers',
     },
     {
-      name: 'Priya Sharma',
-      roleLabel: 'Admissions Counselor',
-      role: 'agent',
-      email: 'priya.s@prakashinstitute.edu.in',
-      icon: '👨‍💼',
-      desc: 'Shared inbox, student chats & 1-click human takeover',
+      industry: 'saas',
+      name: 'Arjun Malhotra',
+      roleLabel: 'Head of Growth',
+      workspaceName: 'ScaleOps Growth Agency',
+      email: 'arjun@scaleops.io',
+      icon: '🚀',
+      shortTitle: 'SaaS Agency',
+      desc: 'AI SDR & product demo calls',
     },
   ];
+
+  const currentIndustryConfig = INDUSTRIES[activeIndustry] || INDUSTRIES.education;
 
   // Resend cooldown timer
   useEffect(() => {
@@ -117,7 +162,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
       try {
         const res = await authApi.loginWithGoogle({ credential: response.credential });
         if (res?.user && res?.token) {
-          onLoginSuccess(res.user, res.token);
+          onLoginSuccess(res.user, res.token, res.workspace);
         } else {
           throw new Error('Google sign-in did not return a valid session.');
         }
@@ -154,10 +199,13 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
     return () => clearInterval(interval);
   }, [onLoginSuccess]);
 
-  const handleSelectDemoUser = (user: typeof demoUsers[0]) => {
-    setEmail(user.email);
+  const handleSelectDemoUser = (account: typeof agencyDemoAccounts[0]) => {
+    setEmail(account.email);
     setPassword('AutoMask@2026');
-    setFullName(user.name);
+    setFullName(account.name);
+    setWorkspaceName(account.workspaceName);
+    setActiveIndustry(account.industry);
+    setSignupCategory(account.industry);
     setAuthMode('signin');
     setStep('credentials');
     setErrorMessage(null);
@@ -187,7 +235,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                   redirectUri: 'postmessage',
                 });
                 if (res?.user && res?.token) {
-                  onLoginSuccess(res.user, res.token);
+                  onLoginSuccess(res.user, res.token, res.workspace);
                 } else {
                   throw new Error('Google sign-in did not return a valid session.');
                 }
@@ -255,7 +303,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
     }
     if (authMode === 'signup') {
       if (!fullName.trim() || !workspaceName.trim()) {
-        setErrorMessage('Please provide your full name and institute name.');
+        setErrorMessage('Please provide your full name and company/organization name.');
         return;
       }
       if (password.length < 8) {
@@ -276,6 +324,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
         fullName: fullName.trim(),
         workspaceName: workspaceName.trim(),
         phone: phone.trim(),
+        category: authMode === 'signup' ? signupCategory : activeIndustry,
       });
 
       if (res?.success) {
@@ -317,7 +366,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
       });
 
       if (res?.user && res?.token) {
-        onLoginSuccess(res.user, res.token);
+        onLoginSuccess(res.user, res.token, res.workspace);
       } else {
         throw new Error('Verification failed. Invalid response from server.');
       }
@@ -361,10 +410,10 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
       <div className="absolute bottom-0 left-1/4 w-[550px] h-[400px] bg-teal-500/10 rounded-full blur-[130px] pointer-events-none" />
 
       {/* Top Header */}
-      <header className="px-6 py-5 flex items-center justify-between relative z-10 border-b border-slate-800/60 bg-slate-950/40 backdrop-blur-md">
+      <header className="px-6 py-4 flex items-center justify-between relative z-10 border-b border-slate-800/60 bg-slate-950/40 backdrop-blur-md">
         <button
           onClick={onBackToHome}
-          className="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors"
+          className="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Home Overview</span>
@@ -377,7 +426,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
           </div>
           <button
             onClick={onNavigateToAdminLogin}
-            className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-indigo-300 bg-indigo-950/60 hover:bg-indigo-900/80 border border-indigo-700/50 transition-all flex items-center gap-1.5 shadow-sm"
+            className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-indigo-300 bg-indigo-950/60 hover:bg-indigo-900/80 border border-indigo-700/50 transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
           >
             <KeyRound className="w-3.5 h-3.5 text-indigo-400" />
             <span>Platform Admin Portal</span>
@@ -386,125 +435,172 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
       </header>
 
       {/* Main Container */}
-      <main className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-10 relative z-10">
+      <main className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8 relative z-10">
         <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-2xl overflow-hidden backdrop-blur-xl">
           
           {/* ========================================================= */}
-          {/* Left Column: Comprehensive Services & Features Showcase */}
+          {/* Left Column: Interactive Multi-Agency Vertical Showcase   */}
           {/* ========================================================= */}
-          <div className="lg:col-span-6 bg-gradient-to-br from-slate-900 via-slate-950 to-emerald-950/40 p-8 lg:p-10 border-b lg:border-b-0 lg:border-r border-slate-800 flex flex-col justify-between">
+          <div className="lg:col-span-6 bg-gradient-to-br from-slate-900 via-slate-950 to-emerald-950/40 p-6 lg:p-9 border-b lg:border-b-0 lg:border-r border-slate-800 flex flex-col justify-between">
             <div>
               {/* Brand Header */}
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-emerald-400 p-0.5 shadow-md shadow-emerald-500/20">
-                  <div className="w-full h-full bg-[#0a0f1d] rounded-[14px] flex items-center justify-center">
-                    <Bot className="w-6 h-6 text-emerald-400" />
+              <div className="flex items-center justify-between gap-3 mb-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-emerald-400 p-0.5 shadow-md shadow-emerald-500/20">
+                    <div className="w-full h-full bg-[#0a0f1d] rounded-[14px] flex items-center justify-center">
+                      <Bot className="w-5 h-5 text-emerald-400" />
+                    </div>
+                  </div>
+                  <div>
+                    <h1 className="text-xl font-black tracking-tight text-white font-['Outfit']">
+                      Auto<span className="text-emerald-400">Mask</span>
+                    </h1>
+                    <p className="text-[10px] text-emerald-400 font-semibold tracking-wide">
+                      Enterprise WhatsApp Cloud API & AI SaaS
+                    </p>
                   </div>
                 </div>
-                <div>
-                  <h1 className="text-xl font-black tracking-tight text-white font-['Outfit']">
-                    Auto<span className="text-emerald-400">Mask</span>
-                  </h1>
-                  <p className="text-[11px] text-emerald-400 font-semibold tracking-wide">
-                    Enterprise WhatsApp Cloud API & AI SaaS
-                  </p>
+
+                <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                  {currentIndustryConfig.icon} {currentIndustryConfig.shortLabel}
+                </span>
+              </div>
+
+              {/* 6-Tab Interactive Industry Selector */}
+              <div className="mb-5 p-2 rounded-2xl bg-slate-950/70 border border-slate-800">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5 px-1">
+                  <Layers className="w-3 h-3 text-emerald-400" />
+                  <span>Choose Agency Vertical To Explore Features:</span>
+                </div>
+                <div className="grid grid-cols-3 sm:grid-cols-6 gap-1.5">
+                  {(Object.keys(INDUSTRIES) as IndustryType[]).map((indKey) => {
+                    const ind = INDUSTRIES[indKey];
+                    const isSelected = activeIndustry === indKey;
+                    return (
+                      <button
+                        key={indKey}
+                        type="button"
+                        onClick={() => {
+                          setActiveIndustry(indKey);
+                          if (authMode === 'signup') {
+                            setSignupCategory(indKey);
+                          }
+                        }}
+                        className={`p-1.5 rounded-xl text-[11px] font-bold transition-all flex flex-col items-center justify-center gap-0.5 border cursor-pointer ${
+                          isSelected
+                            ? 'bg-emerald-600 text-white border-emerald-500 shadow-md shadow-emerald-600/30'
+                            : 'bg-slate-900/60 hover:bg-slate-800 text-slate-400 border-slate-800'
+                        }`}
+                        title={ind.name}
+                      >
+                        <span className="text-sm">{ind.icon}</span>
+                        <span className="truncate max-w-full text-[10px]">{ind.shortLabel.split(' ')[0]}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
-              {/* Pitch */}
-              <h2 className="text-2xl sm:text-3xl font-black text-white font-['Outfit'] leading-tight mb-3">
-                Scale Student Admissions on WhatsApp With 24/7 AI Automation
+              {/* Pitch Headline & Subheadline */}
+              <h2 className="text-xl sm:text-2xl font-black text-white font-['Outfit'] leading-tight mb-2">
+                {currentIndustryConfig.heroHeadline}
               </h2>
-              <p className="text-xs text-slate-300 leading-relaxed mb-6 font-normal">
-                Everything coaching institutes, EdTech academies, and schools need to capture student leads, answer syllabus queries with AI, and broadcast updates without ban risks.
+              <p className="text-xs text-slate-300 leading-relaxed mb-5 font-normal">
+                {currentIndustryConfig.heroSubheadline}
               </p>
 
-              {/* Complete Services & Features Showcase */}
-              <div className="space-y-3.5 mb-8">
-                {/* Feature 1 */}
-                <div className="flex items-start gap-3 p-3 rounded-2xl bg-slate-800/40 border border-slate-800 hover:border-emerald-500/30 transition-all">
+              {/* Dynamic 4 Features for Selected Industry */}
+              <div className="space-y-2.5 mb-6">
+                {/* Feature 1: Official BSP Engine */}
+                <div className="flex items-start gap-3 p-2.5 rounded-2xl bg-slate-800/40 border border-slate-800 hover:border-emerald-500/30 transition-all">
                   <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 shrink-0">
                     <Sparkles className="w-4 h-4" />
                   </div>
                   <div>
                     <h4 className="text-xs font-bold text-white flex items-center gap-2">
                       <span>Official Meta Cloud API (v21.0)</span>
-                      <span className="px-1.5 py-0.5 rounded text-[9px] bg-emerald-500/20 text-emerald-400 font-mono">Zero-Ban</span>
+                      <span className="px-1.5 py-0.2 rounded text-[9px] bg-emerald-500/20 text-emerald-400 font-mono">Zero-Ban</span>
                     </h4>
                     <p className="text-[11px] text-slate-400 mt-0.5 leading-snug">
-                      Direct WhatsApp BSP infrastructure with verified templates, 24-hr service window protection, and green-tick eligibility.
+                      Verified templates, 24-hr service window protection, and green-tick eligibility for {currentIndustryConfig.name}.
                     </p>
                   </div>
                 </div>
 
-                {/* Feature 2 */}
-                <div className="flex items-start gap-3 p-3 rounded-2xl bg-slate-800/40 border border-slate-800 hover:border-teal-500/30 transition-all">
+                {/* Feature 2: Dedicated AI Bot Persona */}
+                <div className="flex items-start gap-3 p-2.5 rounded-2xl bg-slate-800/40 border border-slate-800 hover:border-teal-500/30 transition-all">
                   <div className="p-2 rounded-xl bg-teal-500/10 text-teal-400 shrink-0">
                     <Bot className="w-4 h-4" />
                   </div>
                   <div>
                     <h4 className="text-xs font-bold text-white flex items-center gap-2">
-                      <span>24/7 AI Admission Counselor (Grounded RAG)</span>
+                      <span>24/7 AI: {currentIndustryConfig.botRole}</span>
                     </h4>
                     <p className="text-[11px] text-slate-400 mt-0.5 leading-snug">
-                      Instant accurate answers on courses, fee structures, batch timings, and scholarships in English, Hindi & Hinglish.
+                      {currentIndustryConfig.botDescription}
                     </p>
                   </div>
                 </div>
 
-                {/* Feature 3 */}
-                <div className="flex items-start gap-3 p-3 rounded-2xl bg-slate-800/40 border border-slate-800 hover:border-cyan-500/30 transition-all">
-                  <div className="p-2 rounded-xl bg-cyan-500/10 text-cyan-400 shrink-0">
-                    <MessageSquare className="w-4 h-4" />
+                {/* Feature 3 & 4: Specific industry automation workflows */}
+                {currentIndustryConfig.features.slice(0, 2).map((feat, idx) => (
+                  <div key={idx} className="flex items-start gap-3 p-2.5 rounded-2xl bg-slate-800/40 border border-slate-800 hover:border-indigo-500/30 transition-all">
+                    <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 shrink-0">
+                      <Zap className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-white flex items-center gap-2">
+                        <span>{feat.title}</span>
+                        <span className="px-1.5 py-0.2 rounded text-[9px] bg-indigo-500/20 text-indigo-400 font-mono">{feat.badge}</span>
+                      </h4>
+                      <p className="text-[11px] text-slate-400 mt-0.5 leading-snug">
+                        {feat.desc}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-white flex items-center gap-2">
-                      <span>Multi-Counselor Shared Team Inbox</span>
-                    </h4>
-                    <p className="text-[11px] text-slate-400 mt-0.5 leading-snug">
-                      Multiple staff members collaborate on 1 WhatsApp number with conversation assignments, internal notes & 1-click human takeover.
-                    </p>
-                  </div>
-                </div>
+                ))}
+              </div>
 
-                {/* Feature 4 */}
-                <div className="flex items-start gap-3 p-3 rounded-2xl bg-slate-800/40 border border-slate-800 hover:border-indigo-500/30 transition-all">
-                  <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 shrink-0">
-                    <Zap className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-white flex items-center gap-2">
-                      <span>Broadcast Engine & Automated Lead CRM</span>
-                    </h4>
-                    <p className="text-[11px] text-slate-400 mt-0.5 leading-snug">
-                      Send bulk announcements, demo class bookings, and fee reminders with Kanban pipeline tracking from New to Enrolled.
-                    </p>
-                  </div>
+              {/* Sample WhatsApp Customer Triggers */}
+              <div className="p-3 rounded-2xl bg-slate-950/60 border border-slate-800 mb-5">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+                  <MessageSquare className="w-3 h-3 text-teal-400" />
+                  <span>Sample {currentIndustryConfig.customerTerm} Inbound Queries Handled Instantly:</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {currentIndustryConfig.quickPrompts.slice(0, 3).map((prompt, pIdx) => (
+                    <span
+                      key={pIdx}
+                      className="px-2.5 py-1 rounded-lg text-[10px] bg-slate-800/70 border border-slate-700/60 text-slate-300"
+                    >
+                      💬 "{prompt}"
+                    </span>
+                  ))}
                 </div>
               </div>
 
               {/* Platform Metrics Pills */}
-              <div className="grid grid-cols-3 gap-2.5 pt-4 border-t border-slate-800/80 text-center">
-                <div className="p-2.5 rounded-xl bg-slate-800/50 border border-slate-700/60">
-                  <div className="text-base font-black text-emerald-400 font-['Outfit']">99.98%</div>
-                  <div className="text-[10px] text-slate-400 font-medium">Delivery Rate</div>
+              <div className="grid grid-cols-3 gap-2 text-center">
+                <div className="p-2 rounded-xl bg-slate-800/50 border border-slate-700/60">
+                  <div className="text-sm font-black text-emerald-400 font-['Outfit']">99.98%</div>
+                  <div className="text-[9px] text-slate-400 font-medium">Delivery Rate</div>
                 </div>
-                <div className="p-2.5 rounded-xl bg-slate-800/50 border border-slate-700/60">
-                  <div className="text-base font-black text-teal-400 font-['Outfit']">&lt; 1.2s</div>
-                  <div className="text-[10px] text-slate-400 font-medium">AI Response</div>
+                <div className="p-2 rounded-xl bg-slate-800/50 border border-slate-700/60">
+                  <div className="text-sm font-black text-teal-400 font-['Outfit']">&lt; 1.2s</div>
+                  <div className="text-[9px] text-slate-400 font-medium">AI Latency</div>
                 </div>
-                <div className="p-2.5 rounded-xl bg-slate-800/50 border border-slate-700/60">
-                  <div className="text-base font-black text-white font-['Outfit']">100%</div>
-                  <div className="text-[10px] text-slate-400 font-medium">Meta Compliant</div>
+                <div className="p-2 rounded-xl bg-slate-800/50 border border-slate-700/60">
+                  <div className="text-sm font-black text-white font-['Outfit']">100%</div>
+                  <div className="text-[9px] text-slate-400 font-medium">Meta Verified</div>
                 </div>
               </div>
             </div>
 
             {/* Bottom Status Note */}
-            <div className="mt-8 pt-4 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-400">
+            <div className="mt-6 pt-3 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-400">
               <span className="flex items-center gap-1.5 text-slate-300">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                PostgreSQL RLS Multi-Tenant Protected
+                Multi-Tenant PostgreSQL Architecture
               </span>
               <span className="font-mono text-emerald-400/90">v2.4 Production</span>
             </div>
@@ -513,10 +609,10 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
           {/* ========================================================= */}
           {/* Right Column: Google 1-Click & Email + Password + OTP Auth */}
           {/* ========================================================= */}
-          <div className="lg:col-span-6 p-8 lg:p-10 flex flex-col justify-between">
+          <div className="lg:col-span-6 p-6 lg:p-9 flex flex-col justify-between">
             <div>
               {/* Auth Mode Toggle Tabs (Sign In vs Sign Up) */}
-              <div className="flex items-center p-1 bg-slate-950/80 rounded-2xl border border-slate-800 mb-6">
+              <div className="flex items-center p-1 bg-slate-950/80 rounded-2xl border border-slate-800 mb-5">
                 <button
                   type="button"
                   onClick={() => {
@@ -525,7 +621,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                     setErrorMessage(null);
                     setSuccessMessage(null);
                   }}
-                  className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${
+                  className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                     authMode === 'signin'
                       ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30'
                       : 'text-slate-400 hover:text-white'
@@ -541,7 +637,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                     setErrorMessage(null);
                     setSuccessMessage(null);
                   }}
-                  className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${
+                  className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                     authMode === 'signup'
                       ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30'
                       : 'text-slate-400 hover:text-white'
@@ -552,32 +648,32 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
               </div>
 
               {/* Title & Description */}
-              <div className="mb-6">
+              <div className="mb-5">
                 <h3 className="text-xl font-bold text-white font-['Outfit']">
                   {step === 'otp' 
                     ? 'Verify 6-Digit OTP Code' 
                     : authMode === 'signin' 
                       ? 'Welcome Back to AutoMask' 
-                      : 'Register Your Coaching Institute'}
+                      : `Register Your ${currentIndustryConfig.shortLabel} Workspace`}
                 </h3>
                 <p className="text-xs text-slate-400 mt-1">
                   {step === 'otp'
                     ? `Enter the 6-digit verification code sent to ${email}`
                     : authMode === 'signin'
-                      ? 'Sign in with your Google account or email and 6-digit verification OTP.'
-                      : 'Create your dedicated workspace with full Meta WhatsApp Cloud API access.'}
+                      ? 'Sign in with Google or select your agency demo account with 6-digit OTP.'
+                      : `Configure your ${currentIndustryConfig.name} workspace with full Meta WhatsApp Cloud API access.`}
                 </p>
               </div>
 
               {/* Error & Success Messages */}
               {errorMessage && (
-                <div className="mb-5 p-3.5 bg-rose-950/40 border border-rose-800/80 rounded-2xl flex items-center gap-3 text-xs text-rose-300 animate-in fade-in">
+                <div className="mb-4 p-3 bg-rose-950/40 border border-rose-800/80 rounded-2xl flex items-center gap-3 text-xs text-rose-300 animate-in fade-in">
                   <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
                   <span>{errorMessage}</span>
                 </div>
               )}
               {successMessage && (
-                <div className="mb-5 p-3.5 bg-emerald-950/40 border border-emerald-800/80 rounded-2xl flex items-center gap-3 text-xs text-emerald-300 animate-in fade-in">
+                <div className="mb-4 p-3 bg-emerald-950/40 border border-emerald-800/80 rounded-2xl flex items-center gap-3 text-xs text-emerald-300 animate-in fade-in">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                   <span>{successMessage}</span>
                 </div>
@@ -587,12 +683,12 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
               {step === 'credentials' && (
                 <>
                   {/* Google Authentication Button */}
-                  <div className="mb-6">
+                  <div className="mb-5">
                     <button
                       type="button"
                       onClick={handleGoogleSignIn}
                       disabled={isGoogleLoading || isLoading}
-                      className="w-full py-3 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-xs transition-all shadow-md flex items-center justify-center gap-3 border border-slate-200 hover:shadow-lg active:scale-98 disabled:opacity-60 cursor-pointer"
+                      className="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-xs transition-all shadow-md flex items-center justify-center gap-3 border border-slate-200 hover:shadow-lg active:scale-98 disabled:opacity-60 cursor-pointer"
                     >
                       {isGoogleLoading ? (
                         <>
@@ -624,40 +720,44 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                       )}
                     </button>
 
-                    <div className="relative flex py-4 items-center">
+                    <div className="relative flex py-3 items-center">
                       <div className="flex-grow border-t border-slate-800"></div>
                       <span className="flex-shrink mx-3 text-[10px] text-slate-500 uppercase tracking-widest font-semibold">
-                        or with email & verified OTP
+                        or with agency credentials & verified OTP
                       </span>
                       <div className="flex-grow border-t border-slate-800"></div>
                     </div>
                   </div>
 
-                  {/* 1-Click Fast Credentials for Demo Testing (Sign In only) */}
+                  {/* 1-Click Fast Credentials for 6 Agency Verticals (Sign In only) */}
                   {authMode === 'signin' && (
-                    <div className="mb-6">
-                      <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
-                        ⚡ Quick Demo Team Credentials:
-                      </label>
-                      <div className="grid grid-cols-3 gap-2">
-                        {demoUsers.map((u, idx) => {
-                          const isSelected = email === u.email;
+                    <div className="mb-5">
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                          <span>⚡ 1-Click Agency Demo Logins:</span>
+                        </label>
+                        <span className="text-[10px] text-emerald-400 font-mono">Password: AutoMask@2026</span>
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        {agencyDemoAccounts.map((account, idx) => {
+                          const isSelected = email === account.email;
                           return (
                             <button
                               key={idx}
                               type="button"
-                              onClick={() => handleSelectDemoUser(u)}
-                              className={`p-2 rounded-xl border text-left transition-all flex flex-col items-start gap-1 ${
+                              onClick={() => handleSelectDemoUser(account)}
+                              className={`p-2 rounded-xl border text-left transition-all flex flex-col items-start gap-0.5 cursor-pointer ${
                                 isSelected 
-                                  ? 'bg-emerald-500/10 border-emerald-500 text-white' 
+                                  ? 'bg-emerald-500/10 border-emerald-500 text-white shadow-sm shadow-emerald-500/20' 
                                   : 'bg-slate-800/40 hover:bg-slate-800 border-slate-700/80 text-slate-300'
                               }`}
                             >
                               <div className="flex items-center gap-1.5 w-full">
-                                <span className="text-sm">{u.icon}</span>
-                                <span className="text-xs font-bold truncate text-white">{u.name.split(' ')[0]}</span>
+                                <span className="text-sm">{account.icon}</span>
+                                <span className="text-xs font-bold truncate text-white">{account.shortTitle}</span>
                               </div>
-                              <span className="text-[9px] text-emerald-400 font-medium truncate w-full">{u.roleLabel}</span>
+                              <span className="text-[10px] text-slate-400 truncate w-full">{account.name}</span>
+                              <span className="text-[9px] text-emerald-400 font-mono truncate w-full">{account.workspaceName}</span>
                             </button>
                           );
                         })}
@@ -666,28 +766,60 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                   )}
 
                   {/* Credentials Form */}
-                  <form onSubmit={handleRequestOtp} className="space-y-4">
+                  <form onSubmit={handleRequestOtp} className="space-y-3.5">
                     {authMode === 'signup' && (
                       <>
-                        {/* Institute / Workspace Name */}
+                        {/* Select Business Vertical */}
                         <div>
                           <label className="block text-xs font-medium text-slate-300 mb-1.5 flex items-center gap-1.5">
+                            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                            <span>Select Your Business / Agency Vertical</span>
+                          </label>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 mb-2">
+                            {(Object.keys(INDUSTRIES) as IndustryType[]).map((indKey) => {
+                              const ind = INDUSTRIES[indKey];
+                              const isSelected = signupCategory === indKey;
+                              return (
+                                <button
+                                  key={indKey}
+                                  type="button"
+                                  onClick={() => {
+                                    setSignupCategory(indKey);
+                                    setActiveIndustry(indKey);
+                                  }}
+                                  className={`p-2 rounded-xl text-left border text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+                                    isSelected
+                                      ? 'bg-emerald-500/20 border-emerald-500 text-white shadow-sm'
+                                      : 'bg-slate-800/40 hover:bg-slate-800 border-slate-700/60 text-slate-400'
+                                  }`}
+                                >
+                                  <span>{ind.icon}</span>
+                                  <span className="truncate">{ind.shortLabel}</span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Organization / Workspace Name */}
+                        <div>
+                          <label className="block text-xs font-medium text-slate-300 mb-1 flex items-center gap-1.5">
                             <Building2 className="w-3.5 h-3.5 text-slate-400" />
-                            <span>Coaching Institute / Organization Name</span>
+                            <span>Company / Organization Name</span>
                           </label>
                           <input
                             type="text"
                             value={workspaceName}
                             onChange={(e) => setWorkspaceName(e.target.value)}
                             required
-                            className="w-full bg-slate-800/60 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-                            placeholder="e.g. Apex IIT Academy"
+                            className="w-full bg-slate-800/60 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                            placeholder={`e.g. ${currentIndustryConfig.demoAccount.workspaceName}`}
                           />
                         </div>
 
                         {/* Full Name */}
                         <div>
-                          <label className="block text-xs font-medium text-slate-300 mb-1.5 flex items-center gap-1.5">
+                          <label className="block text-xs font-medium text-slate-300 mb-1 flex items-center gap-1.5">
                             <Users className="w-3.5 h-3.5 text-slate-400" />
                             <span>Your Full Name</span>
                           </label>
@@ -696,7 +828,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                             value={fullName}
                             onChange={(e) => setFullName(e.target.value)}
                             required
-                            className="w-full bg-slate-800/60 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                            className="w-full bg-slate-800/60 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                             placeholder="e.g. Rahul Verma"
                           />
                         </div>
@@ -705,23 +837,23 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
 
                     {/* Email Field */}
                     <div>
-                      <label className="block text-xs font-medium text-slate-300 mb-1.5 flex items-center gap-1.5">
+                      <label className="block text-xs font-medium text-slate-300 mb-1 flex items-center gap-1.5">
                         <Mail className="w-3.5 h-3.5 text-slate-400" />
-                        <span>Email Address</span>
+                        <span>Work Email Address</span>
                       </label>
                       <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        className="w-full bg-slate-800/60 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-                        placeholder="name@institute.edu.in"
+                        className="w-full bg-slate-800/60 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                        placeholder="name@company.com"
                       />
                     </div>
 
                     {/* Password Field */}
                     <div>
-                      <div className="flex items-center justify-between mb-1.5">
+                      <div className="flex items-center justify-between mb-1">
                         <label className="text-xs font-medium text-slate-300 flex items-center gap-1.5">
                           <Lock className="w-3.5 h-3.5 text-slate-400" />
                           <span>Password</span>
@@ -736,13 +868,13 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           required
-                          className="w-full bg-slate-800/60 border border-slate-700 rounded-xl pl-3.5 pr-10 py-2.5 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                          className="w-full bg-slate-800/60 border border-slate-700 rounded-xl pl-3.5 pr-10 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                           placeholder={authMode === 'signup' ? 'Create strong password (min 8 chars)' : 'Enter your password'}
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 cursor-pointer"
                         >
                           {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
@@ -751,7 +883,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
 
                     {authMode === 'signup' && (
                       <div>
-                        <label className="block text-xs font-medium text-slate-300 mb-1.5 flex items-center gap-1.5">
+                        <label className="block text-xs font-medium text-slate-300 mb-1 flex items-center gap-1.5">
                           <Phone className="w-3.5 h-3.5 text-slate-400" />
                           <span>WhatsApp Business Phone (Optional)</span>
                         </label>
@@ -759,7 +891,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                           type="tel"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
-                          className="w-full bg-slate-800/60 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 font-mono"
+                          className="w-full bg-slate-800/60 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 font-mono"
                           placeholder="+91 98765 43210"
                         />
                       </div>
@@ -769,7 +901,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="w-full mt-3 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-emerald-600/30 flex items-center justify-center gap-2 active:scale-98 disabled:opacity-60 cursor-pointer"
+                      className="w-full mt-2 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-emerald-600/30 flex items-center justify-center gap-2 active:scale-98 disabled:opacity-60 cursor-pointer"
                     >
                       {isLoading ? (
                         <>
@@ -787,10 +919,10 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                 </>
               )}
 
-              {/* STEP 2: 6-DIGIT OTP VERIFICATION */}
+              {/* STEP 2: 6-DIGIT OTP CODE VERIFICATION */}
               {step === 'otp' && (
-                <div className="space-y-5 animate-in fade-in">
-                  <div className="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-800/60 flex items-start gap-3">
+                <div className="space-y-4 animate-in fade-in">
+                  <div className="p-3.5 rounded-2xl bg-emerald-950/20 border border-emerald-800/60 flex items-start gap-3">
                     <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 shrink-0">
                       <ShieldCheck className="w-5 h-5" />
                     </div>
@@ -804,12 +936,12 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
 
                   {/* Demo OTP Helper Pill */}
                   {demoOtpCode && (
-                    <div className="p-3 rounded-xl bg-slate-800/80 border border-emerald-500/40 flex items-center justify-between text-xs">
+                    <div className="p-2.5 rounded-xl bg-slate-800/80 border border-emerald-500/40 flex items-center justify-between text-xs">
                       <span className="text-slate-300">Quick Test OTP:</span>
                       <button
                         type="button"
                         onClick={() => setOtp(demoOtpCode)}
-                        className="px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 font-mono font-bold transition-all flex items-center gap-1.5"
+                        className="px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 font-mono font-bold transition-all flex items-center gap-1.5 cursor-pointer"
                       >
                         <span>{demoOtpCode}</span>
                         <span className="text-[10px] text-emerald-300 font-sans font-normal">(Click to Fill)</span>
@@ -820,7 +952,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                   {/* OTP Form */}
                   <form onSubmit={handleVerifyOtp} className="space-y-4">
                     <div>
-                      <label className="block text-xs font-medium text-slate-300 mb-2">
+                      <label className="block text-xs font-medium text-slate-300 mb-1.5">
                         Enter 6-Digit Verification Code
                       </label>
                       <input
@@ -855,11 +987,11 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                   </form>
 
                   {/* Resend & Back controls */}
-                  <div className="flex items-center justify-between text-xs pt-2">
+                  <div className="flex items-center justify-between text-xs pt-1">
                     <button
                       type="button"
                       onClick={() => setStep('credentials')}
-                      className="text-slate-400 hover:text-white flex items-center gap-1 transition-colors"
+                      className="text-slate-400 hover:text-white flex items-center gap-1 transition-colors cursor-pointer"
                     >
                       <ArrowLeft className="w-3.5 h-3.5" />
                       <span>Change details</span>
@@ -886,7 +1018,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
             </div>
 
             {/* Bottom Security Assurance */}
-            <div className="mt-8 pt-4 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-500">
+            <div className="mt-6 pt-3 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-500">
               <span>256-bit SSL Encrypted • Single Sign-On</span>
               <span>AutoMask Security Guard</span>
             </div>
@@ -895,7 +1027,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
       </main>
 
       {/* Footer */}
-      <footer className="px-6 py-4 text-center text-xs text-slate-500 relative z-10 border-t border-slate-900 bg-slate-950/60">
+      <footer className="px-6 py-3 text-center text-xs text-slate-500 relative z-10 border-t border-slate-900 bg-slate-950/60">
         AutoMask Enterprise WhatsApp Business Automation • Multi-Tenant Protected • All Rights Reserved
       </footer>
     </div>
