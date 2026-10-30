@@ -19,7 +19,16 @@ import {
   Lock,
   Mail,
   Zap,
-  Bot
+  Bot,
+  Send,
+  AlertCircle,
+  X,
+  Radio,
+  Sparkles,
+  Smartphone,
+  LogOut,
+  HelpCircle,
+  Info
 } from 'lucide-react';
 import { WhatsAppAccount, User } from '../../types';
 import { whatsappApi, teamApi } from '../../services/api';
@@ -70,7 +79,25 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
   const [autoLogoutSession, setAutoLogoutSession] = useState(true);
   const [restrictStudentExports, setRestrictStudentExports] = useState(true);
 
-  const webhookUrl = `${window.location.origin}/api/v1/webhooks/whatsapp`;
+  // WhatsApp Connect State
+  const [showConnectModal, setShowConnectModal] = useState(false);
+  const [connectMethod, setConnectMethod] = useState<'embedded' | 'manual'>('embedded');
+  const [phoneNumberIdInput, setPhoneNumberIdInput] = useState('1317971801407031');
+  const [wabaIdInput, setWabaIdInput] = useState('1789873612251308');
+  const [displayNumberInput, setDisplayNumberInput] = useState('+1 555-660-3701');
+  const [accessTokenInput, setAccessTokenInput] = useState('');
+  const [isConnecting, setIsConnecting] = useState(false);
+
+  // Test Message State
+  const [showTestMessageDrawer, setShowTestMessageDrawer] = useState(false);
+  const [testRecipientPhone, setTestRecipientPhone] = useState('');
+  const [testMessageBody, setTestMessageBody] = useState('Hello from AutoMask WhatsApp Cloud API! Your automation is active.');
+  const [isSendingTest, setIsSendingTest] = useState(false);
+  const [testResult, setTestResult] = useState<any>(null);
+  const [copiedToken, setCopiedToken] = useState(false);
+
+  const webhookUrl = 'https://pixzywd5u6.execute-api.us-east-1.amazonaws.com/webhooks/whatsapp';
+  const verifyToken = 'automask_webhook_verify_token';
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -80,7 +107,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
   useEffect(() => {
     setLoading(true);
     Promise.all([
-      whatsappApi.getAccount().then(res => res.account && setAccount(res.account)).catch(() => null),
+      whatsappApi.getAccount().then(res => {
+        if (res.account) {
+          setAccount(res.account);
+          if (res.account.phoneNumberId) setPhoneNumberIdInput(res.account.phoneNumberId);
+          if (res.account.wabaId) setWabaIdInput(res.account.wabaId);
+          if (res.account.displayNumber) setDisplayNumberInput(res.account.displayNumber);
+        }
+      }).catch(() => null),
       teamApi.list().then(res => res.team && setTeam(res.team)).catch(() => null),
     ]).finally(() => setLoading(false));
   }, []);
@@ -90,6 +124,86 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
     setCopied(true);
     showToast('Webhook callback URL copied to clipboard.');
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const copyVerifyToken = () => {
+    navigator.clipboard.writeText(verifyToken);
+    setCopiedToken(true);
+    showToast('Webhook verify token copied to clipboard.');
+    setTimeout(() => setCopiedToken(false), 2000);
+  };
+
+  const handleConnectWhatsApp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!phoneNumberIdInput.trim() || !wabaIdInput.trim()) {
+      showToast('Phone Number ID and WABA ID are required.');
+      return;
+    }
+    setIsConnecting(true);
+    try {
+      const res = await whatsappApi.connect({
+        phoneNumberId: phoneNumberIdInput.trim(),
+        wabaId: wabaIdInput.trim(),
+        displayNumber: displayNumberInput.trim() || undefined,
+        accessToken: accessTokenInput.trim() || undefined,
+      });
+      if (res.success && res.account) {
+        setAccount(res.account);
+        setShowConnectModal(false);
+        showToast('🎉 WhatsApp Business Account connected successfully!');
+      } else {
+        showToast('Failed to connect WhatsApp account.');
+      }
+    } catch (err: any) {
+      showToast(err.message || 'Error connecting WhatsApp account.');
+    } finally {
+      setIsConnecting(false);
+    }
+  };
+
+  const handleDisconnect = async () => {
+    if (!window.confirm('Are you sure you want to disconnect this WhatsApp Business number?')) return;
+    try {
+      await whatsappApi.disconnect();
+      setAccount((prev: any) => ({ ...prev, status: 'DISCONNECTED' }));
+      showToast('WhatsApp Business number disconnected.');
+    } catch (err: any) {
+      showToast('Failed to disconnect.');
+    }
+  };
+
+  const handleSendTestMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!testRecipientPhone.trim()) {
+      showToast('Please enter a destination phone number.');
+      return;
+    }
+    setIsSendingTest(true);
+    setTestResult(null);
+    try {
+      const res = await whatsappApi.sendTestMessage({
+        toPhone: testRecipientPhone.trim(),
+        message: testMessageBody,
+      });
+      setTestResult(res);
+      showToast('🚀 Live test message dispatched successfully!');
+    } catch (err: any) {
+      setTestResult({ success: false, error: err.message || 'Dispatch failed' });
+      showToast('Test message dispatch failed.');
+    } finally {
+      setIsSendingTest(false);
+    }
+  };
+
+  const handleLaunchEmbeddedSignup = () => {
+    const appId = '1683058303167953';
+    showToast('Launching Meta Embedded Signup flow...');
+    const popupWidth = 600;
+    const popupHeight = 700;
+    const left = window.screen.width / 2 - popupWidth / 2;
+    const top = window.screen.height / 2 - popupHeight / 2;
+    const popupUrl = `https://www.facebook.com/v21.0/dialog/oauth?client_id=${appId}&redirect_uri=${encodeURIComponent(window.location.origin + '/whatsapp-callback')}&response_type=code&scope=whatsapp_business_management,whatsapp_business_messaging`;
+    window.open(popupUrl, 'Meta_Embedded_Signup', `width=${popupWidth},height=${popupHeight},top=${top},left=${left}`);
   };
 
   const handleSaveSettings = (e: React.FormEvent) => {
@@ -208,28 +322,65 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
       {/* Sub-Tab 1: WhatsApp Cloud API Connection */}
       {activeSubTab === 'whatsapp' && (
         <div className="space-y-6">
+          {/* Main Account Connection Card */}
           <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-5">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
               <div className="flex items-center gap-3.5">
-                <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-sm">
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm ${
+                  account?.status === 'CONNECTED' ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-500'
+                }`}>
                   <Phone className="w-6 h-6 fill-white/20" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
                     <h3 className="text-sm font-bold text-slate-800">WhatsApp Business Account (Cloud API)</h3>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 flex items-center gap-1">
+                    <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1 ${
+                      account?.status === 'CONNECTED' 
+                        ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' 
+                        : 'bg-amber-100 text-amber-800 border border-amber-200'
+                    }`}>
                       <CheckCircle2 className="w-3 h-3 text-emerald-600" />
                       {account?.status || 'CONNECTED'}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-500 mt-0.5">Official WABA connected via Meta Embedded Signup</p>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    {account?.status === 'CONNECTED' 
+                      ? 'Official WABA connected with Meta Graph API & Webhook processing' 
+                      : 'No WhatsApp number connected yet. Connect your number to start receiving leads.'}
+                  </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="text-xs font-mono font-bold bg-slate-100 px-3 py-1.5 rounded-xl text-slate-800">
-                  {account?.displayPhoneNumber || account?.displayNumber || '+91 744 245 6789'}
+                  {account?.displayPhoneNumber || account?.displayNumber || '+1 555-660-3701'}
                 </span>
+
+                <button
+                  onClick={() => setShowConnectModal(true)}
+                  className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  <span>{account?.status === 'CONNECTED' ? 'Change / Reconnect Number' : 'Connect WhatsApp Number'}</span>
+                </button>
+
+                <button
+                  onClick={() => setShowTestMessageDrawer(!showTestMessageDrawer)}
+                  className="px-3 py-1.5 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Send Test Message</span>
+                </button>
+
+                {account?.status === 'CONNECTED' && (
+                  <button
+                    onClick={handleDisconnect}
+                    className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
+                    title="Disconnect number"
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </button>
+                )}
               </div>
             </div>
 
@@ -237,45 +388,321 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
               <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
                 <span className="text-slate-400 block text-[11px] mb-1">Phone Number ID</span>
-                <span className="font-mono font-bold text-slate-700">{account?.phoneNumberId || '982347109238475'}</span>
+                <span className="font-mono font-bold text-slate-700">{account?.phoneNumberId || '1317971801407031'}</span>
               </div>
 
               <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
                 <span className="text-slate-400 block text-[11px] mb-1">WABA Account ID</span>
-                <span className="font-mono font-bold text-slate-700">{account?.wabaId || '109283746501928'}</span>
+                <span className="font-mono font-bold text-slate-700">{account?.wabaId || '1789873612251308'}</span>
               </div>
 
               <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
                 <span className="text-slate-400 block text-[11px] mb-1">Phone Quality Rating</span>
                 <span className="font-bold text-emerald-600 flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                  {account?.qualityRating || 'GREEN'} (HIGH • Tier 2)
+                  {account?.qualityRating || 'GREEN'} (HIGH • Verified)
                 </span>
               </div>
             </div>
 
-            {/* Webhook Endpoint */}
-            <div className="pt-2">
-              <label className="text-xs font-semibold text-slate-700 block mb-1.5">
-                Meta Webhook Callback URL
-              </label>
-              <div className="flex items-center gap-2">
-                <input
-                  type="text"
-                  readOnly
-                  value={webhookUrl}
-                  className="flex-1 bg-slate-50 font-mono text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 text-slate-600 focus:outline-none"
-                />
-                <button
-                  onClick={copyWebhook}
-                  className="px-3 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-2xs"
+            {/* Webhook Configuration Section */}
+            <div className="pt-2 border-t border-slate-100 space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-xs font-bold text-slate-800">Meta Webhook Configuration</h4>
+                  <p className="text-[11px] text-slate-500">Enter these exact credentials in Meta Developer Dashboard ➔ WhatsApp ➔ Configuration ➔ Webhooks</p>
+                </div>
+                <a
+                  href="https://developers.facebook.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[11px] text-emerald-600 hover:underline flex items-center gap-1 font-semibold"
                 >
-                  {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
-                  <span>{copied ? 'Copied!' : 'Copy'}</span>
-                </button>
+                  <span>Meta Developers Portal</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Callback URL</label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      readOnly
+                      value={webhookUrl}
+                      className="flex-1 bg-slate-50 font-mono text-[11px] px-3 py-2 rounded-xl border border-slate-200 text-slate-700 focus:outline-none"
+                    />
+                    <button
+                      onClick={copyWebhook}
+                      className="px-3 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-2xs"
+                    >
+                      {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
+                      <span>{copied ? 'Copied' : 'Copy'}</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Verify Token</label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      readOnly
+                      value={verifyToken}
+                      className="flex-1 bg-slate-50 font-mono text-[11px] px-3 py-2 rounded-xl border border-slate-200 text-slate-700 focus:outline-none"
+                    />
+                    <button
+                      onClick={copyVerifyToken}
+                      className="px-3 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-2xs"
+                    >
+                      {copiedToken ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
+                      <span>{copiedToken ? 'Copied' : 'Copy'}</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+
+          {/* Test Message Drawer / Card */}
+          {showTestMessageDrawer && (
+            <div className="bg-gradient-to-br from-indigo-50/80 to-slate-50 p-6 rounded-3xl border border-indigo-200/80 shadow-xs space-y-4 animate-in slide-in-from-top-2">
+              <div className="flex items-center justify-between pb-3 border-b border-indigo-100">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center">
+                    <Send className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-800">Dispatch Live Test WhatsApp Message</h3>
+                    <p className="text-xs text-slate-500">Send an instant test message to any WhatsApp number to verify live delivery</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowTestMessageDrawer(false)}
+                  className="p-1 text-slate-400 hover:text-slate-600 rounded-lg"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSendTestMessage} className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div>
+                  <label className="font-bold text-slate-700 block mb-1">Destination Phone (with country code)</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. +919876543210"
+                    value={testRecipientPhone}
+                    onChange={(e) => setTestRecipientPhone(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                    required
+                  />
+                  <p className="text-[10px] text-slate-400 mt-1">For sandbox numbers, add recipient in Meta App API Setup.</p>
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="font-bold text-slate-700 block mb-1">Message Body</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={testMessageBody}
+                      onChange={(e) => setTestMessageBody(e.target.value)}
+                      className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                      required
+                    />
+                    <button
+                      type="submit"
+                      disabled={isSendingTest}
+                      className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold flex items-center gap-2 transition-colors disabled:opacity-50 whitespace-nowrap"
+                    >
+                      {isSendingTest ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                      <span>{isSendingTest ? 'Sending...' : 'Send Now'}</span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+
+              {testResult && (
+                <div className={`p-3.5 rounded-xl text-xs border ${
+                  testResult.success ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-rose-50 border-rose-200 text-rose-800'
+                }`}>
+                  <div className="font-bold flex items-center gap-1.5">
+                    {testResult.success ? <CheckCircle2 className="w-4 h-4 text-emerald-600" /> : <AlertCircle className="w-4 h-4 text-rose-600" />}
+                    <span>{testResult.success ? 'Message Sent Successfully!' : 'Delivery Failed'}</span>
+                  </div>
+                  <p className="text-[11px] mt-1 font-mono">
+                    {testResult.success 
+                      ? `Provider Message ID: ${testResult.providerMessageId || 'wamid.HBgL...'} • Method: ${testResult.method || 'text'}` 
+                      : (testResult.error || 'Meta API rejected message. Verify recipient phone number in Meta dashboard.')}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Connect WhatsApp Modal / Popup */}
+          {showConnectModal && (
+            <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+              <div className="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-slate-100 space-y-5 animate-in zoom-in-95">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-9 h-9 rounded-xl bg-emerald-500 text-white flex items-center justify-center">
+                      <Phone className="w-5 h-5 fill-white/20" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-slate-800">Connect WhatsApp Business Account</h3>
+                      <p className="text-xs text-slate-500">Choose your connection method for instant AI automation</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setShowConnectModal(false)}
+                    className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Method Switcher Tabs */}
+                <div className="grid grid-cols-2 gap-2 bg-slate-100 p-1 rounded-2xl text-xs font-bold">
+                  <button
+                    onClick={() => setConnectMethod('embedded')}
+                    className={`py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
+                      connectMethod === 'embedded' ? 'bg-white text-slate-800 shadow-xs' : 'text-slate-500 hover:text-slate-700'
+                    }`}
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>1-Click Facebook Connect</span>
+                  </button>
+                  <button
+                    onClick={() => setConnectMethod('manual')}
+                    className={`py-2 rounded-xl transition-all flex items-center justify-center gap-1.5 ${
+                      connectMethod === 'manual' ? 'bg-white text-slate-800 shadow-xs' : 'text-slate-500 hover:text-slate-700'
+                    }`}
+                  >
+                    <Key className="w-3.5 h-3.5 text-indigo-600" />
+                    <span>Direct Meta Cloud API</span>
+                  </button>
+                </div>
+
+                {/* Option 1: Embedded Signup Flow */}
+                {connectMethod === 'embedded' && (
+                  <div className="space-y-4 text-xs py-2">
+                    <div className="bg-emerald-50 p-4 rounded-2xl border border-emerald-100 text-slate-700 space-y-2">
+                      <h4 className="font-bold text-emerald-900 flex items-center gap-1.5">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                        <span>Recommended for Coaching Institutes & Schools</span>
+                      </h4>
+                      <p className="text-[11px] leading-relaxed text-slate-600">
+                        Connect your official WhatsApp number in under 2 minutes with no technical knowledge required. Meta verifies your number via SMS OTP directly.
+                      </p>
+                    </div>
+
+                    <div className="space-y-2 text-slate-600 text-[11px] pl-1">
+                      <div className="flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-full bg-slate-100 text-slate-700 font-bold flex items-center justify-center text-[10px]">1</span>
+                        <span>Click "Continue with Facebook" to open Meta's secure window.</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-full bg-slate-100 text-slate-700 font-bold flex items-center justify-center text-[10px]">2</span>
+                        <span>Select your Meta Business Account and enter your phone number.</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-full bg-slate-100 text-slate-700 font-bold flex items-center justify-center text-[10px]">3</span>
+                        <span>Enter the 6-digit SMS OTP to verify. Your number connects instantly!</span>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={handleLaunchEmbeddedSignup}
+                      className="w-full py-3.5 bg-[#1877F2] hover:bg-[#166fe5] text-white rounded-2xl font-bold flex items-center justify-center gap-2 transition-all shadow-md text-xs mt-2"
+                    >
+                      <svg className="w-4 h-4 fill-white" viewBox="0 0 24 24">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                      </svg>
+                      <span>Continue with Facebook (Meta Embedded Signup)</span>
+                    </button>
+                  </div>
+                )}
+
+                {/* Option 2: Direct Manual API Credentials Flow */}
+                {connectMethod === 'manual' && (
+                  <form onSubmit={handleConnectWhatsApp} className="space-y-3.5 text-xs">
+                    <div>
+                      <label className="font-bold text-slate-700 block mb-1">
+                        Phone Number ID <span className="text-rose-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 1317971801407031"
+                        value={phoneNumberIdInput}
+                        onChange={(e) => setPhoneNumberIdInput(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono text-xs"
+                        required
+                      />
+                      <p className="text-[10px] text-slate-400 mt-1">Found in Meta Developer Dashboard ➔ WhatsApp ➔ API Setup.</p>
+                    </div>
+
+                    <div>
+                      <label className="font-bold text-slate-700 block mb-1">
+                        WhatsApp Business Account ID (WABA ID) <span className="text-rose-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 1789873612251308"
+                        value={wabaIdInput}
+                        onChange={(e) => setWabaIdInput(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono text-xs"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="font-bold text-slate-700 block mb-1">Display Phone Number</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. +1 555-660-3701"
+                        value={displayNumberInput}
+                        onChange={(e) => setDisplayNumberInput(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono text-xs"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="font-bold text-slate-700 block mb-1">
+                        Meta Permanent Access Token <span className="text-slate-400 font-normal">(Encrypted at rest)</span>
+                      </label>
+                      <input
+                        type="password"
+                        placeholder="EAAX..."
+                        value={accessTokenInput}
+                        onChange={(e) => setAccessTokenInput(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono text-xs"
+                      />
+                      <p className="text-[10px] text-slate-400 mt-1">Leave empty to use system default environment credentials.</p>
+                    </div>
+
+                    <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+                      <button
+                        type="button"
+                        onClick={() => setShowConnectModal(false)}
+                        className="px-4 py-2.5 rounded-xl text-slate-600 hover:bg-slate-100 font-semibold"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={isConnecting}
+                        className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold flex items-center gap-2 transition-colors disabled:opacity-50"
+                      >
+                        {isConnecting ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
+                        <span>{isConnecting ? 'Verifying...' : 'Save & Connect Account'}</span>
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Team Staff Quick Overview */}
           <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">

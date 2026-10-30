@@ -361,6 +361,37 @@ export const whatsappApi = {
     return apiClient.get('/whatsapp/account');
   },
 
+  connect: async (data: {
+    phoneNumberId: string;
+    wabaId: string;
+    displayNumber?: string;
+    accessToken?: string;
+  }): Promise<{
+    success: boolean;
+    account: WhatsAppAccount;
+    message?: string;
+  }> => {
+    return apiClient.post('/whatsapp/connect', data);
+  },
+
+  disconnect: async (): Promise<{ success: boolean; message: string }> => {
+    return apiClient.post('/whatsapp/disconnect');
+  },
+
+  sendTestMessage: async (data: {
+    toPhone: string;
+    message?: string;
+  }): Promise<{
+    success: boolean;
+    method?: string;
+    templateName?: string;
+    providerMessageId?: string;
+    message?: string;
+    error?: string;
+  }> => {
+    return apiClient.post('/whatsapp/test-message', data);
+  },
+
   getTemplates: async (): Promise<{ templates: any[] }> => {
     return apiClient.get('/whatsapp/templates');
   },

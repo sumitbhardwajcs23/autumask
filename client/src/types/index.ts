@@ -120,6 +120,8 @@ export interface WhatsAppAccount {
   id: string;
   workspaceId: string;
   displayNumber: string;
+  displayPhoneNumber?: string;
+  phoneNumberId?: string;
   status: 'CONNECTED' | 'DISCONNECTED' | 'RESTRICTED';
   qualityRating: 'GREEN' | 'YELLOW' | 'RED';
   wabaId: string;
