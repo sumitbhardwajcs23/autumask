@@ -100,6 +100,9 @@ app.get('/health/ready', async (req, res) => {
   let queueCheck: { ready: boolean; queueType: string; reason?: string } = { ready: true, queueType: 'UNKNOWN' };
   try {
     const { WebhookQueueService } = await import('./modules/queue/webhookQueue');
+    if (!WebhookQueueService.isRedisConnected()) {
+      await WebhookQueueService.initQueue();
+    }
     queueCheck = WebhookQueueService.validateProductionReadiness();
   } catch (err: any) {
     queueCheck = { ready: false, queueType: 'ERROR', reason: err.message };
@@ -138,6 +141,9 @@ app.get('/health', async (req, res) => {
   let queueCheck: { ready: boolean; queueType: string; reason?: string } = { ready: true, queueType: 'UNKNOWN' };
   try {
     const { WebhookQueueService } = await import('./modules/queue/webhookQueue');
+    if (!WebhookQueueService.isRedisConnected()) {
+      await WebhookQueueService.initQueue();
+    }
     queueCheck = WebhookQueueService.validateProductionReadiness();
   } catch (err: any) {
     queueCheck = { ready: false, queueType: 'ERROR', reason: err.message };

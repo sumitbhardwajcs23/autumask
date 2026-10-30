@@ -13,6 +13,13 @@ import { Context, APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda
 let serverlessExpressInstance: any;
 
 async function setupServerlessExpress() {
+  try {
+    const { WebhookQueueService } = await import('./modules/queue/webhookQueue');
+    await WebhookQueueService.initQueue();
+  } catch (queueErr) {
+    console.warn('Queue initialization notice in Lambda:', queueErr);
+  }
+
   serverlessExpressInstance = serverlessExpress({
     app,
     logSettings: {
