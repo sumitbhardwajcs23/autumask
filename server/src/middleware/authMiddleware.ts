@@ -29,10 +29,22 @@ declare global {
  * 5. In development/testing, supports graceful topbar role switching while maintaining isolation.
  */
 export const authenticateSession = async (req: Request, res: Response, next: NextFunction) => {
-  // Public paths exempt from authentication
-  const publicPaths = ['/auth/login', '/auth/signup', '/webhooks/whatsapp'];
   const currentPath = req.baseUrl ? `${req.baseUrl}${req.path}` : req.path;
-  if (publicPaths.some(p => req.path.startsWith(p) || currentPath.endsWith(p))) {
+
+  // Public paths exempt from session authentication:
+  // Public auth endpoints (/auth/login, /auth/signup, /auth/google, /auth/request-otp, /auth/verify-otp, /auth/resend-otp)
+  // Note: /auth/me and /auth/logout still require a valid session!
+  const isAuthExempt = (
+    (req.path.startsWith('/auth/') || currentPath.includes('/auth/')) &&
+    !req.path.includes('/auth/me') &&
+    !currentPath.includes('/auth/me') &&
+    !req.path.includes('/auth/logout') &&
+    !currentPath.includes('/auth/logout')
+  );
+
+  const isWebhookExempt = req.path.startsWith('/webhooks/whatsapp') || currentPath.includes('/webhooks/whatsapp');
+
+  if (isAuthExempt || isWebhookExempt) {
     return next();
   }
 

@@ -22,6 +22,9 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
   }
 
+  // Cross-Origin-Opener-Policy allowing third-party authentication popups (Google GIS / OAuth)
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+
   // Preflight OPTIONS requests must terminate immediately with 204 No Content
   if (req.method === 'OPTIONS') {
     return res.status(204).end();
