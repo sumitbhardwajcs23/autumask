@@ -54,7 +54,7 @@ const envSchema = z.object({
   GOOGLE_CLIENT_SECRET: z.string().optional(),
 
   // Production CORS Origin Allow-list
-  CORS_ORIGIN: z.string().default('http://localhost:3000,http://127.0.0.1:3000'),
+  CORS_ORIGIN: z.string().default('http://localhost:3000,http://127.0.0.1:3000,https://main.d1h5ohm6mgf7co.amplifyapp.com'),
 });
 
 export const env = envSchema.parse(process.env);
