@@ -93,7 +93,14 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
         )}
 
-        <div className="relative w-full min-w-0">
+        {/* Mobile Brand Title */}
+        <div className="flex sm:hidden items-center gap-1.5 shrink-0">
+          <span className="font-black text-lg text-slate-900 font-['Outfit'] tracking-tight">
+            Auto<span className="text-emerald-600">Mask</span>
+          </span>
+        </div>
+
+        <div className="relative w-full min-w-0 hidden sm:block">
           <Search className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 absolute left-3 sm:left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"

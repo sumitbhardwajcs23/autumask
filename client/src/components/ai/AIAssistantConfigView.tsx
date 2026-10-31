@@ -191,60 +191,60 @@ export const AIAssistantConfigView: React.FC<AIAssistantConfigViewProps> = ({
   };
 
   return (
-    <div className="w-full px-6 sm:px-8 lg:px-10 py-8 space-y-8">
+    <div className="w-full px-4 sm:px-8 lg:px-10 py-6 sm:py-8 space-y-6 sm:space-y-8">
       {/* Top Banner */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-3.5">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-500 p-0.5 shadow-md flex items-center justify-center text-white shrink-0">
-              <Bot className="w-7 h-7" />
-            </div>
-            <div>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight font-['Outfit'] flex items-center gap-3">
-                Document-Driven AI Knowledge Base & RAG
-                <span className="text-xs font-black bg-violet-50 text-violet-700 px-3 py-1 rounded-full border border-violet-200">
-                  Vector Retrieval
-                </span>
+        <div className="flex items-start gap-3 sm:gap-3.5 min-w-0">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-500 p-0.5 shadow-md flex items-center justify-center text-white shrink-0">
+            <Bot className="w-6 h-6 sm:w-7 sm:h-7" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="text-xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight font-['Outfit']">
+                AI Knowledge Base & RAG
               </h1>
-              <p className="text-base sm:text-lg text-slate-600 mt-1.5 font-normal">
-                Ground student WhatsApp inquiries with official course syllabus, fee structures, and batch schedules.
-              </p>
+              <span className="text-[10px] sm:text-xs font-black bg-violet-50 text-violet-700 px-2.5 py-0.5 sm:py-1 rounded-full border border-violet-200 shrink-0">
+                Vector Retrieval
+              </span>
             </div>
+            <p className="text-xs sm:text-base text-slate-600 mt-1 font-normal leading-normal">
+              Ground student WhatsApp inquiries with official course syllabus, fee structures, and batch schedules.
+            </p>
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
           {actionNotice && (
             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs rounded-xl shadow-xs animate-in fade-in">
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              <span>{actionNotice}</span>
+              <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate">{actionNotice}</span>
             </div>
           )}
 
           <button
             onClick={() => setIsUploadModalOpen(true)}
-            className="px-3.5 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-xl text-xs font-bold shadow-xs transition-colors flex items-center gap-1.5"
+            className="flex-1 sm:flex-initial h-10 px-4 bg-violet-600 hover:bg-violet-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
           >
-            <Upload className="w-3.5 h-3.5" />
+            <Upload className="w-4 h-4" />
             <span>Upload Document</span>
           </button>
 
           <button
             onClick={loadData}
-            className="p-2 text-slate-500 hover:text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
+            className="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors shrink-0 cursor-pointer"
             title="Refresh"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
         </div>
       </div>
 
-      {/* Sub Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
+      {/* Sub Tabs: horizontally scrollable on mobile */}
+      <div className="flex items-center gap-2 border-b border-slate-200 pb-2 overflow-x-auto no-scrollbar scroll-smooth">
         <button
           onClick={() => setActiveTab('DOCUMENTS')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+          className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all shrink-0 cursor-pointer ${
             activeTab === 'DOCUMENTS'
               ? 'bg-violet-600 text-white shadow-xs'
               : 'text-slate-600 hover:bg-slate-100'
@@ -256,7 +256,7 @@ export const AIAssistantConfigView: React.FC<AIAssistantConfigViewProps> = ({
 
         <button
           onClick={() => setActiveTab('PERSONA')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+          className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all shrink-0 cursor-pointer ${
             activeTab === 'PERSONA'
               ? 'bg-violet-600 text-white shadow-xs'
               : 'text-slate-600 hover:bg-slate-100'
@@ -268,7 +268,7 @@ export const AIAssistantConfigView: React.FC<AIAssistantConfigViewProps> = ({
 
         <button
           onClick={() => setActiveTab('PLAYGROUND')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+          className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all shrink-0 cursor-pointer ${
             activeTab === 'PLAYGROUND'
               ? 'bg-violet-600 text-white shadow-xs'
               : 'text-slate-600 hover:bg-slate-100'

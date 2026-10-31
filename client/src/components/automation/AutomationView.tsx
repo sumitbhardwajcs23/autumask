@@ -271,20 +271,20 @@ export const AutomationView: React.FC<AutomationViewProps> = ({
   };
 
   return (
-    <div className="w-full px-6 sm:px-8 lg:px-10 py-8 space-y-8">
+    <div className="w-full px-4 sm:px-8 lg:px-10 py-6 sm:py-8 space-y-6 sm:space-y-8">
       {/* Top Title & Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight font-['Outfit']">
-              WhatsApp Automation Rules & Interactive Buttons
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight font-['Outfit']">
+              WhatsApp Automation Rules
             </h1>
-            <span className="text-xs font-black bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full flex items-center gap-1.5">
+            <span className="text-xs font-black bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full flex items-center gap-1.5 shrink-0">
               <Sparkles className="w-4 h-4 text-emerald-600" />
               Quick Replies & Action Links
             </span>
           </div>
-          <p className="text-base sm:text-lg text-slate-600 mt-1.5 font-normal">
+          <p className="text-sm sm:text-lg text-slate-600 mt-1.5 font-normal">
             Set up automatic keyword triggers that send rich WhatsApp messages with clickable Quick Reply buttons, URL links, and live mobile previews.
           </p>
         </div>
@@ -298,7 +298,7 @@ export const AutomationView: React.FC<AutomationViewProps> = ({
         ) : (
           <button
             onClick={openCreateModal}
-            className="flex items-center gap-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm sm:text-base font-bold transition-all shadow-sm hover:shadow active:scale-[0.98]"
+            className="flex items-center justify-center gap-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm sm:text-base font-bold transition-all shadow-sm hover:shadow active:scale-[0.98] w-full sm:w-auto"
           >
             <Plus className="w-5 h-5" />
             <span>New Rule with Interactive Buttons</span>
@@ -315,14 +315,14 @@ export const AutomationView: React.FC<AutomationViewProps> = ({
       )}
 
       {/* Priority Pipeline Explanation */}
-      <div className="bg-gradient-to-r from-blue-50/80 via-emerald-50/50 to-indigo-50/80 border border-blue-200/80 rounded-2xl p-5 text-sm text-blue-900 flex items-start gap-4 shadow-2xs">
+      <div className="bg-gradient-to-r from-blue-50/80 via-emerald-50/50 to-indigo-50/80 border border-blue-200/80 rounded-2xl p-4 sm:p-5 text-sm text-blue-900 flex items-start gap-3 sm:gap-4 shadow-2xs">
         <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 mt-0.5">
           <Zap className="w-5 h-5" />
         </div>
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h4 className="font-bold text-base text-slate-800 font-['Outfit']">Deterministic Priority Pipeline & Interactive WhatsApp Message Protocol</h4>
-            <span className="text-xs font-mono font-bold text-blue-700 bg-white/90 px-2.5 py-1 rounded-lg border border-blue-200">
+            <h4 className="font-bold text-sm sm:text-base text-slate-800 font-['Outfit']">Deterministic Priority Pipeline & Interactive WhatsApp Message Protocol</h4>
+            <span className="text-[10px] sm:text-xs font-mono font-bold text-blue-700 bg-white/90 px-2.5 py-1 rounded-lg border border-blue-200 shrink-0">
               Meta Cloud API Compliant
             </span>
           </div>
@@ -334,12 +334,12 @@ export const AutomationView: React.FC<AutomationViewProps> = ({
 
       {/* Rules List */}
       {(!rules || !Array.isArray(rules) || rules.length === 0) ? (
-        <div className="bg-white rounded-3xl p-12 border border-slate-200 text-center space-y-4 shadow-xs">
+        <div className="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200 text-center space-y-4 shadow-xs">
           <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto">
             <Bot className="w-8 h-8" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-xl font-bold text-slate-800 font-['Outfit']">No Automation Rules Configured</h3>
+            <h3 className="text-lg sm:text-xl font-bold text-slate-800 font-['Outfit']">No Automation Rules Configured</h3>
             <p className="text-sm sm:text-base text-slate-500 max-w-md mx-auto">
               Set up your first keyword trigger to automatically respond to students on WhatsApp with interactive buttons.
             </p>
@@ -355,55 +355,158 @@ export const AutomationView: React.FC<AutomationViewProps> = ({
           )}
         </div>
       ) : (
-        <div className="space-y-5">
+        <div className="space-y-4 sm:space-y-5">
           {rules.map((rule, idx) => {
-            const ruleKeywords = Array.isArray(rule.keywords)
-              ? rule.keywords
-              : typeof (rule as any).keywords === 'string'
-              ? (rule as any).keywords.split(',').map((k: string) => k.trim()).filter(Boolean)
-              : [];
+            // Robust keyword extraction ensuring clean strings (never [object Object])
+            const ruleKeywords: string[] = (() => {
+              if (Array.isArray(rule.keywords)) {
+                return rule.keywords.flatMap((k: any) => {
+                  if (typeof k === 'string') return [k];
+                  if (k && Array.isArray(k.value)) return k.value.map(String);
+                  if (k && typeof k.value === 'string') return [k.value];
+                  if (k && typeof k.keyword === 'string') return [k.keyword];
+                  if (k && typeof k.name === 'string') return [k.name];
+                  return [];
+                });
+              }
+              if (typeof (rule as any).keywords === 'string') {
+                return (rule as any).keywords.split(',').map((k: string) => k.trim()).filter(Boolean);
+              }
+              if (Array.isArray((rule as any).conditions)) {
+                for (const c of (rule as any).conditions) {
+                  if (Array.isArray(c?.value)) return c.value.map(String);
+                  if (typeof c?.value === 'string') return [c.value];
+                  if (Array.isArray(c?.keywords)) return c.keywords.map(String);
+                }
+              }
+              return [];
+            })();
+
             const execCount = typeof rule.executionsCount === 'number' ? rule.executionsCount : 0;
-            const buttonsList = Array.isArray(rule.buttons) ? rule.buttons : [];
+            
+            // Extract attached buttons from rule.buttons or rule.actions
+            const buttonsList: any[] = (() => {
+              if (Array.isArray(rule.buttons) && rule.buttons.length > 0) return rule.buttons;
+              if (Array.isArray((rule as any).actions)) {
+                for (const a of (rule as any).actions) {
+                  if (a && Array.isArray(a.buttons)) return a.buttons;
+                }
+              }
+              return [];
+            })();
+
+            // Extract reply message from rule.replyMessage or rule.actions
+            const replyMessageText = (() => {
+              if (rule.replyMessage && typeof rule.replyMessage === 'string') return rule.replyMessage;
+              if (Array.isArray((rule as any).actions)) {
+                for (const a of (rule as any).actions) {
+                  if (a && typeof a.message === 'string') return a.message;
+                  if (typeof a === 'string') return a;
+                }
+              }
+              return 'Automated WhatsApp message active';
+            })();
+
+            const headerTextVal = (() => {
+              if (rule.headerText && typeof rule.headerText === 'string') return rule.headerText;
+              if (Array.isArray((rule as any).actions)) {
+                for (const a of (rule as any).actions) {
+                  if (a && typeof a.header === 'string') return a.header;
+                }
+              }
+              return undefined;
+            })();
+
+            const footerTextVal = (() => {
+              if (rule.footerText && typeof rule.footerText === 'string') return rule.footerText;
+              if (Array.isArray((rule as any).actions)) {
+                for (const a of (rule as any).actions) {
+                  if (a && typeof a.footer === 'string') return a.footer;
+                }
+              }
+              return undefined;
+            })();
+
             return (
-          <div
-            key={rule.id}
-            className={`bg-white rounded-2xl p-5 border transition-all ${
-              rule.enabled ? 'border-slate-200/90 shadow-2xs hover:shadow-sm' : 'border-slate-200 opacity-60 bg-slate-50/50'
-            }`}
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex items-start gap-3.5 min-w-0 flex-1">
-                {/* Priority Badge */}
-                <div className="w-11 h-11 rounded-2xl bg-slate-100 text-slate-800 font-extrabold text-sm flex items-center justify-center font-['Outfit'] shrink-0 border border-slate-200">
-                  #{idx + 1}
+              <div
+                key={rule.id}
+                className={`bg-white rounded-2xl p-4 sm:p-6 border transition-all ${
+                  rule.enabled ? 'border-slate-200/90 shadow-2xs hover:shadow-sm' : 'border-slate-200 opacity-60 bg-slate-50/50'
+                }`}
+              >
+                {/* Responsive Header: Priority #, Title, Trigger, and Active Toggle */}
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 pb-3 border-b border-slate-100">
+                  <div className="flex items-start gap-3 min-w-0 flex-1">
+                    <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-slate-100 text-slate-800 font-black text-xs sm:text-sm flex items-center justify-center font-['Outfit'] shrink-0 border border-slate-200">
+                      #{idx + 1}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="text-base sm:text-xl font-bold text-slate-900 font-['Outfit'] leading-snug">
+                          {rule.name}
+                        </h3>
+                        <span className="text-[10px] sm:text-xs font-bold px-2.5 py-0.5 sm:py-1 rounded-full bg-slate-100 text-slate-700 uppercase tracking-wide shrink-0">
+                          {rule.trigger || 'KEYWORD'}
+                        </span>
+                        {buttonsList.length > 0 && (
+                          <span className="text-[10px] sm:text-xs font-bold px-2.5 py-0.5 sm:py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1 shrink-0">
+                            <Sparkles className="w-3 h-3 text-emerald-600" />
+                            <span>{buttonsList.length} Quick Buttons</span>
+                          </span>
+                        )}
+                      </div>
+                      {rule.description && (
+                        <p className="text-xs sm:text-sm text-slate-500 font-normal mt-1 leading-normal">
+                          {rule.description}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Toggle Switch & Executions (Desktop Right / Mobile Clean Row) */}
+                  <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-1 sm:pt-0">
+                    <div className="text-xs font-mono text-slate-500 sm:text-right">
+                      <span className="font-bold text-slate-700">{execCount.toLocaleString()}</span> runs
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold text-slate-600">
+                        {rule.enabled ? 'Active' : 'Off'}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (userRole === 'agent') {
+                            alert("Permission Denied: Automation rules can only be enabled/disabled by Owner or Admin (SRS Section 3).");
+                            return;
+                          }
+                          onToggleRule(rule.id);
+                        }}
+                        className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                          userRole === 'agent' ? 'opacity-50 cursor-not-allowed' : ''
+                        } ${
+                          rule.enabled ? 'bg-emerald-500' : 'bg-slate-300'
+                        }`}
+                      >
+                        <span
+                          className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                            rule.enabled ? 'translate-x-5' : 'translate-x-0'
+                          }`}
+                        />
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="min-w-0 flex-1 space-y-2.5">
-                  <div className="flex flex-wrap items-center gap-2.5">
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 font-['Outfit']">{rule.name}</h3>
-                    <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 uppercase tracking-wide">
-                      {rule.trigger || 'KEYWORD'}
-                    </span>
-                    {buttonsList.length > 0 && (
-                      <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-                        <span>{buttonsList.length} Interactive Buttons Attached</span>
-                      </span>
-                    )}
-                  </div>
-                  
-                  {rule.description && (
-                    <p className="text-sm sm:text-base text-slate-600 font-normal">{rule.description}</p>
-                  )}
-
-                  {/* Trigger Keywords */}
+                {/* Card Body: Clean Keywords & WhatsApp Message Preview */}
+                <div className="py-3.5 space-y-3">
+                  {/* Trigger Keywords Display */}
                   {ruleKeywords.length > 0 && (
-                    <div className="flex flex-wrap items-center gap-2 pt-1">
-                      <span className="text-xs font-bold text-slate-400">KEYWORDS:</span>
+                    <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                      <span className="text-[11px] sm:text-xs font-bold text-slate-400">KEYWORDS:</span>
                       {ruleKeywords.map((kw: string, i: number) => (
                         <span
                           key={i}
-                          className="text-xs sm:text-sm font-mono bg-emerald-50 text-emerald-800 border border-emerald-200/60 px-2.5 py-1 rounded-lg"
+                          className="text-xs font-mono bg-emerald-50 text-emerald-800 border border-emerald-200/60 px-2 py-0.5 rounded-lg"
                         >
                           "{kw}"
                         </span>
@@ -412,36 +515,36 @@ export const AutomationView: React.FC<AutomationViewProps> = ({
                   )}
 
                   {/* WhatsApp Message Preview Box */}
-                  <div className="mt-3.5 bg-slate-50 p-4 sm:p-5 rounded-2xl border border-slate-200/80 text-sm text-slate-700 space-y-2.5">
-                    {rule.headerText && (
+                  <div className="bg-slate-50 p-3.5 sm:p-5 rounded-2xl border border-slate-200/80 text-sm text-slate-700 space-y-2.5">
+                    {headerTextVal && (
                       <div className="text-xs sm:text-sm font-extrabold text-emerald-800 pb-1.5 border-b border-slate-200 flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                        <span>{rule.headerText}</span>
+                        <span>{headerTextVal}</span>
                       </div>
                     )}
 
-                    <div className="whitespace-pre-wrap font-sans text-sm sm:text-base text-slate-800 leading-relaxed">
-                      {rule.replyMessage || (Array.isArray(rule.actions) ? rule.actions.join(', ') : 'Automated WhatsApp message active')}
+                    <div className="whitespace-pre-wrap font-sans text-xs sm:text-base text-slate-800 leading-relaxed">
+                      {replyMessageText}
                     </div>
 
-                    {rule.footerText && (
-                      <div className="text-xs text-slate-400 italic pt-1 border-t border-slate-200/60">
-                        {rule.footerText}
+                    {footerTextVal && (
+                      <div className="text-[11px] sm:text-xs text-slate-400 italic pt-1 border-t border-slate-200/60">
+                        {footerTextVal}
                       </div>
                     )}
 
-                    {/* Render the buttons attached to this rule */}
+                    {/* Attached Interactive Quick Buttons */}
                     {buttonsList.length > 0 && (
-                      <div className="pt-2.5 border-t border-slate-200 space-y-2">
-                        <div className="text-xs font-bold text-slate-500 uppercase tracking-wide flex items-center gap-1.5">
-                          <Bot className="w-4 h-4 text-emerald-600" />
-                          <span>Student Quick Links ({buttonsList.length}):</span>
+                      <div className="pt-2.5 border-t border-slate-200 space-y-1.5">
+                        <div className="text-[11px] sm:text-xs font-bold text-slate-500 uppercase tracking-wide flex items-center gap-1.5">
+                          <Bot className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>Interactive Student Quick Links ({buttonsList.length}):</span>
                         </div>
-                        <div className="flex flex-wrap gap-2 pt-0.5">
-                          {buttonsList.map((btn, bIdx) => (
+                        <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-0.5">
+                          {buttonsList.map((btn: any, bIdx: number) => (
                             <div
                               key={bIdx}
-                              className="px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-semibold text-emerald-700 flex items-center gap-2 shadow-2xs group cursor-pointer hover:border-emerald-400 hover:bg-emerald-50 transition-colors"
+                              className="px-3 py-1.5 bg-white border border-slate-300 rounded-xl text-xs font-semibold text-emerald-700 flex items-center gap-1.5 shadow-2xs hover:border-emerald-400 hover:bg-emerald-50 transition-colors cursor-pointer"
                               title={btn.payload ? `Payload: ${btn.payload}` : btn.url || btn.phoneNumber}
                               onClick={() => setPreviewingRule(rule)}
                             >
@@ -450,10 +553,7 @@ export const AutomationView: React.FC<AutomationViewProps> = ({
                               {btn.type !== 'URL' && btn.type !== 'CALL' && (
                                 <MessageSquare className="w-3 h-3 text-emerald-600" />
                               )}
-                              <span>{btn.title}</span>
-                              <span className="text-[10px] text-slate-400 font-mono">
-                                ({btn.type === 'URL' ? 'URL' : btn.type === 'CALL' ? 'Call' : 'Info'})
-                              </span>
+                              <span>{btn.title || btn.name || 'Quick Link'}</span>
                             </div>
                           ))}
                         </div>
@@ -461,75 +561,40 @@ export const AutomationView: React.FC<AutomationViewProps> = ({
                     )}
                   </div>
                 </div>
-              </div>
 
-              {/* Actions, Toggle & Preview button */}
-              <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
-                <div className="flex items-center gap-2.5">
-                  <span className="text-xs sm:text-sm text-slate-600 font-bold">
-                    {rule.enabled ? 'Active' : 'Disabled'}
-                  </span>
+                {/* Card Footer: Action Buttons (Preview, Edit, Delete) */}
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
                   <button
-                    type="button"
-                    onClick={() => {
-                      if (userRole === 'agent') {
-                        alert("Permission Denied: Automation rules can only be enabled/disabled by Owner or Admin (SRS Section 3).");
-                        return;
-                      }
-                      onToggleRule(rule.id);
-                    }}
-                    className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                      userRole === 'agent' ? 'opacity-50 cursor-not-allowed' : ''
-                    } ${
-                      rule.enabled ? 'bg-emerald-500' : 'bg-slate-300'
-                    }`}
+                    onClick={() => setPreviewingRule(rule)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-slate-700 rounded-xl text-xs sm:text-sm font-bold transition-colors border border-slate-200 shadow-2xs cursor-pointer"
+                    title="Test how student sees this rule on their WhatsApp"
                   >
-                    <span
-                      className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-                        rule.enabled ? 'translate-x-5' : 'translate-x-0'
-                      }`}
-                    />
+                    <Smartphone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
+                    <span>Preview Phone</span>
                   </button>
-                </div>
 
-                <div className="text-xs font-mono text-slate-500 font-medium">
-                  {execCount.toLocaleString()} executions
-                </div>
-
-                {/* Quick Test on WhatsApp Phone Button */}
-                <button
-                  onClick={() => setPreviewingRule(rule)}
-                  className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-slate-700 rounded-xl text-xs sm:text-sm font-bold transition-colors border border-slate-200 shadow-2xs"
-                  title="Test how student sees this rule on their WhatsApp"
-                >
-                  <Smartphone className="w-4 h-4 text-emerald-600" />
-                  <span>Preview Phone</span>
-                </button>
-
-                {/* Edit & Delete Action Buttons */}
-                {userRole !== 'agent' && (
-                  <div className="flex items-center gap-2 pt-1">
-                    <button
-                      onClick={() => openEditModal(rule)}
-                      className="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors"
-                      title="Edit Rule & Buttons"
-                    >
-                      <Edit3 className="w-4 h-4" />
-                    </button>
-                    {onDeleteRule && (
+                  {userRole !== 'agent' && (
+                    <div className="flex items-center gap-1">
                       <button
-                        onClick={() => handleDelete(rule.id, rule.name)}
-                        className="p-2 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
-                        title="Delete Rule"
+                        onClick={() => openEditModal(rule)}
+                        className="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
+                        title="Edit Rule & Buttons"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Edit3 className="w-4 h-4" />
                       </button>
-                    )}
-                  </div>
-                )}
+                      {onDeleteRule && (
+                        <button
+                          onClick={() => handleDelete(rule.id, rule.name)}
+                          className="p-2 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer"
+                          title="Delete Rule"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          </div>
             );
           })}
         </div>
