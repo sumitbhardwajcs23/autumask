@@ -276,7 +276,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           1. HEADER NAVBAR
           ========================================================================= */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-150 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 h-20 flex items-center justify-between">
           
           {/* Brand Logo */}
           <div className="flex items-center gap-3">
@@ -426,41 +426,41 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* =========================================================================
           2. HERO SECTION
           ========================================================================= */}
-      <section className="relative pt-12 pb-20 overflow-hidden bg-gradient-to-b from-[#f0fdf4]/50 via-white to-slate-50 border-b border-slate-150">
+      <section className="relative py-12 xl:py-16 2xl:py-20 overflow-hidden bg-gradient-to-b from-[#f0fdf4]/50 via-white to-slate-50 border-b border-slate-150 min-h-[calc(100vh-80px)] flex items-center">
         
         {/* Soft Background Accents */}
         <div className="absolute top-10 left-1/4 w-[450px] h-[450px] bg-emerald-100/40 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute top-20 right-10 w-[350px] h-[350px] bg-teal-100/30 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-14 2xl:gap-16 items-center w-full">
             
             {/* Left Column: Hero Content */}
-            <div className="lg:col-span-7 space-y-7">
+            <div className="lg:col-span-7 xl:col-span-7 2xl:col-span-7 space-y-6 xl:space-y-8 2xl:space-y-10">
               
               {/* Category Pill Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wide uppercase">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs xl:text-sm font-bold tracking-wide uppercase">
                 <span className="w-2 h-2 rounded-full bg-[#10b981] animate-pulse" />
                 <span>AI-POWERED WHATSAPP AUTOMATION FOR MODERN BUSINESSES & ENTERPRISES</span>
               </div>
 
               {/* Main Headline */}
-              <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-black text-slate-900 tracking-tight leading-[1.12] font-['Outfit']">
+              <h1 className="text-4xl sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-black text-slate-900 tracking-tight leading-[1.1] font-['Outfit']">
                 Convert More Customers.<br />
                 <span className="text-[#059669]">Automatically on WhatsApp.</span>
               </h1>
 
               {/* Subheading */}
-              <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-xl">
+              <p className="text-base sm:text-lg xl:text-xl 2xl:text-2xl text-slate-600 leading-relaxed max-w-xl xl:max-w-2xl 2xl:max-w-3xl">
                 AutoMask helps businesses, D2C brands, real estate firms, clinics, and service providers 
                 capture leads, answer product FAQs, book consultations, run automated follow-ups, and drive revenue — 
                 all on WhatsApp, with the power of AI.
               </p>
 
               {/* 4 Feature Badge Cards (2x2 Grid) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 xl:gap-5 pt-1 max-w-2xl 2xl:max-w-3xl">
                 {/* 1. 24/7 Instant Responses */}
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-white border border-slate-200/80 shadow-xs hover:border-emerald-300 transition-all">
+                <div className="flex items-center gap-3.5 p-3.5 xl:p-4 rounded-xl xl:rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:border-emerald-300 transition-all">
                   <div className="w-9 h-9 rounded-lg bg-emerald-50 border border-emerald-200 flex items-center justify-center shrink-0">
                     <Zap className="w-4 h-4 text-emerald-600" />
                   </div>
@@ -471,7 +471,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </div>
 
                 {/* 2. Automated Bookings & Orders */}
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-white border border-slate-200/80 shadow-xs hover:border-blue-300 transition-all">
+                <div className="flex items-center gap-3.5 p-3.5 xl:p-4 rounded-xl xl:rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:border-blue-300 transition-all">
                   <div className="w-9 h-9 rounded-lg bg-blue-50 border border-blue-200 flex items-center justify-center shrink-0">
                     <Calendar className="w-4 h-4 text-blue-600" />
                   </div>
@@ -482,7 +482,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </div>
 
                 {/* 3. Smart Follow-ups */}
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-white border border-slate-200/80 shadow-xs hover:border-purple-300 transition-all">
+                <div className="flex items-center gap-3.5 p-3.5 xl:p-4 rounded-xl xl:rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:border-purple-300 transition-all">
                   <div className="w-9 h-9 rounded-lg bg-purple-50 border border-purple-200 flex items-center justify-center shrink-0">
                     <Sparkles className="w-4 h-4 text-purple-600" />
                   </div>
@@ -493,7 +493,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </div>
 
                 {/* 4. Human Takeover */}
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-white border border-slate-200/80 shadow-xs hover:border-orange-300 transition-all">
+                <div className="flex items-center gap-3.5 p-3.5 xl:p-4 rounded-xl xl:rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:border-orange-300 transition-all">
                   <div className="w-9 h-9 rounded-lg bg-orange-50 border border-orange-200 flex items-center justify-center shrink-0">
                     <Users className="w-4 h-4 text-orange-600" />
                   </div>
@@ -509,7 +509,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <button
                   id="hero-book-demo-btn"
                   onClick={() => setIsDemoModalOpen(true)}
-                  className="flex items-center gap-2.5 px-7 py-3.5 rounded-lg text-sm font-bold text-white bg-[#065f46] hover:bg-[#047857] transition-all shadow-md shadow-emerald-900/15 hover:shadow-lg active:scale-98"
+                  className="flex items-center gap-2.5 px-7 py-3.5 xl:px-9 xl:py-4 rounded-xl text-sm xl:text-base font-bold text-white bg-[#065f46] hover:bg-[#047857] transition-all shadow-md shadow-emerald-900/15 hover:shadow-lg active:scale-98"
                 >
                   <span>Book a Free Demo</span>
                   <ArrowRight className="w-4 h-4" />
@@ -521,7 +521,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     const el = document.getElementById('dashboard');
                     el?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="flex items-center gap-2 px-6 py-3.5 rounded-lg text-sm font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 transition-all shadow-xs"
+                  className="flex items-center gap-2 px-6 py-3.5 xl:px-8 xl:py-4 rounded-xl text-sm xl:text-base font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 transition-all shadow-xs"
                 >
                   <Play className="w-4 h-4 text-[#059669] fill-[#059669]" />
                   <span>See How It Works</span>
@@ -547,7 +547,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* Right Column: Hero Visual - Smartphone + Dashboard Mockup */}
-            <div className="lg:col-span-5 relative">
+            <div className="lg:col-span-5 xl:col-span-5 2xl:col-span-5 relative flex justify-center">
               
               {/* Playful Hand-drawn Annotation Badge at Top-Right */}
               <div className="absolute -top-8 right-2 z-30 hidden sm:flex items-center gap-2 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-emerald-300 shadow-md">
@@ -558,10 +558,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </div>
 
               {/* Layered Composition Container */}
-              <div className="relative mx-auto max-w-[480px]">
+              <div className="relative mx-auto w-full max-w-[480px] xl:max-w-[560px] 2xl:max-w-[620px]">
                 
                 {/* 1. Behind: Dashboard Preview Card */}
-                <div className="absolute -top-6 -right-6 w-[95%] bg-white rounded-2xl border border-slate-200/90 shadow-2xl p-4 hidden md:block z-10 transform rotate-1 transition-transform hover:rotate-0">
+                <div className="absolute -top-6 -right-6 xl:-top-8 xl:-right-10 w-[95%] xl:w-[105%] bg-white rounded-2xl border border-slate-200/90 shadow-2xl p-4 xl:p-5 hidden md:block z-10 transform rotate-1 transition-transform hover:rotate-0">
                   {/* Dashboard mini header */}
                   <div className="flex items-center justify-between pb-3 border-b border-slate-100 text-xs">
                     <div className="flex items-center gap-2">
@@ -624,7 +624,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </div>
 
                 {/* 2. Foreground: Smartphone Mockup showing WhatsApp chat */}
-                <div className="relative z-20 w-[310px] sm:w-[325px] mx-auto bg-slate-900 rounded-[38px] p-2.5 shadow-2xl border-4 border-slate-800">
+                <div className="relative z-20 w-[310px] sm:w-[330px] xl:w-[370px] 2xl:w-[410px] mx-auto bg-slate-900 rounded-[38px] xl:rounded-[44px] p-2.5 xl:p-3 shadow-2xl border-4 border-slate-800">
                   {/* Phone speaker notch */}
                   <div className="w-28 h-4 bg-slate-800 rounded-full mx-auto mb-2 flex items-center justify-center">
                     <div className="w-3 h-3 rounded-full bg-slate-900/80 mr-3" />
@@ -632,7 +632,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   </div>
 
                   {/* WhatsApp App Screen Container */}
-                  <div className="bg-[#efeae2] rounded-[30px] overflow-hidden flex flex-col h-[530px] border border-slate-200 shadow-inner">
+                  <div className="bg-[#efeae2] rounded-[30px] xl:rounded-[36px] overflow-hidden flex flex-col h-[530px] xl:h-[600px] 2xl:h-[660px] border border-slate-200 shadow-inner">
                     
                     {/* WhatsApp Top Header Bar */}
                     <div className="bg-[#075e54] text-white px-3 py-2.5 flex items-center justify-between shadow-sm">
@@ -730,12 +730,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           3. SOCIAL PROOF / TRUSTED BY LOGOS
           ========================================================================= */}
       <section className="py-10 bg-white border-b border-slate-150">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 text-center">
           <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-6">
             TRUSTED BY 500+ FAST-GROWING BUSINESSES & TEAMS ACROSS INDIA
           </p>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 items-center justify-center">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 xl:gap-8 items-center justify-center">
             {/* 1. UrbanNest Realty */}
             <div className="flex items-center justify-center gap-2 text-slate-700 hover:text-emerald-700 transition-colors">
               <Home className="w-5 h-5 text-slate-500" />
@@ -779,11 +779,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           4. 5-PILLAR BENEFIT STRIP
           ========================================================================= */}
       <section className="py-8 bg-slate-50/80 border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 xl:gap-6">
             
             {/* 1. AI-Powered Responses */}
-            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
+            <div className="flex items-start gap-3.5 p-4 xl:p-5 rounded-xl xl:rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-xs transition-shadow">
               <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
                 <Zap className="w-4 h-4" />
               </div>
@@ -794,7 +794,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* 2. Smart Booking & Sales */}
-            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
+            <div className="flex items-start gap-3.5 p-4 xl:p-5 rounded-xl xl:rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-xs transition-shadow">
               <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center shrink-0">
                 <Calendar className="w-4 h-4" />
               </div>
@@ -805,7 +805,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* 3. Follow-up Sequences */}
-            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
+            <div className="flex items-start gap-3.5 p-4 xl:p-5 rounded-xl xl:rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-xs transition-shadow">
               <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center shrink-0">
                 <Sparkles className="w-4 h-4" />
               </div>
@@ -816,7 +816,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* 4. Human Takeover */}
-            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
+            <div className="flex items-start gap-3.5 p-4 xl:p-5 rounded-xl xl:rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-xs transition-shadow">
               <div className="w-8 h-8 rounded-lg bg-orange-50 text-orange-700 flex items-center justify-center shrink-0">
                 <Users className="w-4 h-4" />
               </div>
@@ -827,7 +827,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* 5. 100% Secure & Private */}
-            <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
+            <div className="flex items-start gap-3.5 p-4 xl:p-5 rounded-xl xl:rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-xs transition-shadow">
               <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center shrink-0">
                 <Shield className="w-4 h-4" />
               </div>
@@ -845,7 +845,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           5. HOW IT WORKS SECTION
           ========================================================================= */}
       <section id="how-it-works" className="py-20 bg-white border-b border-slate-150">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 text-center">
           
           {/* Badge */}
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wider uppercase mb-3">
@@ -927,7 +927,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           6. BUILT FOR MODERN BUSINESSES (INDUSTRY SEGMENTS SHOWCASE)
           ========================================================================= */}
       <section id="solutions" className="py-20 bg-slate-50 border-b border-slate-150">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
           
           <div className="text-center mb-10">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wider uppercase mb-3">
@@ -1024,7 +1024,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           7. "SIMPLE. POWERFUL. COMPLETE." - DASHBOARD PREVIEW
           ========================================================================= */}
       <section id="dashboard" className="py-20 bg-white border-b border-slate-150">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
           
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wider uppercase mb-3">
@@ -1446,7 +1446,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           8. WHY CHOOSE AUTOMASK SECTION
           ========================================================================= */}
       <section className="py-20 bg-slate-50 border-b border-slate-150">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
           
           <div className="text-center mb-14">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wider uppercase mb-3">
@@ -1512,7 +1512,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           9. TESTIMONIALS (LOVED BY BUSINESS LEADERS)
           ========================================================================= */}
       <section className="py-20 bg-white border-b border-slate-150">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
           
           <div className="text-center mb-14">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wider uppercase mb-3">
@@ -1606,7 +1606,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           10. PRICING SECTION
           ========================================================================= */}
       <section id="pricing" className="py-20 bg-slate-50 border-b border-slate-150">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
           
           <div className="text-center mb-10">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wider uppercase mb-3">
@@ -1831,7 +1831,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           11. FREQUENTLY ASKED QUESTIONS
           ========================================================================= */}
       <section id="faq" className="py-20 bg-white border-b border-slate-150">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
           
           <div className="text-center mb-14">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wider uppercase mb-3">
@@ -1880,7 +1880,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           12. FINAL CALL TO ACTION BANNER
           ========================================================================= */}
       <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
           
           <div className="relative rounded-3xl bg-[#064e3b] overflow-hidden p-8 sm:p-14 text-white shadow-2xl">
             {/* Ambient Background Glows */}
@@ -1948,7 +1948,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           13. FOOTER
           ========================================================================= */}
       <footer className="bg-slate-50 border-t border-slate-200 pt-16 pb-12 text-slate-600 text-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
           
           <div className="grid grid-cols-2 md:grid-cols-6 gap-8 pb-12 border-b border-slate-200">
             
