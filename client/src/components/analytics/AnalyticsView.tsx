@@ -71,17 +71,17 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ usage }) => {
   };
 
   return (
-    <div className="p-6 sm:p-8 max-w-[1550px] w-full mx-auto space-y-6">
+    <div className="w-full px-6 sm:px-8 lg:px-10 py-8 space-y-8">
       {/* Header & Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-800 font-['Outfit'] flex items-center gap-2">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 font-['Outfit'] flex items-center gap-3">
             <span>Institute Conversion & Automation Analytics</span>
-            <span className="text-xs bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full">
+            <span className="text-xs font-black bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">
               Live Feed
             </span>
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-base sm:text-lg text-slate-600 mt-1.5 font-normal">
             Track student enquiry velocity, demo show-up rate, and WhatsApp AI bot ROI.
           </p>
         </div>

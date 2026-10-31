@@ -167,21 +167,21 @@ export const BillingView: React.FC<BillingViewProps> = ({ usage }) => {
   };
 
   return (
-    <div className="p-6 sm:p-8 max-w-[1550px] w-full mx-auto space-y-6">
+    <div className="w-full px-6 sm:px-8 lg:px-10 py-8 space-y-8">
       {/* Title */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-extrabold text-slate-800 tracking-tight font-['Outfit']">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight font-['Outfit']">
             Subscription & Razorpay Billing
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-base sm:text-lg text-slate-600 mt-1.5 font-normal">
             Transparent, predictable pricing designed for coaching institutes. Secured by Razorpay.
           </p>
         </div>
 
         {/* Razorpay Verified Badge */}
-        <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-800 px-3 py-1.5 rounded-2xl text-xs font-bold w-max">
-          <ShieldCheck className="w-4 h-4 text-emerald-600" />
+        <div className="flex items-center gap-2.5 bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-2 rounded-2xl text-sm font-extrabold w-max shadow-2xs">
+          <ShieldCheck className="w-5 h-5 text-emerald-600" />
           <span>Razorpay Verified Merchant • UPI & NetBanking Active</span>
         </div>
       </div>

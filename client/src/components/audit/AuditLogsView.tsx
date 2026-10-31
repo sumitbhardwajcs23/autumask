@@ -53,22 +53,22 @@ export const AuditLogsView: React.FC<AuditLogsViewProps> = ({ userRole = 'admin'
   });
 
   return (
-    <div className="p-6 sm:p-8 max-w-[1550px] w-full mx-auto space-y-6">
+    <div className="w-full px-6 sm:px-8 lg:px-10 py-8 space-y-8">
       {/* Header Banner */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-slate-700 to-slate-900 p-0.5 shadow-md flex items-center justify-center text-white">
-              <Activity className="w-5 h-5" />
+          <div className="flex items-center gap-3.5">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-slate-700 to-slate-900 p-0.5 shadow-md flex items-center justify-center text-white shrink-0">
+              <Activity className="w-7 h-7" />
             </div>
             <div>
-              <h1 className="text-xl font-extrabold text-slate-800 tracking-tight font-['Outfit'] flex items-center gap-2">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight font-['Outfit'] flex items-center gap-3">
                 Workspace Audit Trail & Security Logs
-                <span className="text-[10px] font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full border border-slate-200">
+                <span className="text-xs font-black bg-slate-100 text-slate-700 px-3 py-1 rounded-full border border-slate-200">
                   Immutable Record
                 </span>
               </h1>
-              <p className="text-xs text-slate-500">
+              <p className="text-base sm:text-lg text-slate-600 mt-1.5 font-normal">
                 Track all administrative actions, permission overrides, campaign launches, and authentication events.
               </p>
             </div>

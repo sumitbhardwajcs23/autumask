@@ -266,20 +266,20 @@ export const AutomationView: React.FC<AutomationViewProps> = ({
   };
 
   return (
-    <div className="p-6 sm:p-8 max-w-[1550px] w-full mx-auto space-y-6">
+    <div className="w-full px-6 sm:px-8 lg:px-10 py-8 space-y-8">
       {/* Top Title & Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-extrabold text-slate-800 tracking-tight font-['Outfit']">
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight font-['Outfit']">
               WhatsApp Automation Rules & Interactive Buttons
             </h1>
-            <span className="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full flex items-center gap-1">
-              <Sparkles className="w-3 h-3 text-emerald-600" />
+            <span className="text-xs font-black bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4 text-emerald-600" />
               Quick Replies & Action Links
             </span>
           </div>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-base sm:text-lg text-slate-600 mt-1.5 font-normal">
             Set up automatic keyword triggers that send rich WhatsApp messages with clickable Quick Reply buttons, URL links, and live mobile previews.
           </p>
         </div>

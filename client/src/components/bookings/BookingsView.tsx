@@ -85,28 +85,28 @@ export const BookingsView: React.FC<BookingsViewProps> = ({
   };
 
   return (
-    <div className="p-6 sm:p-8 max-w-[1550px] w-full mx-auto space-y-6">
+    <div className="w-full px-6 sm:px-8 lg:px-10 py-8 space-y-8">
       {/* Title */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-extrabold text-slate-800 tracking-tight font-['Outfit']">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight font-['Outfit']">
             Demo & Counselling Slot Scheduler
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-base sm:text-lg text-slate-600 mt-1.5 font-normal">
             Built-in capacity-safe scheduling engine for live trial classes and parent counselling (DD-02).
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {slots.length > 0 && onBookAppointment && (
             <button
               onClick={() => {
                 setSelectedSlotId(slots[0].id);
                 setIsBookModalOpen(true);
               }}
-              className="flex items-center gap-1.5 px-3.5 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold transition-colors shadow-xs"
+              className="flex items-center gap-2 h-11 sm:h-12 px-5 bg-purple-600 hover:bg-purple-700 text-white rounded-2xl text-sm sm:text-base font-extrabold transition-colors shadow-xs"
             >
-              <UserCheck className="w-4 h-4" />
+              <UserCheck className="w-4.5 h-4.5" />
               <span>Schedule Student</span>
             </button>
           )}

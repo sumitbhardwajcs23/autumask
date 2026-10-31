@@ -152,32 +152,32 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
   };
 
   return (
-    <div className="p-6 sm:p-8 max-w-[1550px] w-full mx-auto space-y-6">
+    <div className="w-full px-6 sm:px-8 lg:px-10 py-8 space-y-8">
       {/* Title & Stats */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-extrabold text-slate-800 tracking-tight font-['Outfit']">
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight font-['Outfit']">
               Contacts & WhatsApp Consent Directory
             </h1>
-            <span className="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">
+            <span className="text-xs font-black bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">
               {contacts.length} Total Contacts
             </span>
           </div>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-base sm:text-lg text-slate-600 mt-1.5 font-normal">
             Meta opt-in consent registry, tag segments, and direct student communication history.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {actionNotice && (
-            <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xl animate-in fade-in">
+            <span className="text-sm font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-4 py-2 rounded-xl animate-in fade-in">
               ✓ {actionNotice}
             </span>
           )}
           <button
             onClick={() => { setImportSummary(null); setIsCsvModalOpen(true); }}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors shadow-2xs border border-slate-200"
+            className="flex items-center gap-2 h-11 sm:h-12 px-5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-2xl text-sm sm:text-base font-bold transition-colors shadow-2xs border border-slate-200"
           >
             <UploadCloud className="w-4 h-4 text-slate-500" />
             <span>Import CSV</span>

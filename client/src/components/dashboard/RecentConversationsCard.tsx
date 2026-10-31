@@ -45,16 +45,16 @@ export const RecentConversationsCard: React.FC<RecentConversationsCardProps> = (
   };
 
   return (
-    <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between h-full">
+    <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-xs flex flex-col justify-between h-full">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-base font-bold text-slate-800">Recent Conversations</h3>
+      <div className="flex items-center justify-between mb-5">
+        <h3 className="text-lg sm:text-xl font-black text-slate-900 font-['Outfit']">Recent Conversations</h3>
         <button
           onClick={onViewAll}
-          className="text-xs sm:text-sm font-bold text-emerald-600 hover:text-emerald-700 flex items-center gap-1.5 transition-colors cursor-pointer"
+          className="text-sm font-bold text-emerald-600 hover:text-emerald-700 flex items-center gap-1.5 transition-colors cursor-pointer"
         >
           <span>View All</span>
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="w-4.5 h-4.5" />
         </button>
       </div>
 
@@ -72,40 +72,40 @@ export const RecentConversationsCard: React.FC<RecentConversationsCardProps> = (
             <div
               key={conv.id}
               onClick={() => onSelectConversation(conv)}
-              className="py-3.5 flex items-center justify-between hover:bg-slate-50/80 rounded-2xl px-2.5 -mx-2.5 cursor-pointer transition-colors group"
+              className="py-3.5 flex items-center justify-between hover:bg-slate-50/80 rounded-2xl px-3 -mx-3 cursor-pointer transition-colors group"
             >
               <div className="flex items-center gap-3.5 min-w-0">
                 {/* Avatar with WhatsApp call indicator */}
                 <div className="relative flex-shrink-0">
-                  <div className={`w-11 h-11 rounded-full ${getAvatarBg(conv.contactName)} text-white font-bold text-sm flex items-center justify-center shadow-xs`}>
+                  <div className={`w-12 h-12 rounded-full ${getAvatarBg(conv.contactName)} text-white font-bold text-sm flex items-center justify-center shadow-xs`}>
                     {initials}
                   </div>
-                  <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white flex items-center justify-center text-white">
+                  <div className="absolute -bottom-0.5 -right-0.5 w-4.5 h-4.5 rounded-full bg-emerald-500 border-2 border-white flex items-center justify-center text-white">
                     <Phone className="w-2.5 h-2.5 fill-white" />
                   </div>
                 </div>
 
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <h4 className="text-sm font-bold text-slate-800 truncate group-hover:text-emerald-600 transition-colors">
+                    <h4 className="text-base font-bold text-slate-900 truncate group-hover:text-emerald-600 transition-colors">
                       {conv.contactName}
                     </h4>
-                    <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${getBadgeStyle(conv.leadStatus)}`}>
+                    <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full border ${getBadgeStyle(conv.leadStatus)}`}>
                       {formatStatus(conv.leadStatus)}
                     </span>
                   </div>
-                  <p className="text-xs sm:text-sm text-slate-500 truncate mt-0.5 font-normal">
+                  <p className="text-sm text-slate-500 truncate mt-1 font-normal">
                     {conv.lastMessage}
                   </p>
                 </div>
               </div>
 
-              <div className="flex flex-col items-end gap-1 flex-shrink-0 ml-3">
-                <span className="text-xs text-slate-400 font-medium">
+              <div className="flex flex-col items-end gap-1.5 flex-shrink-0 ml-3">
+                <span className="text-xs sm:text-sm text-slate-400 font-semibold">
                   {conv.lastMessageAt}
                 </span>
                 {conv.unreadCount > 0 && (
-                  <span className="w-5 h-5 rounded-full bg-red-500 text-white text-[11px] font-bold flex items-center justify-center">
+                  <span className="w-5 h-5 rounded-full bg-red-500 text-white text-xs font-black flex items-center justify-center">
                     {conv.unreadCount}
                   </span>
                 )}

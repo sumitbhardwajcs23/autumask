@@ -224,29 +224,29 @@ export const BroadcastTemplatesView: React.FC<BroadcastTemplatesViewProps> = ({
   };
 
   return (
-    <div className="p-6 sm:p-8 max-w-[1550px] w-full mx-auto space-y-6">
+    <div className="w-full px-6 sm:px-8 lg:px-10 py-8 space-y-8">
       {/* Top Banner & Quick Metrics */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-800 font-['Outfit'] flex items-center gap-2">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 font-['Outfit'] flex items-center gap-3">
             <span>Meta WhatsApp Templates & Broadcasts</span>
-            <span className="text-xs bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full">
+            <span className="text-xs font-black bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full">
               Meta Cloud API Ready
             </span>
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-base sm:text-lg text-slate-600 mt-1.5 font-normal">
             Compliant template-driven engagement for audiences outside the 24-hr customer service window.
           </p>
         </div>
 
         {/* Tab switchers */}
-        <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-xl">
+        <div className="flex items-center gap-2 bg-slate-100 p-1.5 rounded-2xl">
           <button
             onClick={() => setActiveSubTab('TEMPLATES')}
-            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer ${
+            className={`h-11 px-5 text-sm font-bold rounded-xl transition-colors cursor-pointer ${
               activeSubTab === 'TEMPLATES'
-                ? 'bg-white text-slate-800 shadow-xs'
-                : 'text-slate-600 hover:text-slate-800'
+                ? 'bg-white text-slate-900 shadow-xs'
+                : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             📋 Meta Templates ({templates.length})

@@ -38,38 +38,38 @@ export const UsageAndActionsCard: React.FC<UsageAndActionsCardProps> = ({
   const tplPercent = Math.round((currentUsage.templateMessagesUsed / currentUsage.templateMessagesLimit) * 100);
 
   return (
-    <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between h-full">
+    <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-xs flex flex-col justify-between h-full">
       {/* Top: Usage This Month */}
       <div>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-base font-bold text-slate-800">Usage This Month</h3>
+        <div className="flex items-center justify-between mb-5">
+          <h3 className="text-lg sm:text-xl font-black text-slate-900 font-['Outfit']">Usage This Month</h3>
           <button
             onClick={() => onNavigate('billing')}
-            className="text-xs sm:text-sm font-bold text-emerald-600 hover:text-emerald-700 flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="text-sm font-bold text-emerald-600 hover:text-emerald-700 flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <span>View Details</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4.5 h-4.5" />
           </button>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 sm:space-y-5">
           {/* AI Replies */}
           <div>
-            <div className="flex items-center justify-between text-xs sm:text-sm mb-1.5">
-              <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                  <Bot className="w-4 h-4" />
+            <div className="flex items-center justify-between text-sm sm:text-base mb-2">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                  <Bot className="w-4.5 h-4.5" />
                 </div>
-                <span className="font-semibold text-slate-700">AI Replies</span>
+                <span className="font-bold text-slate-800">AI Replies</span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-slate-500 font-medium text-xs">
+              <div className="flex items-center gap-2.5">
+                <span className="text-slate-500 font-semibold text-xs sm:text-sm">
                   {currentUsage.aiRepliesUsed.toLocaleString()} / {currentUsage.aiRepliesLimit.toLocaleString()}
                 </span>
-                <span className="font-bold text-slate-800 text-xs sm:text-sm font-['Outfit']">{aiPercent}%</span>
+                <span className="font-extrabold text-slate-900 text-sm sm:text-base font-['Outfit']">{aiPercent}%</span>
               </div>
             </div>
-            <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+            <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
               <div
                 className="bg-emerald-500 h-full rounded-full transition-all duration-500"
                 style={{ width: `${aiPercent}%` }}
@@ -79,21 +79,21 @@ export const UsageAndActionsCard: React.FC<UsageAndActionsCardProps> = ({
 
           {/* Automation Executions */}
           <div>
-            <div className="flex items-center justify-between text-xs sm:text-sm mb-1.5">
-              <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-                  <Cog className="w-4 h-4" />
+            <div className="flex items-center justify-between text-sm sm:text-base mb-2">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                  <Cog className="w-4.5 h-4.5" />
                 </div>
-                <span className="font-semibold text-slate-700">Automation Executions</span>
+                <span className="font-bold text-slate-800">Automation Executions</span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-slate-500 font-medium text-xs">
+              <div className="flex items-center gap-2.5">
+                <span className="text-slate-500 font-semibold text-xs sm:text-sm">
                   {currentUsage.executionsUsed.toLocaleString()} / {currentUsage.executionsLimit.toLocaleString()}
                 </span>
-                <span className="font-bold text-slate-800 text-xs sm:text-sm font-['Outfit']">{execPercent}%</span>
+                <span className="font-extrabold text-slate-900 text-sm sm:text-base font-['Outfit']">{execPercent}%</span>
               </div>
             </div>
-            <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+            <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
               <div
                 className="bg-blue-600 h-full rounded-full transition-all duration-500"
                 style={{ width: `${execPercent}%` }}
@@ -103,21 +103,21 @@ export const UsageAndActionsCard: React.FC<UsageAndActionsCardProps> = ({
 
           {/* Template Messages */}
           <div>
-            <div className="flex items-center justify-between text-xs sm:text-sm mb-1.5">
-              <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
-                  <MessageSquare className="w-4 h-4" />
+            <div className="flex items-center justify-between text-sm sm:text-base mb-2">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                  <MessageSquare className="w-4.5 h-4.5" />
                 </div>
-                <span className="font-semibold text-slate-700">Template Messages</span>
+                <span className="font-bold text-slate-800">Template Messages</span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-slate-500 font-medium text-xs">
+              <div className="flex items-center gap-2.5">
+                <span className="text-slate-500 font-semibold text-xs sm:text-sm">
                   {currentUsage.templateMessagesUsed.toLocaleString()} / {currentUsage.templateMessagesLimit.toLocaleString()}
                 </span>
-                <span className="font-bold text-slate-800 text-xs sm:text-sm font-['Outfit']">{tplPercent}%</span>
+                <span className="font-extrabold text-slate-900 text-sm sm:text-base font-['Outfit']">{tplPercent}%</span>
               </div>
             </div>
-            <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+            <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
               <div
                 className="bg-purple-600 h-full rounded-full transition-all duration-500"
                 style={{ width: `${tplPercent}%` }}
@@ -128,38 +128,38 @@ export const UsageAndActionsCard: React.FC<UsageAndActionsCardProps> = ({
       </div>
 
       {/* Bottom: Quick Actions */}
-      <div className="mt-5 pt-4 border-t border-slate-100">
-        <h4 className="text-xs sm:text-sm font-bold text-slate-800 mb-3">Quick Actions</h4>
-        <div className="grid grid-cols-2 gap-2.5">
+      <div className="mt-6 pt-5 border-t border-slate-100">
+        <h4 className="text-sm font-extrabold text-slate-900 mb-3.5 uppercase tracking-wide">Quick Actions</h4>
+        <div className="grid grid-cols-2 gap-3">
           <button
             onClick={onOpenBroadcastModal}
-            className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:border-emerald-500/50 hover:bg-emerald-50/50 text-xs sm:text-sm font-semibold text-slate-700 hover:text-emerald-700 transition-all group cursor-pointer shadow-2xs"
+            className="flex items-center gap-2.5 p-3 rounded-2xl border border-slate-200 hover:border-emerald-500/50 hover:bg-emerald-50/50 text-sm font-bold text-slate-800 hover:text-emerald-700 transition-all group cursor-pointer shadow-2xs"
           >
-            <Send className="w-4 h-4 text-slate-400 group-hover:text-emerald-600 transition-colors shrink-0" />
+            <Send className="w-4.5 h-4.5 text-slate-400 group-hover:text-emerald-600 transition-colors shrink-0" />
             <span className="truncate">Send Broadcast</span>
           </button>
 
           <button
             onClick={() => onNavigate('workflows')}
-            className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:border-blue-500/50 hover:bg-blue-50/50 text-xs sm:text-sm font-semibold text-slate-700 hover:text-blue-700 transition-all group cursor-pointer shadow-2xs"
+            className="flex items-center gap-2.5 p-3 rounded-2xl border border-slate-200 hover:border-blue-500/50 hover:bg-blue-50/50 text-sm font-bold text-slate-800 hover:text-blue-700 transition-all group cursor-pointer shadow-2xs"
           >
-            <Zap className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-colors shrink-0" />
+            <Zap className="w-4.5 h-4.5 text-slate-400 group-hover:text-blue-600 transition-colors shrink-0" />
             <span className="truncate">Create Workflow</span>
           </button>
 
           <button
             onClick={onOpenAddLeadModal}
-            className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:border-amber-500/50 hover:bg-amber-50/50 text-xs sm:text-sm font-semibold text-slate-700 hover:text-amber-700 transition-all group cursor-pointer shadow-2xs"
+            className="flex items-center gap-2.5 p-3 rounded-2xl border border-slate-200 hover:border-amber-500/50 hover:bg-amber-50/50 text-sm font-bold text-slate-800 hover:text-amber-700 transition-all group cursor-pointer shadow-2xs"
           >
-            <UserPlus className="w-4 h-4 text-slate-400 group-hover:text-amber-600 transition-colors shrink-0" />
+            <UserPlus className="w-4.5 h-4.5 text-slate-400 group-hover:text-amber-600 transition-colors shrink-0" />
             <span className="truncate">Add New Lead</span>
           </button>
 
           <button
             onClick={() => onNavigate('templates')}
-            className="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:border-purple-500/50 hover:bg-purple-50/50 text-xs sm:text-sm font-semibold text-slate-700 hover:text-purple-700 transition-all group cursor-pointer shadow-2xs"
+            className="flex items-center gap-2.5 p-3 rounded-2xl border border-slate-200 hover:border-purple-500/50 hover:bg-purple-50/50 text-sm font-bold text-slate-800 hover:text-purple-700 transition-all group cursor-pointer shadow-2xs"
           >
-            <FileText className="w-4 h-4 text-slate-400 group-hover:text-purple-600 transition-colors shrink-0" />
+            <FileText className="w-4.5 h-4.5 text-slate-400 group-hover:text-purple-600 transition-colors shrink-0" />
             <span className="truncate">Manage Templates</span>
           </button>
         </div>

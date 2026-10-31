@@ -83,52 +83,52 @@ export const OnboardingBanner: React.FC<OnboardingBannerProps> = ({
   const progressPercent = Math.round((completedCount / steps.length) * 100);
 
   return (
-    <div className="bg-gradient-to-r from-emerald-950/80 via-slate-900 to-slate-900 rounded-2xl p-6 text-white shadow-xs border border-emerald-500/20">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-4 min-w-0">
-          <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400 shrink-0 shadow-inner">
-            <ShieldCheck className="w-7 h-7" />
+    <div className="bg-gradient-to-r from-emerald-950/80 via-slate-900 to-slate-900 rounded-3xl p-7 sm:p-8 text-white shadow-xs border border-emerald-500/20">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+        <div className="flex items-center gap-4 sm:gap-5 min-w-0">
+          <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-400 shrink-0 shadow-inner">
+            <ShieldCheck className="w-8 h-8" />
           </div>
           <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-2.5">
-              <h3 className="text-base sm:text-lg font-black font-['Outfit'] tracking-tight truncate">
+            <div className="flex flex-wrap items-center gap-3">
+              <h3 className="text-lg sm:text-xl font-black font-['Outfit'] tracking-tight truncate">
                 Onboarding & Cloud API Health Check (SRS §4.1 & AUTH-10)
               </h3>
-              <span className="text-xs font-bold bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 px-3 py-0.5 rounded-full shrink-0">
+              <span className="text-xs sm:text-sm font-extrabold bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 px-3.5 py-0.5 rounded-full shrink-0">
                 100% Ready
               </span>
             </div>
-            <p className="text-xs sm:text-sm text-slate-300 mt-1 truncate">
+            <p className="text-sm sm:text-base text-slate-300 mt-1.5 truncate">
               All 6 onboarding milestones for <strong className="text-white font-bold">Prakash Institute</strong> are verified and operational.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5 self-end sm:self-center shrink-0">
+        <div className="flex items-center gap-3 self-end sm:self-center shrink-0">
           <button
             onClick={onOpenSimulator}
-            className="h-10 px-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm rounded-xl flex items-center gap-2 transition-colors shadow-2xs cursor-pointer"
+            className="h-11 sm:h-12 px-5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-sm sm:text-base rounded-2xl flex items-center gap-2.5 transition-colors shadow-2xs cursor-pointer"
           >
-            <Smartphone className="w-4 h-4" />
+            <Smartphone className="w-4.5 h-4.5" />
             <span>Test Phone Simulator</span>
           </button>
           <button
             onClick={() => setIsExpanded(prev => !prev)}
-            className="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 text-slate-300 flex items-center justify-center transition-colors cursor-pointer"
+            className="w-11 sm:w-12 h-11 sm:h-12 rounded-2xl bg-white/10 hover:bg-white/20 text-slate-300 flex items-center justify-center transition-colors cursor-pointer"
             title="Toggle Milestone Details"
           >
-            {isExpanded ? <ChevronUp className="w-4.5 h-4.5" /> : <ChevronDown className="w-4.5 h-4.5" />}
+            {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
           </button>
         </div>
       </div>
 
       {/* Progress Bar */}
-      <div className="mt-4 pt-3.5 border-t border-white/10">
-        <div className="flex items-center justify-between text-xs sm:text-sm text-slate-300 mb-2">
-          <span className="font-medium">Milestones Completed: <strong className="text-white font-bold">{completedCount}</strong> of {steps.length}</span>
-          <span className="font-mono font-bold text-emerald-400 text-sm">{progressPercent}%</span>
+      <div className="mt-5 pt-4 border-t border-white/10">
+        <div className="flex items-center justify-between text-sm sm:text-base text-slate-300 mb-2.5">
+          <span className="font-semibold">Milestones Completed: <strong className="text-white font-bold">{completedCount}</strong> of {steps.length}</span>
+          <span className="font-mono font-bold text-emerald-400 text-base">{progressPercent}%</span>
         </div>
-        <div className="w-full bg-white/10 h-2.5 rounded-full overflow-hidden">
+        <div className="w-full bg-white/10 h-3 rounded-full overflow-hidden">
           <div 
             className="bg-emerald-400 h-full rounded-full transition-all duration-700 shadow-xs" 
             style={{ width: `${progressPercent}%` }}
@@ -138,16 +138,16 @@ export const OnboardingBanner: React.FC<OnboardingBannerProps> = ({
 
       {/* Expanded Milestone Details */}
       {isExpanded && (
-        <div className="mt-4 pt-4 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+        <div className="mt-5 pt-5 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {steps.map(step => (
             <div 
               key={step.id} 
-              className="p-4 rounded-xl bg-white/5 border border-white/10 flex items-start gap-3.5 text-xs sm:text-sm"
+              className="p-5 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-4 text-sm"
             >
               <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
               <div>
-                <span className="font-bold text-slate-100 block text-sm">{step.title}</span>
-                <p className="text-xs sm:text-sm text-slate-400 mt-1 leading-snug">
+                <span className="font-bold text-slate-100 block text-base">{step.title}</span>
+                <p className="text-sm text-slate-300 mt-1 leading-relaxed">
                   {step.description}
                 </p>
               </div>

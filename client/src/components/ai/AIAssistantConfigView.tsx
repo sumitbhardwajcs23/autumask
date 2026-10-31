@@ -191,22 +191,22 @@ export const AIAssistantConfigView: React.FC<AIAssistantConfigViewProps> = ({
   };
 
   return (
-    <div className="p-6 sm:p-8 max-w-[1550px] w-full mx-auto space-y-6">
+    <div className="w-full px-6 sm:px-8 lg:px-10 py-8 space-y-8">
       {/* Top Banner */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-500 p-0.5 shadow-md flex items-center justify-center text-white">
-              <Bot className="w-5 h-5" />
+          <div className="flex items-center gap-3.5">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-500 p-0.5 shadow-md flex items-center justify-center text-white shrink-0">
+              <Bot className="w-7 h-7" />
             </div>
             <div>
-              <h1 className="text-xl font-extrabold text-slate-800 tracking-tight font-['Outfit'] flex items-center gap-2">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight font-['Outfit'] flex items-center gap-3">
                 Document-Driven AI Knowledge Base & RAG
-                <span className="text-[10px] font-bold bg-violet-50 text-violet-700 px-2 py-0.5 rounded-full border border-violet-200">
+                <span className="text-xs font-black bg-violet-50 text-violet-700 px-3 py-1 rounded-full border border-violet-200">
                   Vector Retrieval
                 </span>
               </h1>
-              <p className="text-xs text-slate-500">
+              <p className="text-base sm:text-lg text-slate-600 mt-1.5 font-normal">
                 Ground student WhatsApp inquiries with official course syllabus, fee structures, and batch schedules.
               </p>
             </div>

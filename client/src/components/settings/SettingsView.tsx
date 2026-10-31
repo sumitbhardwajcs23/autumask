@@ -218,29 +218,29 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
   const onlineMembersCount = team.filter(m => m.isOnline).length;
 
   return (
-    <div className="w-full max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-7 space-y-7 animate-in fade-in">
+    <div className="w-full px-6 sm:px-8 lg:px-10 py-8 space-y-8 animate-in fade-in">
       {/* Title */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight font-['Outfit'] flex items-center gap-2.5">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight font-['Outfit'] flex items-center gap-3">
             Settings & Workspace Preferences
           </h1>
-          <p className="text-sm sm:text-base text-slate-500 mt-1">
+          <p className="text-base sm:text-lg text-slate-600 mt-1.5 font-normal">
             Configure Meta WhatsApp Cloud API credentials, automated lead routing switches, staff alerts, and security policies.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3.5">
           {toastMessage && (
-            <div className="flex items-center gap-2 px-3.5 py-2 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-bold rounded-xl shadow-xs">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            <div className="flex items-center gap-2 px-4 py-2.5 bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-bold rounded-2xl shadow-xs">
+              <CheckCircle2 className="w-4.5 h-4.5 text-emerald-600" />
               <span>{toastMessage}</span>
             </div>
           )}
 
           {loading && (
-            <div className="flex items-center gap-2 text-xs sm:text-sm text-emerald-600 font-bold">
-              <Loader2 className="w-4 h-4 animate-spin" />
+            <div className="flex items-center gap-2 text-sm text-emerald-600 font-bold">
+              <Loader2 className="w-4.5 h-4.5 animate-spin" />
               <span>Syncing...</span>
             </div>
           )}
@@ -248,102 +248,102 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
           <button
             onClick={handleSaveSettings}
             disabled={isSaving}
-            className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs transition-all cursor-pointer"
+            className="flex items-center gap-2.5 h-12 px-6 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-sm sm:text-base font-extrabold shadow-xs transition-all cursor-pointer"
           >
-            <Save className={`w-4 h-4 ${isSaving ? 'animate-spin' : ''}`} />
+            <Save className={`w-4.5 h-4.5 ${isSaving ? 'animate-spin' : ''}`} />
             <span>{isSaving ? 'Saving...' : 'Save All Settings'}</span>
           </button>
         </div>
       </div>
 
       {/* Sub-Tabs Navigation */}
-      <div className="flex items-center gap-2 border-b border-slate-200 pb-3 overflow-x-auto">
+      <div className="flex items-center gap-2.5 border-b border-slate-200 pb-3.5 overflow-x-auto">
         <button
           onClick={() => setActiveSubTab('whatsapp')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-2.5 h-12 px-5 rounded-2xl text-sm sm:text-base font-bold transition-all whitespace-nowrap cursor-pointer ${
             activeSubTab === 'whatsapp'
               ? 'bg-emerald-600 text-white shadow-xs'
               : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
-          <Phone className="w-4 h-4" />
+          <Phone className="w-4.5 h-4.5" />
           <span>WhatsApp Cloud API</span>
         </button>
 
         <button
           onClick={() => setActiveSubTab('general')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-2.5 h-12 px-5 rounded-2xl text-sm sm:text-base font-bold transition-all whitespace-nowrap cursor-pointer ${
             activeSubTab === 'general'
               ? 'bg-emerald-600 text-white shadow-xs'
               : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
-          <Building className="w-4 h-4" />
+          <Building className="w-4.5 h-4.5" />
           <span>General Profile</span>
         </button>
 
         <button
           onClick={() => setActiveSubTab('notifications')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-2.5 h-12 px-5 rounded-2xl text-sm sm:text-base font-bold transition-all whitespace-nowrap cursor-pointer ${
             activeSubTab === 'notifications'
               ? 'bg-emerald-600 text-white shadow-xs'
               : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
-          <Bell className="w-4 h-4" />
+          <Bell className="w-4.5 h-4.5" />
           <span>Notification Switches</span>
         </button>
 
         <button
           onClick={() => setActiveSubTab('routing')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-2.5 h-12 px-5 rounded-2xl text-sm sm:text-base font-bold transition-all whitespace-nowrap cursor-pointer ${
             activeSubTab === 'routing'
               ? 'bg-emerald-600 text-white shadow-xs'
               : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
-          <Sliders className="w-4 h-4" />
+          <Sliders className="w-4.5 h-4.5" />
           <span>Routing & Auto-Assignment</span>
         </button>
 
         <button
           onClick={() => setActiveSubTab('security')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-2.5 h-12 px-5 rounded-2xl text-sm sm:text-base font-bold transition-all whitespace-nowrap cursor-pointer ${
             activeSubTab === 'security'
               ? 'bg-emerald-600 text-white shadow-xs'
               : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
-          <ShieldCheck className="w-4 h-4" />
+          <ShieldCheck className="w-4.5 h-4.5" />
           <span>Security & RLS Isolation</span>
         </button>
       </div>
 
       {/* Sub-Tab 1: WhatsApp Cloud API Connection */}
       {activeSubTab === 'whatsapp' && (
-        <div className="space-y-6">
+        <div className="space-y-7">
           {/* Main Account Connection Card */}
-          <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 shadow-xs space-y-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 pb-6 border-b border-slate-100">
-              <div className="flex items-center gap-4">
-                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm shrink-0 ${
+          <div className="bg-white rounded-3xl p-7 sm:p-8 border border-slate-200/90 shadow-xs space-y-7">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 pb-7 border-b border-slate-100">
+              <div className="flex items-center gap-5">
+                <div className={`w-18 h-18 rounded-2xl flex items-center justify-center shadow-sm shrink-0 ${
                   account?.status === 'CONNECTED' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-500'
                 }`}>
-                  <Phone className="w-8 h-8 fill-white/20" />
+                  <Phone className="w-9 h-9 fill-white/20" />
                 </div>
                 <div>
                   <div className="flex flex-wrap items-center gap-3">
-                    <h3 className="text-lg sm:text-xl font-black text-slate-900 font-['Outfit']">WhatsApp Business Account (Cloud API)</h3>
-                    <span className={`text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5 ${
+                    <h3 className="text-xl sm:text-2xl font-black text-slate-900 font-['Outfit']">WhatsApp Business Account (Cloud API)</h3>
+                    <span className={`text-sm font-bold px-3.5 py-1 rounded-full flex items-center gap-1.5 ${
                       account?.status === 'CONNECTED' 
                         ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' 
                         : 'bg-amber-100 text-amber-800 border border-amber-200'
                     }`}>
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                       {account?.status || 'CONNECTED'}
                     </span>
                   </div>
-                  <p className="text-sm text-slate-500 mt-1">
+                  <p className="text-base text-slate-500 mt-1.5 font-medium">
                     {account?.status === 'CONNECTED' 
                       ? 'Official WABA connected with Meta Graph API & Webhook processing' 
                       : 'No WhatsApp number connected yet. Connect your number to start receiving leads.'}
@@ -351,112 +351,112 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="text-base font-mono font-black bg-slate-100 border border-slate-200 px-4 py-2.5 rounded-xl text-slate-900">
+              <div className="flex flex-wrap items-center gap-3.5">
+                <span className="text-lg sm:text-xl font-mono font-bold bg-slate-100 border border-slate-200 px-5 py-3 rounded-2xl text-slate-900">
                   {account?.displayPhoneNumber || account?.displayNumber || '+1 555-660-3701'}
                 </span>
 
                 <button
                   onClick={() => setShowConnectModal(true)}
-                  className="h-11 px-4.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer"
+                  className="h-12 px-5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-sm sm:text-base font-extrabold transition-all shadow-xs flex items-center gap-2.5 cursor-pointer"
                 >
-                  <RefreshCw className="w-4 h-4" />
+                  <RefreshCw className="w-4.5 h-4.5" />
                   <span>{account?.status === 'CONNECTED' ? 'Change / Reconnect Number' : 'Connect WhatsApp Number'}</span>
                 </button>
 
                 <button
                   onClick={() => setShowTestMessageDrawer(!showTestMessageDrawer)}
-                  className="h-11 px-4.5 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs sm:text-sm font-bold transition-colors flex items-center gap-2 cursor-pointer"
+                  className="h-12 px-5 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 text-indigo-700 rounded-2xl text-sm sm:text-base font-extrabold transition-colors flex items-center gap-2.5 cursor-pointer"
                 >
-                  <Send className="w-4 h-4" />
+                  <Send className="w-4.5 h-4.5" />
                   <span>Send Test Message</span>
                 </button>
 
                 {account?.status === 'CONNECTED' && (
                   <button
                     onClick={handleDisconnect}
-                    className="h-11 w-11 flex items-center justify-center text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl border border-slate-200 transition-colors cursor-pointer"
+                    className="h-12 w-12 flex items-center justify-center text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-2xl border border-slate-200 transition-colors cursor-pointer"
                     title="Disconnect number"
                   >
-                    <LogOut className="w-4 h-4" />
+                    <LogOut className="w-5 h-5" />
                   </button>
                 )}
               </div>
             </div>
 
             {/* WABA Details Grid: 3 Equal Dimension Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/90">
-                <span className="text-slate-500 block text-xs sm:text-sm font-bold mb-1.5 uppercase tracking-wide">Phone Number ID</span>
-                <span className="font-mono font-bold text-slate-900 text-base sm:text-lg">{account?.phoneNumberId || '1317971801407031'}</span>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              <div className="bg-slate-50/80 p-6 rounded-2xl border border-slate-200/90">
+                <span className="text-slate-500 block text-sm font-extrabold mb-2 uppercase tracking-wide">Phone Number ID</span>
+                <span className="font-mono font-bold text-slate-900 text-lg sm:text-xl">{account?.phoneNumberId || '1317971801407031'}</span>
               </div>
 
-              <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/90">
-                <span className="text-slate-500 block text-xs sm:text-sm font-bold mb-1.5 uppercase tracking-wide">WABA Account ID</span>
-                <span className="font-mono font-bold text-slate-900 text-base sm:text-lg">{account?.wabaId || '1789873612251308'}</span>
+              <div className="bg-slate-50/80 p-6 rounded-2xl border border-slate-200/90">
+                <span className="text-slate-500 block text-sm font-extrabold mb-2 uppercase tracking-wide">WABA Account ID</span>
+                <span className="font-mono font-bold text-slate-900 text-lg sm:text-xl">{account?.wabaId || '1789873612251308'}</span>
               </div>
 
-              <div className="bg-slate-50/80 p-5 rounded-2xl border border-slate-200/90">
-                <span className="text-slate-500 block text-xs sm:text-sm font-bold mb-1.5 uppercase tracking-wide">Phone Quality Rating</span>
-                <span className="font-bold text-emerald-600 text-base sm:text-lg flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+              <div className="bg-slate-50/80 p-6 rounded-2xl border border-slate-200/90">
+                <span className="text-slate-500 block text-sm font-extrabold mb-2 uppercase tracking-wide">Phone Quality Rating</span>
+                <span className="font-bold text-emerald-600 text-lg sm:text-xl flex items-center gap-2.5">
+                  <span className="w-3.5 h-3.5 rounded-full bg-emerald-500 animate-pulse"></span>
                   {account?.qualityRating || 'GREEN'} (HIGH • Verified)
                 </span>
               </div>
             </div>
 
             {/* Webhook Configuration Section */}
-            <div className="pt-4 border-t border-slate-100 space-y-3.5">
+            <div className="pt-5 border-t border-slate-100 space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="text-base font-extrabold text-slate-900 font-['Outfit']">Meta Webhook Configuration</h4>
-                  <p className="text-xs sm:text-sm text-slate-500 mt-0.5">Enter these exact credentials in Meta Developer Dashboard ➔ WhatsApp ➔ Configuration ➔ Webhooks</p>
+                  <h4 className="text-lg font-black text-slate-900 font-['Outfit']">Meta Webhook Configuration</h4>
+                  <p className="text-sm sm:text-base text-slate-500 mt-1">Enter these exact credentials in Meta Developer Dashboard ➔ WhatsApp ➔ Configuration ➔ Webhooks</p>
                 </div>
                 <a
                   href="https://developers.facebook.com/"
                   target="_blank"
                   rel="noreferrer"
-                  className="text-xs sm:text-sm text-emerald-600 hover:underline flex items-center gap-1.5 font-bold"
+                  className="text-sm sm:text-base text-emerald-600 hover:underline flex items-center gap-2 font-bold"
                 >
                   <span>Meta Developers Portal</span>
-                  <ExternalLink className="w-4 h-4" />
+                  <ExternalLink className="w-4.5 h-4.5" />
                 </a>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-sm">
                 <div>
-                  <label className="text-xs sm:text-sm font-bold text-slate-700 block mb-1.5 uppercase tracking-wide">Callback URL</label>
-                  <div className="flex items-center gap-2">
+                  <label className="text-sm font-extrabold text-slate-700 block mb-2 uppercase tracking-wide">Callback URL</label>
+                  <div className="flex items-center gap-2.5">
                     <input
                       type="text"
                       readOnly
                       value={webhookUrl}
-                      className="flex-1 bg-slate-50 font-mono text-xs sm:text-sm px-4 py-3 rounded-xl border border-slate-200 text-slate-800 focus:outline-none"
+                      className="flex-1 bg-slate-50 font-mono text-sm sm:text-base px-4 py-3 rounded-xl border border-slate-200 text-slate-800 focus:outline-none"
                     />
                     <button
                       onClick={copyWebhook}
-                      className="h-11 px-4.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-colors shadow-xs cursor-pointer"
+                      className="h-12 px-5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-sm font-bold flex items-center gap-2 transition-colors shadow-xs cursor-pointer"
                     >
-                      {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-slate-400" />}
+                      {copied ? <Check className="w-4.5 h-4.5 text-emerald-600" /> : <Copy className="w-4.5 h-4.5 text-slate-400" />}
                       <span>{copied ? 'Copied' : 'Copy'}</span>
                     </button>
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-xs sm:text-sm font-bold text-slate-700 block mb-1.5 uppercase tracking-wide">Verify Token</label>
-                  <div className="flex items-center gap-2">
+                  <label className="text-sm font-extrabold text-slate-700 block mb-2 uppercase tracking-wide">Verify Token</label>
+                  <div className="flex items-center gap-2.5">
                     <input
                       type="text"
                       readOnly
                       value={verifyToken}
-                      className="flex-1 bg-slate-50 font-mono text-xs sm:text-sm px-4 py-3 rounded-xl border border-slate-200 text-slate-800 focus:outline-none"
+                      className="flex-1 bg-slate-50 font-mono text-sm sm:text-base px-4 py-3 rounded-xl border border-slate-200 text-slate-800 focus:outline-none"
                     />
                     <button
                       onClick={copyVerifyToken}
-                      className="h-11 px-4.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-colors shadow-xs cursor-pointer"
+                      className="h-12 px-5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-sm font-bold flex items-center gap-2 transition-colors shadow-xs cursor-pointer"
                     >
-                      {copiedToken ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-slate-400" />}
+                      {copiedToken ? <Check className="w-4.5 h-4.5 text-emerald-600" /> : <Copy className="w-4.5 h-4.5 text-slate-400" />}
                       <span>{copiedToken ? 'Copied' : 'Copy'}</span>
                     </button>
                   </div>
@@ -705,40 +705,40 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
           )}
 
           {/* Team Staff Quick Overview */}
-          <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 shadow-xs space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+          <div className="bg-white rounded-3xl p-7 sm:p-8 border border-slate-200/90 shadow-xs space-y-6">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
               <div>
-                <h3 className="text-lg sm:text-xl font-black text-slate-900 font-['Outfit']">Institute Counselling Staff</h3>
-                <p className="text-sm text-slate-500 mt-0.5">{team.length} members assigned to manage inbound WhatsApp chats</p>
+                <h3 className="text-xl sm:text-2xl font-black text-slate-900 font-['Outfit']">Institute Counselling Staff</h3>
+                <p className="text-sm sm:text-base text-slate-500 mt-1">{team.length} members assigned to manage inbound WhatsApp chats</p>
               </div>
-              <span className="text-xs sm:text-sm font-bold text-emerald-700 bg-emerald-50 px-3.5 py-1.5 rounded-xl border border-emerald-200">
+              <span className="text-sm font-extrabold text-emerald-800 bg-emerald-50 px-4 py-2 rounded-xl border border-emerald-200 shadow-2xs">
                 {onlineMembersCount} Online Now
               </span>
             </div>
 
             <div className="divide-y divide-slate-100">
               {team.map((member) => (
-                <div key={member.id} className="py-4 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
+                <div key={member.id} className="py-4.5 flex items-center justify-between">
+                  <div className="flex items-center gap-4 sm:gap-5">
                     <div className="relative">
-                      <div className="w-11 h-11 rounded-full bg-slate-800 text-white font-bold text-base flex items-center justify-center shadow-xs">
+                      <div className="w-13 h-13 rounded-full bg-slate-900 text-white font-black text-lg flex items-center justify-center shadow-xs">
                         {member.fullName.charAt(0)}
                       </div>
                       {member.isOnline && (
-                        <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-emerald-500 ring-2 ring-white"></span>
+                        <span className="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-emerald-500 ring-2 ring-white"></span>
                       )}
                     </div>
                     <div>
-                      <h4 className="font-bold text-slate-900 text-base">{member.fullName}</h4>
-                      <p className="text-sm text-slate-500">{member.email}</p>
+                      <h4 className="font-extrabold text-slate-900 text-base sm:text-lg">{member.fullName}</h4>
+                      <p className="text-sm sm:text-base text-slate-500 mt-0.5">{member.email}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3.5">
-                    <span className="text-xs font-extrabold uppercase px-3 py-1 rounded-lg bg-slate-100 text-slate-700 border border-slate-200">
+                  <div className="flex items-center gap-4">
+                    <span className="text-xs sm:text-sm font-extrabold uppercase px-3.5 py-1.5 rounded-xl bg-slate-100 text-slate-700 border border-slate-200">
                       {member.role}
                     </span>
-                    <span className={`text-xs sm:text-sm font-bold ${member.isOnline ? 'text-emerald-600' : 'text-slate-400'}`}>
+                    <span className={`text-sm sm:text-base font-extrabold ${member.isOnline ? 'text-emerald-600' : 'text-slate-400'}`}>
                       {member.isOnline ? 'Active' : 'Offline'}
                     </span>
                   </div>
@@ -751,60 +751,60 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
 
       {/* Sub-Tab 2: General Profile */}
       {activeSubTab === 'general' && (
-        <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-5">
+        <div className="bg-white rounded-3xl p-7 sm:p-8 border border-slate-200/90 shadow-xs space-y-6">
           <div>
-            <h3 className="text-sm font-bold text-slate-800 font-['Outfit']">Institute Profile Details</h3>
-            <p className="text-xs text-slate-500">Official information shown in WhatsApp business profile and demo class invites</p>
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900 font-['Outfit']">Institute Profile Details</h3>
+            <p className="text-sm sm:text-base text-slate-500 mt-1">Official information shown in WhatsApp business profile and demo class invites</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-            <div className="space-y-1">
-              <label className="font-bold text-slate-700">Coaching Institute Name</label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-sm sm:text-base">
+            <div className="space-y-2">
+              <label className="font-bold text-slate-800 block">Coaching Institute Name</label>
               <input
                 type="text"
                 value={instituteName}
                 onChange={e => setInstituteName(e.target.value)}
-                className="w-full bg-slate-50 text-slate-800 p-2.5 rounded-xl border border-slate-200 outline-none focus:border-emerald-500 font-medium"
+                className="w-full h-12 bg-slate-50 text-slate-800 px-4 rounded-xl border border-slate-200 outline-none focus:border-emerald-500 font-medium"
               />
             </div>
 
-            <div className="space-y-1">
-              <label className="font-bold text-slate-700">Helpline / WhatsApp Desk Phone</label>
+            <div className="space-y-2">
+              <label className="font-bold text-slate-800 block">Helpline / WhatsApp Desk Phone</label>
               <input
                 type="text"
                 value={helplinePhone}
                 onChange={e => setHelplinePhone(e.target.value)}
-                className="w-full bg-slate-50 text-slate-800 p-2.5 rounded-xl border border-slate-200 outline-none focus:border-emerald-500 font-mono font-medium"
+                className="w-full h-12 bg-slate-50 text-slate-800 px-4 rounded-xl border border-slate-200 outline-none focus:border-emerald-500 font-mono font-medium"
               />
             </div>
 
-            <div className="space-y-1 md:col-span-2">
-              <label className="font-bold text-slate-700">Kota Main Campus Address</label>
+            <div className="space-y-2 md:col-span-2">
+              <label className="font-bold text-slate-800 block">Kota Main Campus Address</label>
               <input
                 type="text"
                 value={campusAddress}
                 onChange={e => setCampusAddress(e.target.value)}
-                className="w-full bg-slate-50 text-slate-800 p-2.5 rounded-xl border border-slate-200 outline-none focus:border-emerald-500 font-medium"
+                className="w-full h-12 bg-slate-50 text-slate-800 px-4 rounded-xl border border-slate-200 outline-none focus:border-emerald-500 font-medium"
               />
             </div>
 
-            <div className="space-y-1">
-              <label className="font-bold text-slate-700">Admissions Desk Email</label>
+            <div className="space-y-2">
+              <label className="font-bold text-slate-800 block">Admissions Desk Email</label>
               <input
                 type="email"
                 value={contactEmail}
                 onChange={e => setContactEmail(e.target.value)}
-                className="w-full bg-slate-50 text-slate-800 p-2.5 rounded-xl border border-slate-200 outline-none focus:border-emerald-500 font-medium"
+                className="w-full h-12 bg-slate-50 text-slate-800 px-4 rounded-xl border border-slate-200 outline-none focus:border-emerald-500 font-medium"
               />
             </div>
 
-            <div className="space-y-1">
-              <label className="font-bold text-slate-700">Operating Timezone</label>
+            <div className="space-y-2">
+              <label className="font-bold text-slate-800 block">Operating Timezone</label>
               <input
                 type="text"
                 value={timezone}
                 onChange={e => setTimezone(e.target.value)}
-                className="w-full bg-slate-50 text-slate-800 p-2.5 rounded-xl border border-slate-200 outline-none focus:border-emerald-500 font-medium"
+                className="w-full h-12 bg-slate-50 text-slate-800 px-4 rounded-xl border border-slate-200 outline-none focus:border-emerald-500 font-medium"
               />
             </div>
           </div>
@@ -813,18 +813,18 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
 
       {/* Sub-Tab 3: Notification Switches */}
       {activeSubTab === 'notifications' && (
-        <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
-          <div className="pb-3 border-b border-slate-100">
-            <h3 className="text-sm font-bold text-slate-800 font-['Outfit']">Staff & Owner Notification Switches</h3>
-            <p className="text-xs text-slate-500">Configure audible chimes, email pings, and WhatsApp alert forwards</p>
+        <div className="bg-white rounded-3xl p-7 sm:p-8 border border-slate-200/90 shadow-xs space-y-6">
+          <div className="pb-4 border-b border-slate-100">
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900 font-['Outfit']">Staff & Owner Notification Switches</h3>
+            <p className="text-sm sm:text-base text-slate-500 mt-1">Configure audible chimes, email pings, and WhatsApp alert forwards</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-sm">
             {/* Switch 1: Sound Alerts */}
-            <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+            <div className="flex items-center justify-between p-5 rounded-2xl bg-slate-50 border border-slate-100">
               <div>
-                <h4 className="font-bold text-slate-800">Inbound WhatsApp Sound Chimes</h4>
-                <p className="text-[11px] text-slate-500 mt-0.5">Play audible alert when student messages arrive in inbox</p>
+                <h4 className="text-base font-bold text-slate-900">Inbound WhatsApp Sound Chimes</h4>
+                <p className="text-sm text-slate-500 mt-1">Play audible alert when student messages arrive in inbox</p>
               </div>
               <button
                 type="button"
@@ -832,23 +832,23 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
                   setSoundAlerts(!soundAlerts);
                   showToast(soundAlerts ? 'Sound notifications muted' : 'Sound notifications enabled');
                 }}
-                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                className={`relative inline-flex h-7 w-13 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
                   soundAlerts ? 'bg-emerald-500' : 'bg-slate-300'
                 }`}
               >
                 <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-                    soundAlerts ? 'translate-x-5' : 'translate-x-0'
+                  className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                    soundAlerts ? 'translate-x-6' : 'translate-x-0'
                   }`}
                 />
               </button>
             </div>
 
             {/* Switch 2: Email on VIP Lead */}
-            <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+            <div className="flex items-center justify-between p-5 rounded-2xl bg-slate-50 border border-slate-100">
               <div>
-                <h4 className="font-bold text-slate-800">Email Alerts on High-Intent VIP Leads</h4>
-                <p className="text-[11px] text-slate-500 mt-0.5">Notify counsellors immediately when student score &gt; 80</p>
+                <h4 className="text-base font-bold text-slate-900">Email Alerts on High-Intent VIP Leads</h4>
+                <p className="text-sm text-slate-500 mt-1">Notify counsellors immediately when student score &gt; 80</p>
               </div>
               <button
                 type="button"
@@ -856,23 +856,23 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
                   setEmailOnVipLead(!emailOnVipLead);
                   showToast(emailOnVipLead ? 'VIP lead emails paused' : 'VIP lead emails active');
                 }}
-                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                className={`relative inline-flex h-7 w-13 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
                   emailOnVipLead ? 'bg-emerald-500' : 'bg-slate-300'
                 }`}
               >
                 <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-                    emailOnVipLead ? 'translate-x-5' : 'translate-x-0'
+                  className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                    emailOnVipLead ? 'translate-x-6' : 'translate-x-0'
                   }`}
                 />
               </button>
             </div>
 
             {/* Switch 3: Staff Demo Alerts */}
-            <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+            <div className="flex items-center justify-between p-5 rounded-2xl bg-slate-50 border border-slate-100">
               <div>
-                <h4 className="font-bold text-slate-800">Demo Class Booking WhatsApp Push</h4>
-                <p className="text-[11px] text-slate-500 mt-0.5">Forward appointment confirmations to faculty counsellor's mobile</p>
+                <h4 className="text-base font-bold text-slate-900">Demo Class Booking WhatsApp Push</h4>
+                <p className="text-sm text-slate-500 mt-1">Forward appointment confirmations to faculty counsellor's mobile</p>
               </div>
               <button
                 type="button"
@@ -880,23 +880,23 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
                   setStaffDemoAlerts(!staffDemoAlerts);
                   showToast(staffDemoAlerts ? 'Demo booking WhatsApp alerts paused' : 'Demo booking alerts active');
                 }}
-                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                className={`relative inline-flex h-7 w-13 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
                   staffDemoAlerts ? 'bg-emerald-500' : 'bg-slate-300'
                 }`}
               >
                 <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-                    staffDemoAlerts ? 'translate-x-5' : 'translate-x-0'
+                  className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                    staffDemoAlerts ? 'translate-x-6' : 'translate-x-0'
                   }`}
                 />
               </button>
             </div>
 
             {/* Switch 4: Daily Owner Digest */}
-            <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+            <div className="flex items-center justify-between p-5 rounded-2xl bg-slate-50 border border-slate-100">
               <div>
-                <h4 className="font-bold text-slate-800">Daily 20:00 IST Executive Summary</h4>
-                <p className="text-[11px] text-slate-500 mt-0.5">Send daily leads, admissions, and broadcast reports to Dr. Prakash</p>
+                <h4 className="text-base font-bold text-slate-900">Daily 20:00 IST Executive Summary</h4>
+                <p className="text-sm text-slate-500 mt-1">Send daily leads, admissions, and broadcast reports to Dr. Prakash</p>
               </div>
               <button
                 type="button"
@@ -904,13 +904,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
                   setDailyOwnerDigest(!dailyOwnerDigest);
                   showToast(dailyOwnerDigest ? 'Daily executive summary disabled' : 'Daily executive summary enabled');
                 }}
-                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                className={`relative inline-flex h-7 w-13 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
                   dailyOwnerDigest ? 'bg-emerald-500' : 'bg-slate-300'
                 }`}
               >
                 <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-                    dailyOwnerDigest ? 'translate-x-5' : 'translate-x-0'
+                  className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                    dailyOwnerDigest ? 'translate-x-6' : 'translate-x-0'
                   }`}
                 />
               </button>
@@ -921,18 +921,18 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
 
       {/* Sub-Tab 4: Routing & Auto-Assignment */}
       {activeSubTab === 'routing' && (
-        <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
-          <div className="pb-3 border-b border-slate-100">
-            <h3 className="text-sm font-bold text-slate-800 font-['Outfit']">Automated Conversation Routing & Rules</h3>
-            <p className="text-xs text-slate-500">Configure round-robin distribution, operating hours, and automatic resolution rules</p>
+        <div className="bg-white rounded-3xl p-7 sm:p-8 border border-slate-200/90 shadow-xs space-y-6">
+          <div className="pb-4 border-b border-slate-100">
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900 font-['Outfit']">Automated Conversation Routing & Rules</h3>
+            <p className="text-sm sm:text-base text-slate-500 mt-1">Configure round-robin distribution, operating hours, and automatic resolution rules</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-sm">
             {/* Switch 1: Round Robin */}
-            <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+            <div className="flex items-center justify-between p-5 rounded-2xl bg-slate-50 border border-slate-100">
               <div>
-                <h4 className="font-bold text-slate-800">Round-Robin Counsellor Assignment</h4>
-                <p className="text-[11px] text-slate-500 mt-0.5">Evenly rotate new student chats among active online counsellors</p>
+                <h4 className="text-base font-bold text-slate-900">Round-Robin Counsellor Assignment</h4>
+                <p className="text-sm text-slate-500 mt-1">Evenly rotate new student chats among active online counsellors</p>
               </div>
               <button
                 type="button"
@@ -940,23 +940,23 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
                   setRoundRobinAssignment(!roundRobinAssignment);
                   showToast(roundRobinAssignment ? 'Round-robin assignment disabled' : 'Round-robin assignment enabled');
                 }}
-                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                className={`relative inline-flex h-7 w-13 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
                   roundRobinAssignment ? 'bg-emerald-500' : 'bg-slate-300'
                 }`}
               >
                 <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-                    roundRobinAssignment ? 'translate-x-5' : 'translate-x-0'
+                  className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                    roundRobinAssignment ? 'translate-x-6' : 'translate-x-0'
                   }`}
                 />
               </button>
             </div>
 
             {/* Switch 2: Office Hours */}
-            <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+            <div className="flex items-center justify-between p-5 rounded-2xl bg-slate-50 border border-slate-100">
               <div>
-                <h4 className="font-bold text-slate-800">Enforce Kota Working Hours (9 AM - 8 PM)</h4>
-                <p className="text-[11px] text-slate-500 mt-0.5">Send away-message and rely on AI Assistant outside working hours</p>
+                <h4 className="text-base font-bold text-slate-900">Enforce Kota Working Hours (9 AM - 8 PM)</h4>
+                <p className="text-sm text-slate-500 mt-1">Send away-message and rely on AI Assistant outside working hours</p>
               </div>
               <button
                 type="button"
@@ -964,23 +964,23 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
                   setEnforceOfficeHours(!enforceOfficeHours);
                   showToast(enforceOfficeHours ? 'Office hours enforcement relaxed' : 'Office hours enforcement active');
                 }}
-                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                className={`relative inline-flex h-7 w-13 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
                   enforceOfficeHours ? 'bg-emerald-500' : 'bg-slate-300'
                 }`}
               >
                 <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-                    enforceOfficeHours ? 'translate-x-5' : 'translate-x-0'
+                  className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                    enforceOfficeHours ? 'translate-x-6' : 'translate-x-0'
                   }`}
                 />
               </button>
             </div>
 
             {/* Switch 3: Auto-Archive Inactive */}
-            <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+            <div className="flex items-center justify-between p-5 rounded-2xl bg-slate-50 border border-slate-100">
               <div>
-                <h4 className="font-bold text-slate-800">Auto-Archive Inactive Chats (48h)</h4>
-                <p className="text-[11px] text-slate-500 mt-0.5">Mark resolved if neither student nor counsellor responds in 48 hours</p>
+                <h4 className="text-base font-bold text-slate-900">Auto-Archive Inactive Chats (48h)</h4>
+                <p className="text-sm text-slate-500 mt-1">Mark resolved if neither student nor counsellor responds in 48 hours</p>
               </div>
               <button
                 type="button"
@@ -988,23 +988,23 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
                   setAutoArchiveInactive(!autoArchiveInactive);
                   showToast(autoArchiveInactive ? 'Auto-archive disabled' : 'Auto-archive 48h active');
                 }}
-                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                className={`relative inline-flex h-7 w-13 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
                   autoArchiveInactive ? 'bg-emerald-500' : 'bg-slate-300'
                 }`}
               >
                 <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-                    autoArchiveInactive ? 'translate-x-5' : 'translate-x-0'
+                  className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                    autoArchiveInactive ? 'translate-x-6' : 'translate-x-0'
                   }`}
                 />
               </button>
             </div>
 
             {/* Switch 4: Auto-Tag Interests */}
-            <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+            <div className="flex items-center justify-between p-5 rounded-2xl bg-slate-50 border border-slate-100">
               <div>
-                <h4 className="font-bold text-slate-800">Auto-Tag Course Interests</h4>
-                <p className="text-[11px] text-slate-500 mt-0.5">Tag contacts with JEE / NEET / Dropper based on first message keywords</p>
+                <h4 className="text-base font-bold text-slate-900">Auto-Tag Course Interests</h4>
+                <p className="text-sm text-slate-500 mt-1">Tag contacts with JEE / NEET / Dropper based on first message keywords</p>
               </div>
               <button
                 type="button"
@@ -1012,13 +1012,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
                   setAutoTagInterests(!autoTagInterests);
                   showToast(autoTagInterests ? 'Auto-tagging disabled' : 'Auto-tagging active');
                 }}
-                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                className={`relative inline-flex h-7 w-13 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
                   autoTagInterests ? 'bg-emerald-500' : 'bg-slate-300'
                 }`}
               >
                 <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-                    autoTagInterests ? 'translate-x-5' : 'translate-x-0'
+                  className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                    autoTagInterests ? 'translate-x-6' : 'translate-x-0'
                   }`}
                 />
               </button>
@@ -1029,18 +1029,18 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
 
       {/* Sub-Tab 5: Security & RLS */}
       {activeSubTab === 'security' && (
-        <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
-          <div className="pb-3 border-b border-slate-100">
-            <h3 className="text-sm font-bold text-slate-800 font-['Outfit']">Workspace Security & Tenant Isolation</h3>
-            <p className="text-xs text-slate-500">PostgreSQL 17 Row-Level Security, authentication requirements, and export safeguards</p>
+        <div className="bg-white rounded-3xl p-7 sm:p-8 border border-slate-200/90 shadow-xs space-y-6">
+          <div className="pb-4 border-b border-slate-100">
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900 font-['Outfit']">Workspace Security & Tenant Isolation</h3>
+            <p className="text-sm sm:text-base text-slate-500 mt-1">PostgreSQL 17 Row-Level Security, authentication requirements, and export safeguards</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-sm">
             {/* Switch 1: Two Factor Auth */}
-            <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+            <div className="flex items-center justify-between p-5 rounded-2xl bg-slate-50 border border-slate-100">
               <div>
-                <h4 className="font-bold text-slate-800">Require 2FA for Staff Login</h4>
-                <p className="text-[11px] text-slate-500 mt-0.5">Requires OTP code verification on every staff login</p>
+                <h4 className="text-base font-bold text-slate-900">Require 2FA for Staff Login</h4>
+                <p className="text-sm text-slate-500 mt-1">Requires OTP code verification on every staff login</p>
               </div>
               <button
                 type="button"
@@ -1048,39 +1048,39 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
                   setEnforceStaffMfa(!enforceStaffMfa);
                   showToast(enforceStaffMfa ? 'Staff 2FA requirement relaxed' : '2FA enforced for all staff logins');
                 }}
-                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                className={`relative inline-flex h-7 w-13 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
                   enforceStaffMfa ? 'bg-emerald-500' : 'bg-slate-300'
                 }`}
               >
                 <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-                    enforceStaffMfa ? 'translate-x-5' : 'translate-x-0'
+                  className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                    enforceStaffMfa ? 'translate-x-6' : 'translate-x-0'
                   }`}
                 />
               </button>
             </div>
 
             {/* Switch 2: Row Level Security */}
-            <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+            <div className="flex items-center justify-between p-5 rounded-2xl bg-slate-50 border border-slate-100">
               <div>
-                <h4 className="font-bold text-slate-800">PostgreSQL Row-Level Security (RLS)</h4>
-                <p className="text-[11px] text-slate-500 mt-0.5">Enforces database transaction-level tenant isolation</p>
+                <h4 className="text-base font-bold text-slate-900">PostgreSQL Row-Level Security (RLS)</h4>
+                <p className="text-sm text-slate-500 mt-1">Enforces database transaction-level tenant isolation</p>
               </div>
               <button
                 type="button"
                 disabled
-                className="relative inline-flex h-6 w-11 flex-shrink-0 cursor-not-allowed rounded-full border-2 border-transparent bg-emerald-500 opacity-90"
+                className="relative inline-flex h-7 w-13 flex-shrink-0 cursor-not-allowed rounded-full border-2 border-transparent bg-emerald-500 opacity-90"
                 title="System Enforced Multi-Tenant Security"
               >
-                <span className="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 translate-x-5" />
+                <span className="pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-sm ring-0 translate-x-6" />
               </button>
             </div>
 
             {/* Switch 3: Session Auto-Logout */}
-            <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+            <div className="flex items-center justify-between p-5 rounded-2xl bg-slate-50 border border-slate-100">
               <div>
-                <h4 className="font-bold text-slate-800">Idle Session Auto-Logout (30 mins)</h4>
-                <p className="text-[11px] text-slate-500 mt-0.5">Protect student phone numbers on shared campus workstations</p>
+                <h4 className="text-base font-bold text-slate-900">Idle Session Auto-Logout (30 mins)</h4>
+                <p className="text-sm text-slate-500 mt-1">Protect student phone numbers on shared campus workstations</p>
               </div>
               <button
                 type="button"
@@ -1088,23 +1088,23 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
                   setAutoLogoutSession(!autoLogoutSession);
                   showToast(autoLogoutSession ? 'Session auto-logout disabled' : 'Idle session timeout set to 30 mins');
                 }}
-                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                className={`relative inline-flex h-7 w-13 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
                   autoLogoutSession ? 'bg-emerald-500' : 'bg-slate-300'
                 }`}
               >
                 <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-                    autoLogoutSession ? 'translate-x-5' : 'translate-x-0'
+                  className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                    autoLogoutSession ? 'translate-x-6' : 'translate-x-0'
                   }`}
                 />
               </button>
             </div>
 
             {/* Switch 4: Block Export for Non-Owners */}
-            <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-100">
+            <div className="flex items-center justify-between p-5 rounded-2xl bg-slate-50 border border-slate-100">
               <div>
-                <h4 className="font-bold text-slate-800">Restrict Contact Export to Owner (SRS §3)</h4>
-                <p className="text-[11px] text-slate-500 mt-0.5">Blocks counsellors and agents from bulk exporting student phone databases</p>
+                <h4 className="text-base font-bold text-slate-900">Restrict Contact Export to Owner (SRS §3)</h4>
+                <p className="text-sm text-slate-500 mt-1">Blocks counsellors and agents from bulk exporting student phone databases</p>
               </div>
               <button
                 type="button"
@@ -1112,13 +1112,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
                   setRestrictStudentExports(!restrictStudentExports);
                   showToast(restrictStudentExports ? 'Export restriction relaxed' : 'Student database export restricted to Owner');
                 }}
-                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                className={`relative inline-flex h-7 w-13 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
                   restrictStudentExports ? 'bg-emerald-500' : 'bg-slate-300'
                 }`}
               >
                 <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-                    restrictStudentExports ? 'translate-x-5' : 'translate-x-0'
+                  className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                    restrictStudentExports ? 'translate-x-6' : 'translate-x-0'
                   }`}
                 />
               </button>

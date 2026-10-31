@@ -103,69 +103,69 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
   };
 
   return (
-    <div className="p-6 sm:p-8 max-w-[1550px] w-full mx-auto space-y-6">
+    <div className="w-full px-6 sm:px-8 lg:px-10 py-8 space-y-8">
       {/* Page Title & Actions */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-extrabold text-slate-800 tracking-tight font-['Outfit']">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight font-['Outfit']">
             Student Leads CRM
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-base sm:text-lg text-slate-600 mt-1.5 font-normal">
             Capture, qualify and convert student enquiries into verified coaching admissions.
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-3">
           {userRole === 'agent' ? (
             <button
               disabled
               title="CSV Export restricted to Admin and Owner (SRS Section 3)"
-              className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 border border-slate-200 text-slate-400 rounded-xl text-xs font-semibold cursor-not-allowed opacity-70"
+              className="flex items-center gap-2 h-11 sm:h-12 px-5 bg-slate-100 border border-slate-200 text-slate-400 rounded-2xl text-sm font-semibold cursor-not-allowed opacity-70"
             >
-              <Download className="w-3.5 h-3.5 text-slate-400" />
+              <Download className="w-4 h-4 text-slate-400" />
               <span>Export CSV (Admin Only)</span>
             </button>
           ) : (
             <button
               onClick={handleExportCSV}
-              className="flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 text-slate-700 rounded-xl text-xs font-semibold hover:bg-slate-50 transition-colors shadow-xs"
+              className="flex items-center gap-2 h-11 sm:h-12 px-5 bg-white border border-slate-200 text-slate-800 rounded-2xl text-sm sm:text-base font-bold hover:bg-slate-50 transition-colors shadow-2xs"
             >
-              <Download className="w-3.5 h-3.5 text-slate-400" />
+              <Download className="w-4 h-4 text-slate-500" />
               <span>Export CSV</span>
             </button>
           )}
 
           <button
             onClick={onOpenAddModal}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors shadow-sm"
+            className="flex items-center gap-2.5 h-11 sm:h-12 px-5.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-sm sm:text-base font-extrabold transition-colors shadow-xs"
           >
-            <UserPlus className="w-3.5 h-3.5" />
+            <UserPlus className="w-4.5 h-4.5" />
             <span>Add New Lead</span>
           </button>
         </div>
       </div>
 
       {/* Filter Toolbar */}
-      <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2 flex-1 min-w-[240px]">
+      <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-xs flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-3 flex-1 min-w-[280px]">
           <div className="relative w-full">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by student name, phone or city..."
-              className="w-full pl-10 pr-3 py-2 text-xs bg-slate-50 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+              className="w-full h-12 pl-12 pr-4 text-sm sm:text-base bg-slate-50 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 font-medium"
             />
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-3">
           {/* Status Filter */}
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="text-xs font-semibold px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 focus:outline-none"
+            className="h-12 text-sm font-bold px-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 focus:outline-none cursor-pointer"
           >
             <option value="ALL">All Stages</option>
             <option value="NEW">New Enquiries</option>
@@ -180,7 +180,7 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
           <select
             value={courseFilter}
             onChange={(e) => setCourseFilter(e.target.value)}
-            className="text-xs font-semibold px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 focus:outline-none"
+            className="h-12 text-sm font-bold px-4 bg-slate-50 border border-slate-200 rounded-2xl text-slate-800 focus:outline-none cursor-pointer"
           >
             <option value="ALL">All Courses</option>
             <option value="JEE">JEE Programs</option>
@@ -191,11 +191,11 @@ export const LeadsView: React.FC<LeadsViewProps> = ({
       </div>
 
       {/* Leads Table */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+      <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50/80 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+              <tr className="bg-slate-50/80 border-b border-slate-200 text-xs sm:text-sm font-extrabold text-slate-500 uppercase tracking-wider">
                 <th className="py-3 px-4">Student</th>
                 <th className="py-3 px-4">Phone / WhatsApp</th>
                 <th className="py-3 px-4">Course & Class</th>
