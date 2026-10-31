@@ -624,7 +624,7 @@ export const App: React.FC = () => {
       />
 
       {/* Main Content Area: starts immediately after sidebar */}
-      <div className={`flex-1 flex flex-col h-screen min-w-0 ${currentTab === 'inbox' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
+      <div className={`flex-1 flex flex-col h-screen min-w-0 overflow-x-hidden ${currentTab === 'inbox' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
         {/* Top Header: consistent h-16, sticky */}
         <Header
           currentUser={currentUser}

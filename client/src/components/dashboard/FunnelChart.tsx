@@ -33,7 +33,7 @@ export const FunnelChart: React.FC<FunnelChartProps> = ({
   const maxVal = Math.max(...steps.map(s => s.count), 250);
 
   return (
-    <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between h-full">
+    <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between h-full overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>

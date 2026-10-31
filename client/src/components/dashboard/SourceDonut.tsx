@@ -45,7 +45,7 @@ export const SourceDonut: React.FC<SourceDonutProps> = ({
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-5 py-2">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-5 py-2">
         {/* Donut Chart SVG */}
         <div className="relative w-44 h-44 flex-shrink-0 flex items-center justify-center">
           <svg className="w-full h-full -rotate-90 transform" viewBox={`0 0 ${size} ${size}`}>
