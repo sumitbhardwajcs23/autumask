@@ -8,8 +8,6 @@ import {
   Users, 
   Key, 
   RefreshCw, 
-  Copy, 
-  ExternalLink,
   Loader2,
   Sliders,
   Bell,
@@ -41,7 +39,6 @@ export type SettingsSubTab = 'general' | 'whatsapp' | 'notifications' | 'routing
 
 export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: propAccount }) => {
   const [activeSubTab, setActiveSubTab] = useState<SettingsSubTab>('whatsapp');
-  const [copied, setCopied] = useState(false);
   const [account, setAccount] = useState<any>(propAccount || null);
   const [team, setTeam] = useState<User[]>([
     { id: 'usr-1', email: 'sumit@prakashinstitute.edu.in', fullName: 'Sumit Bhardwaj', role: 'admin', isOnline: true },
@@ -94,10 +91,6 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
   const [testMessageBody, setTestMessageBody] = useState('Hello from AutoMask WhatsApp Cloud API! Your automation is active.');
   const [isSendingTest, setIsSendingTest] = useState(false);
   const [testResult, setTestResult] = useState<any>(null);
-  const [copiedToken, setCopiedToken] = useState(false);
-
-  const webhookUrl = 'https://pixzywd5u6.execute-api.us-east-1.amazonaws.com/webhooks/whatsapp';
-  const verifyToken = 'automask_webhook_verify_token';
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -118,20 +111,6 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
       teamApi.list().then(res => res.team && setTeam(res.team)).catch(() => null),
     ]).finally(() => setLoading(false));
   }, []);
-
-  const copyWebhook = () => {
-    navigator.clipboard.writeText(webhookUrl);
-    setCopied(true);
-    showToast('Webhook callback URL copied to clipboard.');
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const copyVerifyToken = () => {
-    navigator.clipboard.writeText(verifyToken);
-    setCopiedToken(true);
-    showToast('Webhook verify token copied to clipboard.');
-    setTimeout(() => setCopiedToken(false), 2000);
-  };
 
   const handleConnectWhatsApp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -402,65 +381,6 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
                   <span className="w-3.5 h-3.5 rounded-full bg-emerald-500 animate-pulse"></span>
                   {account?.qualityRating || 'GREEN'} (HIGH • Verified)
                 </span>
-              </div>
-            </div>
-
-            {/* Webhook Configuration Section */}
-            <div className="pt-5 border-t border-slate-100 space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="text-lg font-black text-slate-900 font-['Outfit']">Meta Webhook Configuration</h4>
-                  <p className="text-sm sm:text-base text-slate-500 mt-1">Enter these exact credentials in Meta Developer Dashboard ➔ WhatsApp ➔ Configuration ➔ Webhooks</p>
-                </div>
-                <a
-                  href="https://developers.facebook.com/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-sm sm:text-base text-emerald-600 hover:underline flex items-center gap-2 font-bold"
-                >
-                  <span>Meta Developers Portal</span>
-                  <ExternalLink className="w-4.5 h-4.5" />
-                </a>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 text-sm">
-                <div>
-                  <label className="text-sm font-extrabold text-slate-700 block mb-2 uppercase tracking-wide">Callback URL</label>
-                  <div className="flex items-center gap-2.5">
-                    <input
-                      type="text"
-                      readOnly
-                      value={webhookUrl}
-                      className="flex-1 bg-slate-50 font-mono text-sm sm:text-base px-4 py-3 rounded-xl border border-slate-200 text-slate-800 focus:outline-none"
-                    />
-                    <button
-                      onClick={copyWebhook}
-                      className="h-12 px-5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-sm font-bold flex items-center gap-2 transition-colors shadow-xs cursor-pointer"
-                    >
-                      {copied ? <Check className="w-4.5 h-4.5 text-emerald-600" /> : <Copy className="w-4.5 h-4.5 text-slate-400" />}
-                      <span>{copied ? 'Copied' : 'Copy'}</span>
-                    </button>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-sm font-extrabold text-slate-700 block mb-2 uppercase tracking-wide">Verify Token</label>
-                  <div className="flex items-center gap-2.5">
-                    <input
-                      type="text"
-                      readOnly
-                      value={verifyToken}
-                      className="flex-1 bg-slate-50 font-mono text-sm sm:text-base px-4 py-3 rounded-xl border border-slate-200 text-slate-800 focus:outline-none"
-                    />
-                    <button
-                      onClick={copyVerifyToken}
-                      className="h-12 px-5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-sm font-bold flex items-center gap-2 transition-colors shadow-xs cursor-pointer"
-                    >
-                      {copiedToken ? <Check className="w-4.5 h-4.5 text-emerald-600" /> : <Copy className="w-4.5 h-4.5 text-slate-400" />}
-                      <span>{copiedToken ? 'Copied' : 'Copy'}</span>
-                    </button>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

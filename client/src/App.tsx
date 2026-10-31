@@ -68,7 +68,6 @@ import {
   INITIAL_USAGE,
   INITIAL_CONTACTS
 } from './services/fixtures';
-import { Loader2, RefreshCw, CheckCircle2, AlertCircle, Wifi, WifiOff } from 'lucide-react';
 
 export type PageView = 'landing' | 'user-login' | 'admin-login' | 'app';
 
@@ -642,34 +641,6 @@ export const App: React.FC = () => {
           onLogout={handleLogout}
           onToggleMobileSidebar={() => setIsMobileSidebarOpen(prev => !prev)}
         />
-
-        {/* Live Backend Connection & Sync Pill */}
-        <div className="w-full px-4 sm:px-8 lg:px-10 pt-3 sm:pt-4 pb-1 flex items-center justify-between gap-2 text-xs sm:text-base text-slate-700">
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-            <span className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shrink-0 ${apiConnected ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`} />
-            <span className="font-bold text-slate-800 text-xs sm:text-sm truncate">
-              Backend API: <span className="sm:hidden font-mono text-emerald-700 font-semibold">Online</span>
-              <code className="hidden sm:inline text-slate-600 font-mono text-xs sm:text-sm bg-slate-100 px-2 py-0.5 rounded-md">http://localhost:5000/api/v1</code>
-            </span>
-            <span className={`hidden sm:inline px-2.5 py-0.5 rounded-lg font-bold text-xs ${
-              apiConnected ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'
-            }`}>
-              {apiConnected ? 'REST Connected' : 'Offline / Error'}
-            </span>
-            {syncError && (
-              <span className="text-rose-600 font-bold truncate max-w-xs text-xs">({syncError})</span>
-            )}
-          </div>
-
-          <button
-            onClick={() => fetchAllData()}
-            disabled={isSyncing}
-            className="flex items-center gap-1.5 sm:gap-2 h-8 sm:h-10 px-2.5 sm:px-4 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-bold transition-colors shadow-2xs cursor-pointer shrink-0"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500 ${isSyncing ? 'animate-spin' : ''}`} />
-            <span>{isSyncing ? 'Syncing...' : 'Sync Server'}</span>
-          </button>
-        </div>
 
         {/* Dynamic Tab Body */}
         <main className={`flex-1 min-h-0 ${currentTab === 'inbox' ? 'flex flex-col overflow-hidden' : ''}`}>
