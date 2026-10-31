@@ -80,7 +80,7 @@ export const Header: React.FC<HeaderProps> = ({
   const CurrentIcon = currentRoleConfig.icon;
 
   return (
-    <header className="h-16 bg-white/95 backdrop-blur-sm border-b border-slate-200/80 px-4 sm:px-6 lg:px-8 flex items-center justify-between sticky top-0 z-20">
+    <header className="h-18 bg-white/95 backdrop-blur-sm border-b border-slate-200/80 px-5 sm:px-8 flex items-center justify-between sticky top-0 z-20">
       {/* Left: Mobile Menu & Search Bar */}
       <div className="flex items-center gap-2.5 sm:gap-4 flex-1 max-w-lg">
         {onToggleMobileSidebar && (
