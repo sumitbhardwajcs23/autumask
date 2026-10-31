@@ -117,22 +117,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="p-3">
         <div 
           onClick={onOpenBusinessProfile}
-          className="bg-[#121c27] hover:bg-[#162433] transition-colors rounded-xl p-2.5 border border-[#1d2d3e] flex items-center justify-between cursor-pointer group shadow-2xs"
+          className="bg-[#121c27] hover:bg-[#162433] transition-colors rounded-xl p-3 border border-[#1d2d3e] flex items-center justify-between cursor-pointer group shadow-2xs"
           title="Click to Switch Business Sector or Edit Profile"
         >
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-emerald-600/20 text-emerald-400 font-bold text-xs flex items-center justify-center border border-emerald-500/30 shrink-0 font-['Outfit']">
+            <div className="w-9 h-9 rounded-lg bg-emerald-600/20 text-emerald-400 font-bold text-sm flex items-center justify-center border border-emerald-500/30 shrink-0 font-['Outfit']">
               {getInitials(currentBusinessName)}
             </div>
             <div className="truncate text-left">
-              <h4 className="text-xs font-semibold text-white truncate group-hover:text-emerald-400 transition-colors">
+              <h4 className="text-sm font-bold text-white truncate group-hover:text-emerald-400 transition-colors">
                 {currentBusinessName}
               </h4>
-              <div className="flex items-center gap-1 mt-0.5">
-                <span className="text-[10px] text-emerald-400 font-medium">
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <span className="text-xs text-emerald-400 font-semibold">
                   {sectorConfig.shortName}
                 </span>
-                <span className="text-[10px] text-slate-500">• Pro</span>
+                <span className="text-xs text-slate-400">• Pro</span>
               </div>
             </div>
           </div>
@@ -159,16 +159,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 }
               }}
               title={!isAllowed ? `Access Disabled: Workspace Owner has not granted '${item.label}' access to this team member.` : item.label}
-              className={`w-full h-10 flex items-center justify-between px-3 rounded-xl text-xs font-medium transition-all duration-200 group cursor-pointer ${
+              className={`w-full h-10.5 flex items-center justify-between px-3.5 rounded-xl text-sm font-semibold transition-all duration-200 group cursor-pointer ${
                 !isAllowed
                   ? 'opacity-35 cursor-not-allowed text-slate-600 bg-slate-900/30'
                   : isActive
-                  ? 'bg-emerald-600 text-white shadow-md font-semibold'
-                  : 'text-slate-400 hover:text-slate-100 hover:bg-[#13202e]'
+                  ? 'bg-emerald-600 text-white shadow-md font-bold'
+                  : 'text-slate-300 hover:text-white hover:bg-[#13202e]'
               }`}
             >
               <div className="flex items-center gap-3 min-w-0">
-                <Icon className={`w-4 h-4 shrink-0 transition-colors ${
+                <Icon className={`w-4.5 h-4.5 shrink-0 transition-colors ${
                   !isAllowed 
                     ? 'text-slate-600' 
                     : isActive 
@@ -179,13 +179,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </div>
               <div className="flex items-center gap-1.5 shrink-0">
                 {!isAllowed && (
-                  <span className="flex items-center gap-1 text-[9px] bg-slate-900 text-rose-400/90 border border-rose-900/40 px-1.5 py-0.2 rounded font-mono">
+                  <span className="flex items-center gap-1 text-[10px] bg-slate-900 text-rose-400 border border-rose-900/40 px-2 py-0.5 rounded font-mono">
                     <Lock className="w-2.5 h-2.5 text-rose-400" />
                     Locked
                   </span>
                 )}
                 {isAllowed && item.badge !== undefined && item.badge > 0 && (
-                  <span className="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full min-w-5 text-center shadow-sm">
+                  <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full min-w-5 text-center shadow-sm">
                     {item.badge}
                   </span>
                 )}
@@ -197,28 +197,28 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Pro Plan Usage Box */}
       <div className="p-3 border-t border-[#162230] shrink-0">
-        <div className="bg-[#121c27] rounded-xl p-3 border border-[#1e2e3f] relative overflow-hidden">
+        <div className="bg-[#121c27] rounded-xl p-3.5 border border-[#1e2e3f] relative overflow-hidden">
           <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
-                <Phone className="w-3.5 h-3.5 fill-emerald-400/20" />
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                <Phone className="w-4 h-4 fill-emerald-400/20" />
               </div>
               <div>
-                <h5 className="text-xs font-bold text-white">Pro Plan</h5>
-                <p className="text-[10px] text-slate-400">Renews on 15 Nov 2026</p>
+                <h5 className="text-sm font-bold text-white">Pro Plan</h5>
+                <p className="text-xs text-slate-400">Renews on 15 Nov 2026</p>
               </div>
             </div>
           </div>
 
           <div className="mt-2.5">
-            <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+            <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
               <div className="bg-emerald-500 h-full rounded-full transition-all duration-500" style={{ width: '65%' }}></div>
             </div>
-            <div className="flex items-center justify-between text-[10px] mt-1.5 font-medium">
+            <div className="flex items-center justify-between text-xs mt-2 font-medium">
               <span className="text-slate-300 font-semibold">32,450 / 50,000</span>
               <span className="text-emerald-400 font-bold">65%</span>
             </div>
-            <p className="text-[10px] text-slate-400 mt-0.5">AI replies used</p>
+            <p className="text-xs text-slate-400 mt-0.5">AI replies used</p>
           </div>
 
           <button 
@@ -226,9 +226,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
               onSelectTab('billing');
               if (isDrawer && onCloseMobile) onCloseMobile();
             }}
-            className="w-full mt-3 py-1.5 px-2.5 rounded-lg bg-[#0e1722] hover:bg-[#162434] text-amber-300 border border-amber-500/30 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm group cursor-pointer"
+            className="w-full mt-3 h-9 px-3 rounded-lg bg-[#0e1722] hover:bg-[#162434] text-amber-300 border border-amber-500/30 text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-sm group cursor-pointer"
           >
-            <Crown className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
+            <Crown className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
             <span>Upgrade Plan</span>
           </button>
         </div>
@@ -238,8 +238,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <>
-      {/* Desktop Permanent Sidebar: fixed 260px, 100vh */}
-      <aside className="hidden lg:flex w-[260px] bg-[#0b131e] text-slate-300 flex-col h-screen select-none border-r border-[#192635] flex-shrink-0 z-30">
+      {/* Desktop Permanent Sidebar: fixed 270px, 100vh */}
+      <aside className="hidden lg:flex w-[270px] bg-[#0b131e] text-slate-300 flex-col h-screen select-none border-r border-[#192635] flex-shrink-0 z-30">
         {renderContent(false)}
       </aside>
 
@@ -250,7 +250,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             className="fixed inset-0 bg-slate-950/70 backdrop-blur-xs transition-opacity"
             onClick={onCloseMobile}
           />
-          <aside className="relative w-[260px] max-w-[80vw] bg-[#0b131e] text-slate-300 flex flex-col h-full select-none border-r border-[#192635] shadow-2xl z-10 animate-in slide-in-from-left duration-200">
+          <aside className="relative w-[270px] max-w-[85vw] bg-[#0b131e] text-slate-300 flex flex-col h-full select-none border-r border-[#192635] shadow-2xl z-10 animate-in slide-in-from-left duration-200">
             {renderContent(true)}
           </aside>
         </div>

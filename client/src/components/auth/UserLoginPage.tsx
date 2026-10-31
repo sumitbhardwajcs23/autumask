@@ -355,165 +355,168 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
       {/* =========================================================================
           LEFT COLUMN: Product Showcase & High-Fidelity Dashboard Mockup (Full Viewport)
           ========================================================================= */}
-      <div className="hidden lg:flex lg:w-7/12 xl:w-3/5 bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9] to-[#ecfdf5]/40 border-r border-slate-200/80 p-8 xl:p-14 flex-col justify-between overflow-y-auto">
+      <div className="hidden lg:flex lg:w-7/12 xl:w-3/5 bg-gradient-to-br from-[#f8fafc] via-[#f1f5f9] to-[#ecfdf5]/40 border-r border-slate-200/80 p-8 xl:p-14 2xl:p-16 flex-col justify-between overflow-y-auto">
         
         {/* Top Logo */}
         <div 
           onClick={onBackToHome}
-          className="flex items-center gap-2.5 cursor-pointer group select-none shrink-0"
+          className="flex items-center gap-3 cursor-pointer group select-none shrink-0"
         >
-          <div className="w-8 h-8 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-sm transition-transform group-hover:scale-105">
-            <MessageSquare className="w-4.5 h-4.5 fill-white/20" />
+          <div className="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-sm transition-transform group-hover:scale-105">
+            <MessageSquare className="w-5 h-5 fill-white/20" />
           </div>
-          <span className="font-extrabold text-2xl text-slate-900 tracking-tight font-['Outfit']">
+          <span className="font-black text-2xl xl:text-3xl text-slate-900 tracking-tight font-['Outfit']">
             Auto<span className="text-emerald-700">Mask</span>
           </span>
         </div>
 
         {/* Center Pitch & Mockup */}
-        <div className="my-auto py-8 max-w-2xl space-y-7">
+        <div className="my-auto py-8 max-w-3xl space-y-8">
           
           {/* Main Headline */}
-          <div className="space-y-3">
-            <h1 className="text-4xl xl:text-5xl font-black text-slate-900 tracking-tight leading-[1.14] font-['Outfit']">
+          <div className="space-y-4">
+            <h1 className="text-4xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tight leading-[1.12] font-['Outfit']">
               Automate Your <br />
               <span className="text-emerald-700">WhatsApp Conversations</span> <br />
               and Grow Faster
             </h1>
-            <p className="text-base text-slate-600 leading-relaxed font-normal">
+            <p className="text-base xl:text-lg text-slate-600 leading-relaxed font-normal max-w-2xl">
               Reply to enquiries and messages automatically, manage multiple staff accounts, and save hours with smart AI automation.
             </p>
           </div>
 
           {/* 4 Feature Badges in a Row */}
-          <div className="grid grid-cols-4 gap-4 py-1 max-w-xl">
+          <div className="grid grid-cols-4 gap-4 py-2 max-w-2xl">
             <div className="flex flex-col items-center text-center">
-              <div className="w-13 h-13 rounded-2xl bg-white border border-emerald-100 shadow-xs flex items-center justify-center text-emerald-700">
-                <Zap className="w-6 h-6 fill-emerald-600/20" />
+              <div className="w-16 h-16 rounded-2xl bg-white border border-emerald-100 shadow-xs flex items-center justify-center text-emerald-700">
+                <Zap className="w-7 h-7 fill-emerald-600/20" />
               </div>
-              <span className="text-xs font-bold text-slate-700 mt-2.5 leading-tight">
+              <span className="text-xs sm:text-sm font-bold text-slate-800 mt-2.5 leading-snug">
                 Smart<br />Auto Replies
               </span>
             </div>
 
             <div className="flex flex-col items-center text-center">
-              <div className="w-13 h-13 rounded-2xl bg-white border border-emerald-100 shadow-xs flex items-center justify-center text-emerald-700">
-                <Users className="w-6 h-6 fill-emerald-600/20" />
+              <div className="w-16 h-16 rounded-2xl bg-white border border-emerald-100 shadow-xs flex items-center justify-center text-emerald-700">
+                <Users className="w-7 h-7 fill-emerald-600/20" />
               </div>
-              <span className="text-xs font-bold text-slate-700 mt-2.5 leading-tight">
+              <span className="text-xs sm:text-sm font-bold text-slate-800 mt-2.5 leading-snug">
                 Multiple<br />Accounts
               </span>
             </div>
 
             <div className="flex flex-col items-center text-center">
-              <div className="w-13 h-13 rounded-2xl bg-white border border-emerald-100 shadow-xs flex items-center justify-center text-emerald-700">
-                <BarChart2 className="w-6 h-6" />
+              <div className="w-16 h-16 rounded-2xl bg-white border border-emerald-100 shadow-xs flex items-center justify-center text-emerald-700">
+                <BarChart2 className="w-7 h-7" />
               </div>
-              <span className="text-xs font-bold text-slate-700 mt-2.5 leading-tight">
+              <span className="text-xs sm:text-sm font-bold text-slate-800 mt-2.5 leading-snug">
                 Analytics &<br />Insights
               </span>
             </div>
 
             <div className="flex flex-col items-center text-center">
-              <div className="w-13 h-13 rounded-2xl bg-white border border-emerald-100 shadow-xs flex items-center justify-center text-emerald-700">
-                <ShieldCheck className="w-6 h-6 fill-emerald-600/20" />
+              <div className="w-16 h-16 rounded-2xl bg-white border border-emerald-100 shadow-xs flex items-center justify-center text-emerald-700">
+                <ShieldCheck className="w-7 h-7 fill-emerald-600/20" />
               </div>
-              <span className="text-xs font-bold text-slate-700 mt-2.5 leading-tight">
+              <span className="text-xs sm:text-sm font-bold text-slate-800 mt-2.5 leading-snug">
                 Secure<br />& Reliable
               </span>
             </div>
           </div>
 
           {/* High-Fidelity Product Dashboard Mockup Card */}
-          <div className="w-full max-w-2xl bg-white rounded-2xl border border-slate-200/90 shadow-2xl overflow-hidden flex select-none pointer-events-none transition-all duration-300">
+          <div className="w-full max-w-2xl xl:max-w-3xl bg-white rounded-2xl border border-slate-200/90 shadow-2xl overflow-hidden flex select-none pointer-events-none transition-all duration-300">
             {/* Mock Dark Navy Sidebar */}
-            <div className="w-36 bg-[#0b131e] text-slate-400 p-3.5 flex flex-col justify-between shrink-0 border-r border-[#152332]">
-              <div className="space-y-3.5">
-                <div className="flex items-center gap-1.5 px-1 py-0.5">
-                  <div className="w-4.5 h-4.5 rounded-md bg-emerald-500 flex items-center justify-center text-white">
-                    <MessageSquare className="w-2.5 h-2.5 fill-white" />
+            <div className="w-44 bg-[#0b131e] text-slate-400 p-4 flex flex-col justify-between shrink-0 border-r border-[#152332]">
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 px-1 py-0.5">
+                  <div className="w-5 h-5 rounded-md bg-emerald-500 flex items-center justify-center text-white">
+                    <MessageSquare className="w-3 h-3 fill-white" />
                   </div>
-                  <span className="font-extrabold text-xs text-white font-['Outfit']">AutoMask</span>
+                  <span className="font-black text-sm text-white font-['Outfit']">AutoMask</span>
                 </div>
 
-                <div className="space-y-1 text-[11px]">
-                  <div className="bg-emerald-600 text-white font-bold px-2 py-1.5 rounded-lg flex items-center gap-1.5 shadow-xs">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
+                <div className="space-y-1.5 text-xs">
+                  <div className="bg-emerald-600 text-white font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-2 shadow-xs">
+                    <span className="w-2 h-2 rounded-full bg-white"></span>
                     <span>Dashboard</span>
                   </div>
-                  <div className="px-2 py-1 text-slate-400 flex items-center gap-1.5">
+                  <div className="px-2.5 py-1.5 text-slate-400 flex items-center gap-2 font-medium">
                     <span>💬</span>
                     <span>Inbox</span>
                   </div>
-                  <div className="px-2 py-1 text-slate-400 flex items-center gap-1.5">
+                  <div className="px-2.5 py-1.5 text-slate-400 flex items-center gap-2 font-medium">
                     <span>⚡</span>
                     <span>Automation</span>
                   </div>
-                  <div className="px-2 py-1 text-slate-400 flex items-center gap-1.5">
+                  <div className="px-2.5 py-1.5 text-slate-400 flex items-center gap-2 font-medium">
                     <span>👥</span>
                     <span>Accounts</span>
                   </div>
-                  <div className="px-2 py-1 text-slate-400 flex items-center gap-1.5">
+                  <div className="px-2.5 py-1.5 text-slate-400 flex items-center gap-2 font-medium">
                     <span>📊</span>
                     <span>Analytics</span>
                   </div>
-                  <div className="px-2 py-1 text-slate-400 flex items-center gap-1.5">
+                  <div className="px-2.5 py-1.5 text-slate-400 flex items-center gap-2 font-medium">
                     <span>📋</span>
                     <span>Templates</span>
                   </div>
-                  <div className="px-2 py-1 text-slate-400 flex items-center gap-1.5">
+                  <div className="px-2.5 py-1.5 text-slate-400 flex items-center gap-2 font-medium">
                     <span>⚙️</span>
                     <span>Settings</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-slate-800 text-[10px] text-slate-500">
-                <span className="text-emerald-400 font-bold">● Live Gateway</span>
+              <div className="pt-3 border-t border-slate-800 text-xs text-slate-400">
+                <span className="text-emerald-400 font-bold flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  Live Gateway
+                </span>
               </div>
             </div>
 
             {/* Mock Dashboard Body */}
-            <div className="flex-1 bg-white p-4 space-y-3.5 min-w-0">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                <span className="text-xs font-bold text-slate-800 font-['Outfit']">Dashboard Overview</span>
-                <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-full text-[11px] text-slate-700 font-medium">
-                  <div className="w-4 h-4 rounded-full bg-slate-800 text-white font-bold text-[9px] flex items-center justify-center">
+            <div className="flex-1 bg-white p-5 space-y-4 min-w-0">
+              <div className="flex items-center justify-between pb-2.5 border-b border-slate-100">
+                <span className="text-sm font-extrabold text-slate-800 font-['Outfit']">Dashboard Overview</span>
+                <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-full text-xs text-slate-700 font-medium">
+                  <div className="w-5 h-5 rounded-full bg-slate-800 text-white font-bold text-[10px] flex items-center justify-center">
                     S
                   </div>
                   <span>Sumit</span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-4 gap-2">
-                <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl">
-                  <span className="text-[10px] text-slate-400 block font-medium">Total Replies</span>
-                  <div className="text-sm font-black text-slate-800 font-['Outfit'] mt-0.5">12,543</div>
-                  <span className="text-[9px] text-emerald-600 font-bold">↗ +12%</span>
+              <div className="grid grid-cols-4 gap-2.5">
+                <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl">
+                  <span className="text-xs text-slate-400 block font-semibold">Total Replies</span>
+                  <div className="text-base sm:text-lg font-black text-slate-900 font-['Outfit'] mt-1">12,543</div>
+                  <span className="text-xs text-emerald-600 font-bold">↗ +12%</span>
                 </div>
-                <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl">
-                  <span className="text-[10px] text-slate-400 block font-medium">Active Accounts</span>
-                  <div className="text-sm font-black text-slate-800 font-['Outfit'] mt-0.5">3</div>
-                  <span className="text-[9px] text-emerald-600 font-bold">+1</span>
+                <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl">
+                  <span className="text-xs text-slate-400 block font-semibold">Active Accounts</span>
+                  <div className="text-base sm:text-lg font-black text-slate-900 font-['Outfit'] mt-1">3</div>
+                  <span className="text-xs text-emerald-600 font-bold">+1</span>
                 </div>
-                <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl">
-                  <span className="text-[10px] text-slate-400 block font-medium">New Enquiries</span>
-                  <div className="text-sm font-black text-slate-800 font-['Outfit'] mt-0.5">842</div>
-                  <span className="text-[9px] text-emerald-600 font-bold">↗ +18%</span>
+                <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl">
+                  <span className="text-xs text-slate-400 block font-semibold">New Enquiries</span>
+                  <div className="text-base sm:text-lg font-black text-slate-900 font-['Outfit'] mt-1">842</div>
+                  <span className="text-xs text-emerald-600 font-bold">↗ +18%</span>
                 </div>
-                <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl">
-                  <span className="text-[10px] text-slate-400 block font-medium">Response Rate</span>
-                  <div className="text-sm font-black text-slate-800 font-['Outfit'] mt-0.5">98%</div>
-                  <span className="text-[9px] text-emerald-600 font-bold">↗ +5%</span>
+                <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl">
+                  <span className="text-xs text-slate-400 block font-semibold">Response Rate</span>
+                  <div className="text-base sm:text-lg font-black text-slate-900 font-['Outfit'] mt-1">98%</div>
+                  <span className="text-xs text-emerald-600 font-bold">↗ +5%</span>
                 </div>
               </div>
 
-              <div className="p-3 bg-slate-50/70 border border-slate-100 rounded-xl space-y-2">
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="font-bold text-slate-700">Reply Activity</span>
-                  <span className="text-[10px] text-slate-400 font-medium">Last 30 days ▾</span>
+              <div className="p-3.5 bg-slate-50/70 border border-slate-100 rounded-xl space-y-2.5">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-bold text-slate-800">Reply Activity</span>
+                  <span className="text-slate-400 font-semibold">Last 30 days ▾</span>
                 </div>
-                <div className="h-12 flex items-end justify-between gap-1 pt-1">
+                <div className="h-16 flex items-end justify-between gap-1 pt-1">
                   {[28, 45, 60, 35, 75, 50, 65, 40, 85, 95, 70, 80, 55, 65, 90, 100, 75, 60, 85, 70, 90, 85, 65, 95].map((h, idx) => (
                     <div 
                       key={idx}
@@ -524,37 +527,37 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                 </div>
               </div>
 
-              <div className="space-y-1.5 pt-0.5">
-                <div className="flex items-center justify-between text-[11px]">
-                  <span className="font-bold text-slate-800">Recent Conversations</span>
-                  <span className="text-[10px] text-emerald-600 font-semibold">View all</span>
+              <div className="space-y-2 pt-1">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-bold text-slate-900">Recent Conversations</span>
+                  <span className="text-emerald-700 font-bold hover:underline cursor-pointer">View all</span>
                 </div>
-                <div className="space-y-1.5 text-[10px]">
-                  <div className="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-100">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-amber-500 to-rose-500 text-white font-bold text-[8px] flex items-center justify-center shrink-0">
+                <div className="space-y-2 text-xs">
+                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-amber-500 to-rose-500 text-white font-bold text-[10px] flex items-center justify-center shrink-0">
                         @
                       </div>
-                      <span className="font-bold text-slate-800 truncate">@thefitnesshub</span>
-                      <span className="text-slate-400 truncate">Can you share the pricing details?</span>
+                      <span className="font-bold text-slate-900 truncate">@thefitnesshub</span>
+                      <span className="text-slate-500 truncate">Can you share the pricing details?</span>
                     </div>
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      <span className="text-slate-400 text-[9px]">2m ago</span>
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="text-slate-400 text-xs">2m ago</span>
+                      <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-100">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-500 text-white font-bold text-[8px] flex items-center justify-center shrink-0">
+                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-500 text-white font-bold text-[10px] flex items-center justify-center shrink-0">
                         @
                       </div>
-                      <span className="font-bold text-slate-800 truncate">@neha_sharma</span>
-                      <span className="text-slate-400 truncate">Is this batch available in Kota?</span>
+                      <span className="font-bold text-slate-900 truncate">@neha_sharma</span>
+                      <span className="text-slate-500 truncate">Is this batch available in Kota?</span>
                     </div>
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      <span className="text-slate-400 text-[9px]">8m ago</span>
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="text-slate-400 text-xs">8m ago</span>
+                      <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
                     </div>
                   </div>
                 </div>
@@ -566,32 +569,32 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
         </div>
 
         {/* Left Bottom Trust Info */}
-        <div className="pt-4 border-t border-slate-200/80 text-xs text-slate-400 flex items-center justify-between shrink-0">
+        <div className="pt-4 border-t border-slate-200/80 text-xs sm:text-sm text-slate-500 flex items-center justify-between shrink-0 font-medium">
           <span>Meta Cloud API Official Partner • 99.98% Uptime SLA</span>
           <span>End-to-End Encrypted</span>
         </div>
       </div>
 
       {/* =========================================================================
-          RIGHT COLUMN: The Centered Authentication Form (420-460px readable width)
+          RIGHT COLUMN: The Centered Authentication Form (Comfortable 500-540px readable width)
           ========================================================================= */}
-      <div className="w-full lg:w-5/12 xl:w-2/5 min-h-screen bg-white p-6 sm:p-10 xl:p-14 flex flex-col justify-between overflow-y-auto">
+      <div className="w-full lg:w-5/12 xl:w-2/5 min-h-screen bg-white p-6 sm:p-10 xl:p-14 2xl:p-16 flex flex-col justify-between overflow-y-auto">
         
         {/* Top Bar: Mobile Logo + Top-Right Sign Up Toggle */}
-        <div className="flex items-center justify-between w-full max-w-[450px] mx-auto shrink-0 pb-4">
+        <div className="flex items-center justify-between w-full max-w-[500px] xl:max-w-[540px] mx-auto shrink-0 pb-4">
           <div 
             onClick={onBackToHome}
-            className="flex lg:hidden items-center gap-2 cursor-pointer select-none"
+            className="flex lg:hidden items-center gap-2.5 cursor-pointer select-none"
           >
-            <div className="w-7 h-7 rounded-lg bg-emerald-600 flex items-center justify-center text-white shadow-2xs">
-              <MessageSquare className="w-4 h-4 fill-white/20" />
+            <div className="w-8 h-8 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-2xs">
+              <MessageSquare className="w-4.5 h-4.5 fill-white/20" />
             </div>
-            <span className="font-extrabold text-xl text-slate-900 tracking-tight font-['Outfit']">
+            <span className="font-extrabold text-2xl text-slate-900 tracking-tight font-['Outfit']">
               Auto<span className="text-emerald-700">Mask</span>
             </span>
           </div>
 
-          <div className="text-xs sm:text-sm text-slate-500 ml-auto">
+          <div className="text-xs sm:text-sm text-slate-500 ml-auto font-medium">
             {authMode === 'signin' ? (
               <>
                 <span>Don't have an account? </span>
@@ -603,7 +606,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                     setErrorMessage(null);
                     setSuccessMessage(null);
                   }}
-                  className="font-bold text-emerald-700 hover:text-emerald-800 hover:underline cursor-pointer"
+                  className="font-bold text-emerald-700 hover:text-emerald-800 hover:underline cursor-pointer ml-1"
                 >
                   Sign Up
                 </button>
@@ -619,7 +622,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                     setErrorMessage(null);
                     setSuccessMessage(null);
                   }}
-                  className="font-bold text-emerald-700 hover:text-emerald-800 hover:underline cursor-pointer"
+                  className="font-bold text-emerald-700 hover:text-emerald-800 hover:underline cursor-pointer ml-1"
                 >
                   Sign In
                 </button>
@@ -629,27 +632,27 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
         </div>
 
         {/* Center Main Login Card Form (Centered Vertically and Horizontally) */}
-        <div className="w-full max-w-[450px] mx-auto my-auto py-6 space-y-6">
+        <div className="w-full max-w-[500px] xl:max-w-[540px] mx-auto my-auto py-8 space-y-7">
           
           {/* Card Header */}
           <div>
-            <div className="hidden lg:flex items-center gap-2 mb-3">
-              <div className="w-7 h-7 rounded-lg bg-emerald-600 flex items-center justify-center text-white shadow-2xs">
-                <MessageSquare className="w-4 h-4 fill-white/20" />
+            <div className="hidden lg:flex items-center gap-2.5 mb-3.5">
+              <div className="w-8 h-8 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-2xs">
+                <MessageSquare className="w-4.5 h-4.5 fill-white/20" />
               </div>
-              <span className="font-black text-xl text-slate-900 tracking-tight font-['Outfit']">
+              <span className="font-black text-2xl text-slate-900 tracking-tight font-['Outfit']">
                 Auto<span className="text-emerald-700">Mask</span>
               </span>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-['Outfit'] tracking-tight">
+            <h2 className="text-3xl sm:text-4xl xl:text-5xl font-black text-slate-900 font-['Outfit'] tracking-tight">
               {step === 'otp'
                 ? 'Verify 6-Digit OTP'
                 : authMode === 'signin'
                   ? 'Welcome back'
                   : 'Create your account'}
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+            <p className="text-sm sm:text-base text-slate-500 mt-2">
               {step === 'otp'
                 ? `Enter the code sent to ${email}`
                 : authMode === 'signin'
@@ -660,27 +663,27 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
 
           {/* Error & Success Feedback Alerts */}
           {errorMessage && (
-            <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-xl flex items-center gap-2 text-xs text-rose-700">
-              <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
-              <span className="leading-tight">{errorMessage}</span>
+            <div className="p-4 bg-rose-50 border border-rose-200 rounded-2xl flex items-center gap-2.5 text-xs sm:text-sm text-rose-700 font-medium">
+              <AlertCircle className="w-5 h-5 text-rose-500 shrink-0" />
+              <span className="leading-snug">{errorMessage}</span>
             </div>
           )}
           {successMessage && (
-            <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-2 text-xs text-emerald-800">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span className="leading-tight">{successMessage}</span>
+            <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center gap-2.5 text-xs sm:text-sm text-emerald-800 font-medium">
+              <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+              <span className="leading-snug">{successMessage}</span>
             </div>
           )}
 
           {/* STEP 1: CREDENTIALS */}
           {step === 'credentials' && (
             <>
-              {/* Official Google Sign-In Button (Standardized 20px Icon) */}
+              {/* Official Google Sign-In Button (Standardized 24px Icon, Comfortable Height) */}
               <button
                 type="button"
                 onClick={handleGoogleSignIn}
                 disabled={isGoogleLoading || isLoading}
-                className="w-full h-12 px-4 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm transition-all shadow-xs flex items-center justify-center gap-3 border border-slate-200 hover:border-slate-300 cursor-pointer disabled:opacity-60"
+                className="w-full h-13 sm:h-14 px-5 rounded-2xl bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm sm:text-base transition-all shadow-xs flex items-center justify-center gap-3.5 border-2 border-slate-200 hover:border-slate-300 cursor-pointer disabled:opacity-60"
               >
                 {isGoogleLoading ? (
                   <>
@@ -690,9 +693,9 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                 ) : (
                   <>
                     <svg 
-                      className="w-5 h-5 min-w-[20px] min-h-[20px] max-w-[20px] max-h-[20px] shrink-0" 
-                      width="20" 
-                      height="20" 
+                      className="w-6 h-6 min-w-[24px] min-h-[24px] max-w-[24px] max-h-[24px] shrink-0" 
+                      width="24" 
+                      height="24" 
                       viewBox="0 0 24 24"
                     >
                       <path
@@ -718,26 +721,26 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
               </button>
 
               {/* Clean Divider */}
-              <div className="relative flex py-1 items-center">
+              <div className="relative flex py-2 items-center">
                 <div className="flex-grow border-t border-slate-200"></div>
-                <span className="flex-shrink mx-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                <span className="flex-shrink mx-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
                   OR
                 </span>
                 <div className="flex-grow border-t border-slate-200"></div>
               </div>
 
-              {/* Form Inputs: Standardized h-12 Height */}
-              <form onSubmit={handleRequestOtp} className="space-y-4">
+              {/* Form Inputs: Comfortable h-13 to h-14 Height */}
+              <form onSubmit={handleRequestOtp} className="space-y-4 sm:space-y-5">
                 {authMode === 'signup' && (
                   <>
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">
+                      <label className="block text-xs sm:text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">
                         Industry Vertical
                       </label>
                       <select
                         value={category}
                         onChange={(e) => setCategory(e.target.value as IndustryType)}
-                        className="w-full h-12 bg-slate-50/60 hover:bg-slate-50 focus:bg-white border border-slate-200 rounded-xl px-3.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all font-medium"
+                        className="w-full h-13 sm:h-14 bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-200 rounded-2xl px-4 text-base text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all font-medium"
                       >
                         <option value="education">🎓 Education & Institutes</option>
                         <option value="ecommerce">🛍️ D2C & E-Commerce</option>
@@ -749,7 +752,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">
+                      <label className="block text-xs sm:text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">
                         Workspace / Company Name
                       </label>
                       <input
@@ -758,12 +761,12 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                         onChange={(e) => setWorkspaceName(e.target.value)}
                         required
                         placeholder="e.g. Prakash Institute"
-                        className="w-full h-12 px-4 bg-slate-50/60 hover:bg-slate-50 focus:bg-white text-sm text-slate-800 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all font-medium placeholder:text-slate-400"
+                        className="w-full h-13 sm:h-14 px-4 bg-slate-50 hover:bg-slate-100/70 focus:bg-white text-base text-slate-800 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all font-medium placeholder:text-slate-400"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">
+                      <label className="block text-xs sm:text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">
                         Full Name
                       </label>
                       <input
@@ -772,7 +775,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                         onChange={(e) => setFullName(e.target.value)}
                         required
                         placeholder="e.g. Dr. Prakash Sharma"
-                        className="w-full h-12 px-4 bg-slate-50/60 hover:bg-slate-50 focus:bg-white text-sm text-slate-800 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all font-medium placeholder:text-slate-400"
+                        className="w-full h-13 sm:h-14 px-4 bg-slate-50 hover:bg-slate-100/70 focus:bg-white text-base text-slate-800 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all font-medium placeholder:text-slate-400"
                       />
                     </div>
                   </>
@@ -780,52 +783,52 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
 
                 {/* Email Address */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">
+                  <label className="block text-xs sm:text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">
                     Email Address
                   </label>
                   <div className="relative">
-                    <Mail className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <Mail className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                     <input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
                       placeholder="dr.prakash@prakashinstitute.edu.in"
-                      className="w-full h-12 pl-11 pr-4 bg-slate-50/60 hover:bg-slate-50 focus:bg-white text-sm text-slate-800 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all font-medium placeholder:text-slate-400"
+                      className="w-full h-13 sm:h-14 pl-12 pr-4 bg-slate-50 hover:bg-slate-100/70 focus:bg-white text-base text-slate-800 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all font-medium placeholder:text-slate-400"
                     />
                   </div>
                 </div>
 
                 {/* Password */}
                 <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-bold text-slate-700 uppercase tracking-wide">
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wide">
                       Password
                     </label>
                     {authMode === 'signin' && (
                       <button
                         type="button"
                         onClick={() => setSuccessMessage('Password reset instructions will be emailed to your address.')}
-                        className="text-xs font-bold text-emerald-700 hover:text-emerald-800 hover:underline cursor-pointer"
+                        className="text-xs sm:text-sm font-bold text-emerald-700 hover:text-emerald-800 hover:underline cursor-pointer"
                       >
                         Forgot password?
                       </button>
                     )}
                   </div>
                   <div className="relative">
-                    <Lock className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <Lock className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
                       placeholder="••••••••••••"
-                      className="w-full h-12 pl-11 pr-11 bg-slate-50/60 hover:bg-slate-50 focus:bg-white text-sm text-slate-800 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all font-medium placeholder:text-slate-400"
+                      className="w-full h-13 sm:h-14 pl-12 pr-12 bg-slate-50 hover:bg-slate-100/70 focus:bg-white text-base text-slate-800 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all font-medium placeholder:text-slate-400"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer p-1"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer p-1"
                     >
                       {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
@@ -834,17 +837,17 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
 
                 {authMode === 'signup' && (
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">
+                    <label className="block text-xs sm:text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">
                       WhatsApp Phone Number (Optional)
                     </label>
                     <div className="relative">
-                      <Phone className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       <input
                         type="tel"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="+91 98765 43210"
-                        className="w-full h-12 pl-11 pr-4 bg-slate-50/60 hover:bg-slate-50 focus:bg-white text-sm text-slate-800 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all font-medium placeholder:text-slate-400 font-mono"
+                        className="w-full h-13 sm:h-14 pl-12 pr-4 bg-slate-50 hover:bg-slate-100/70 focus:bg-white text-base text-slate-800 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all font-medium placeholder:text-slate-400 font-mono"
                       />
                     </div>
                   </div>
@@ -854,17 +857,17 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full h-12 mt-2 bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white rounded-xl text-sm font-bold transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                  className="w-full h-13 sm:h-14 mt-3 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-2xl text-base font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-60"
                 >
                   {isLoading ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin text-white" />
+                      <Loader2 className="w-5 h-5 animate-spin text-white" />
                       <span>Sending verification code...</span>
                     </>
                   ) : (
                     <>
                       <span>{authMode === 'signin' ? 'Sign In with OTP' : 'Create Account & Verify OTP'}</span>
-                      <ArrowRight className="w-4 h-4" />
+                      <ArrowRight className="w-5 h-5" />
                     </>
                   )}
                 </button>
@@ -872,24 +875,24 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
 
               {/* Quick Demo Logins Section */}
               {authMode === 'signin' && (
-                <div className="pt-3 border-t border-slate-100">
-                  <div className="text-[11px] font-bold text-slate-400 tracking-wider uppercase text-center mb-2.5">
+                <div className="pt-4 border-t border-slate-100">
+                  <div className="text-xs font-bold text-slate-400 tracking-wider uppercase text-center mb-3">
                     Quick Demo Logins
                   </div>
-                  <div className="grid grid-cols-3 gap-2.5">
+                  <div className="grid grid-cols-3 gap-3">
                     {demoAccounts.map((acc, idx) => (
                       <button
                         key={idx}
                         type="button"
                         onClick={() => handleSelectDemoUser(acc)}
-                        className={`h-10 px-2.5 rounded-xl text-xs font-bold border flex items-center justify-center gap-1.5 transition-all cursor-pointer truncate shadow-2xs ${
+                        className={`h-11 sm:h-12 px-3 rounded-xl text-xs sm:text-sm font-bold border flex items-center justify-center gap-2 transition-all cursor-pointer truncate shadow-2xs ${
                           email === acc.email
-                            ? 'bg-emerald-50 border-emerald-500 text-emerald-800'
+                            ? 'bg-emerald-50 border-emerald-500 text-emerald-800 shadow-xs'
                             : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-300'
                         }`}
                         title={`${acc.name} (${acc.workspaceName})`}
                       >
-                        <span className="text-sm shrink-0">{acc.icon}</span>
+                        <span className="text-base shrink-0">{acc.icon}</span>
                         <span className="truncate">{acc.label}</span>
                       </button>
                     ))}
@@ -901,24 +904,24 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
 
           {/* STEP 2: 6-DIGIT OTP VERIFICATION */}
           {step === 'otp' && (
-            <div className="space-y-5">
+            <div className="space-y-6">
               {demoOtpCode && (
-                <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between text-xs">
-                  <span className="text-emerald-800 font-semibold">Demo OTP Code:</span>
+                <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-between text-sm">
+                  <span className="text-emerald-800 font-bold">Demo OTP Code:</span>
                   <button
                     type="button"
                     onClick={() => setOtp(demoOtpCode)}
-                    className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-mono font-bold text-xs cursor-pointer flex items-center gap-1.5 shadow-2xs"
+                    className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-mono font-bold text-sm cursor-pointer flex items-center gap-2 shadow-xs"
                   >
                     <span>{demoOtpCode}</span>
-                    <span className="text-[10px] font-normal opacity-90">(Auto-fill)</span>
+                    <span className="text-xs font-normal opacity-90">(Auto-fill)</span>
                   </button>
                 </div>
               )}
 
-              <form onSubmit={handleVerifyOtp} className="space-y-4">
+              <form onSubmit={handleVerifyOtp} className="space-y-5">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-2 text-center uppercase tracking-wide">
+                  <label className="block text-xs sm:text-sm font-bold text-slate-700 mb-2.5 text-center uppercase tracking-wide">
                     Enter the 6-Digit Code
                   </label>
                   <input
@@ -929,36 +932,36 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                     required
                     autoFocus
                     placeholder="• • • • • •"
-                    className="w-full text-center tracking-[0.6em] font-mono text-2xl h-14 bg-slate-50/50 hover:bg-slate-50 focus:bg-white border border-slate-200 rounded-xl text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
+                    className="w-full text-center tracking-[0.6em] font-mono text-3xl h-16 bg-slate-50 hover:bg-slate-100/70 focus:bg-white border-2 border-slate-200 rounded-2xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isLoading || otp.length < 6}
-                  className="w-full h-12 bg-emerald-700 hover:bg-emerald-800 active:bg-emerald-900 text-white rounded-xl text-sm font-bold transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="w-full h-13 sm:h-14 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-2xl text-base font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-50"
                 >
                   {isLoading ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin text-white" />
+                      <Loader2 className="w-5 h-5 animate-spin text-white" />
                       <span>Verifying...</span>
                     </>
                   ) : (
                     <>
                       <span>Verify & Open Dashboard</span>
-                      <Check className="w-4 h-4" />
+                      <Check className="w-5 h-5" />
                     </>
                   )}
                 </button>
               </form>
 
-              <div className="flex items-center justify-between text-xs pt-2">
+              <div className="flex items-center justify-between text-sm pt-2">
                 <button
                   type="button"
                   onClick={() => setStep('credentials')}
-                  className="text-slate-500 hover:text-slate-800 font-semibold flex items-center gap-1 cursor-pointer"
+                  className="text-slate-500 hover:text-slate-800 font-semibold flex items-center gap-1.5 cursor-pointer"
                 >
-                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <ArrowLeft className="w-4 h-4" />
                   <span>Back to credentials</span>
                 </button>
 
@@ -966,7 +969,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                   type="button"
                   onClick={handleResendOtp}
                   disabled={resendCooldown > 0 || isLoading}
-                  className={`font-semibold cursor-pointer ${
+                  className={`font-bold cursor-pointer ${
                     resendCooldown > 0 ? 'text-slate-400 cursor-not-allowed' : 'text-emerald-700 hover:underline'
                   }`}
                 >
@@ -979,7 +982,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
         </div>
 
         {/* Bottom Footer Info */}
-        <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400 w-full max-w-[450px] mx-auto shrink-0">
+        <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs sm:text-sm text-slate-400 w-full max-w-[500px] xl:max-w-[540px] mx-auto shrink-0 font-medium">
           <span>© 2026 AutoMask Inc.</span>
           <div className="flex items-center gap-3">
             <span className="hover:text-slate-600 cursor-pointer">Privacy</span>
