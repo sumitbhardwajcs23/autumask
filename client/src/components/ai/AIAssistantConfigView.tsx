@@ -1,31 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Bot, 
-  FileText, 
-  Upload, 
-  Trash2, 
-  Sliders, 
-  CheckCircle2, 
-  AlertTriangle, 
-  Play, 
-  RefreshCw, 
-  BookOpen, 
-  Sparkles, 
-  HelpCircle, 
-  Layers, 
-  Search, 
-  Plus, 
+import {
+  Bot,
+  FileText,
+  Upload,
+  Trash2,
+  Sliders,
+  CheckCircle2,
+  AlertTriangle,
+  Play,
+  RefreshCw,
+  BookOpen,
+  Sparkles,
+  HelpCircle,
+  Layers,
+  Search,
+  Plus,
   X,
   FileCode,
   ShieldCheck,
   Zap,
   Tag
 } from 'lucide-react';
-import { 
-  KnowledgeDocument, 
-  AIAssistantConfig, 
-  KnowledgeItem, 
-  UserRole 
+import {
+  KnowledgeDocument,
+  AIAssistantConfig,
+  KnowledgeItem,
+  UserRole
 } from '../../types';
 import { knowledgeDocsApi, knowledgeApi } from '../../services/api';
 
@@ -348,14 +348,12 @@ export const AIAssistantConfigView: React.FC<AIAssistantConfigViewProps> = ({
                   setConfig(prev => ({ ...prev, enabled: !prev.enabled }));
                   showNotice(config.enabled ? 'AI Assistant auto-replies paused' : 'AI Assistant auto-replies activated');
                 }}
-                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                  config.enabled ? 'bg-violet-600' : 'bg-slate-300'
-                }`}
+                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${config.enabled ? 'bg-violet-600' : 'bg-slate-300'
+                  }`}
               >
                 <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
-                    config.enabled ? 'translate-x-5' : 'translate-x-0'
-                  }`}
+                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${config.enabled ? 'translate-x-5' : 'translate-x-0'
+                    }`}
                 />
               </button>
             </div>

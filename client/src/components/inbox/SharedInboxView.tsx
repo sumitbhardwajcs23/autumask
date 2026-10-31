@@ -27,7 +27,8 @@ import {
   Edit3,
   Trash2,
   X,
-  Sliders
+  Sliders,
+  ArrowLeft
 } from 'lucide-react';
 import { Conversation, Message, LeadStatus, User, QuickReply } from '../../types';
 import { conversationsApi, leadsApi, ApiError } from '../../services/api';
@@ -64,6 +65,10 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
     'Student called on morning helpline inquiring about hostel fees.',
     'Parent requested callback after 6:00 PM.',
   ]);
+
+  // Responsive mobile view state ('LIST' or 'CHAT')
+  const [mobileView, setMobileView] = useState<'LIST' | 'CHAT'>('LIST');
+  const [isMobileCrmOpen, setIsMobileCrmOpen] = useState(false);
 
   // Quick Canned Replies State (Audio 5 Requirement)
   const [quickReplies, setQuickReplies] = useState<QuickReply[]>([
@@ -332,8 +337,10 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
 
   return (
     <div className="h-full flex-1 flex overflow-hidden bg-white min-h-0">
-      {/* 1. Left: Conversation List */}
-      <div className="w-80 md:w-88 xl:w-96 border-r border-slate-200 flex flex-col h-full bg-slate-50/50 flex-shrink-0 min-h-0">
+      {/* 1. Left: Conversation List (Full width on mobile when in 'LIST' view) */}
+      <div className={`w-full md:w-80 lg:w-88 xl:w-96 border-r border-slate-200 flex flex-col h-full bg-slate-50/50 flex-shrink-0 min-h-0 ${
+        mobileView === 'CHAT' ? 'hidden md:flex' : 'flex'
+      }`}>
         {/* Inbox Header */}
         <div className="p-4 border-b border-slate-200">
           <div className="flex items-center justify-between mb-3">
@@ -391,7 +398,10 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
             return (
               <div
                 key={conv.id}
-                onClick={() => onSelectConversation(conv)}
+                onClick={() => {
+                  onSelectConversation(conv);
+                  setMobileView('CHAT');
+                }}
                 className={`p-4 cursor-pointer transition-all ${
                   isSelected ? 'bg-emerald-50/80 border-l-4 border-emerald-600 shadow-2xs' : 'hover:bg-slate-100/60'
                 }`}
@@ -433,32 +443,43 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
         </div>
       </div>
 
-      {/* 2. Middle: Active Chat Window */}
+      {/* 2. Middle: Active Chat Window (Full width on mobile when in 'CHAT' view) */}
       {activeConv ? (
-        <div className="flex-1 flex flex-col h-full bg-[#f8fafc] border-r border-slate-200 min-w-0 min-h-0">
+        <div className={`flex-1 flex flex-col h-full bg-[#f8fafc] border-r border-slate-200 min-w-0 min-h-0 ${
+          mobileView === 'LIST' ? 'hidden md:flex' : 'flex'
+        }`}>
           {/* Thread Header */}
-          <div className="p-4 sm:p-4.5 bg-white border-b border-slate-200 flex items-center justify-between">
-            <div className="flex items-center gap-3.5">
-              <div className="w-12 h-12 rounded-full bg-emerald-600 text-white font-extrabold text-base flex items-center justify-center shadow-xs">
+          <div className="p-3 sm:p-4.5 bg-white border-b border-slate-200 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 sm:gap-3.5 min-w-0">
+              {/* Mobile Back Button to return to list */}
+              <button
+                onClick={() => setMobileView('LIST')}
+                className="md:hidden p-2 -ml-1 rounded-xl text-slate-700 hover:bg-slate-100 flex items-center gap-1 font-bold shrink-0 cursor-pointer"
+                title="Back to conversation list"
+              >
+                <ArrowLeft className="w-5 h-5 text-slate-700" />
+              </button>
+
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-emerald-600 text-white font-extrabold text-sm sm:text-base flex items-center justify-center shadow-xs shrink-0">
                 {activeConv.contactName.charAt(0)}
               </div>
-              <div>
-                <div className="flex items-center gap-2.5">
-                  <h3 className="text-base sm:text-lg font-bold text-slate-900">{activeConv.contactName}</h3>
-                  <span className="text-xs sm:text-sm text-slate-500 font-mono">{activeConv.phone}</span>
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm sm:text-lg font-bold text-slate-900 truncate">{activeConv.contactName}</h3>
+                  <span className="text-xs text-slate-500 font-mono hidden sm:inline">{activeConv.phone}</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs sm:text-sm text-emerald-600 font-medium">
+                <div className="flex items-center gap-1.5 text-[11px] sm:text-sm text-emerald-600 font-medium">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                  <span>WhatsApp Business Cloud API</span>
+                  <span className="truncate">WhatsApp Business Cloud API</span>
                 </div>
               </div>
             </div>
 
             {/* Counsellor Takeover Switch & Window Status */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
               <button
                 onClick={() => onToggleTakeover(activeConv.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all border ${
+                className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all border ${
                   activeConv.takeoverActive
                     ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
                     : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
@@ -466,15 +487,26 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
               >
                 {activeConv.takeoverActive ? (
                   <>
-                    <UserIcon className="w-4 h-4" />
-                    <span>Human Takeover (Bot Paused)</span>
+                    <UserIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <span className="hidden sm:inline">Human Takeover</span>
+                    <span className="sm:hidden">Takeover</span>
                   </>
                 ) : (
                   <>
-                    <Bot className="w-4 h-4 text-emerald-600" />
-                    <span>Take Over Chat</span>
+                    <Bot className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
+                    <span className="hidden sm:inline">Take Over Chat</span>
+                    <span className="sm:hidden">Takeover</span>
                   </>
                 )}
+              </button>
+
+              {/* View CRM Details on Mobile/Tablet */}
+              <button
+                onClick={() => setIsMobileCrmOpen(true)}
+                className="xl:hidden p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 transition-colors shrink-0 cursor-pointer"
+                title="View student profile & notes"
+              >
+                <UserIcon className="w-4 h-4 text-slate-700" />
               </button>
             </div>
           </div>
@@ -1085,6 +1117,109 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
               >
                 Done
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile CRM Details Modal / Drawer */}
+      {isMobileCrmOpen && activeConv && (
+        <div className="fixed inset-0 z-50 xl:hidden flex justify-end">
+          <div
+            className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs transition-opacity"
+            onClick={() => setIsMobileCrmOpen(false)}
+          />
+          <div className="relative w-full max-w-sm bg-white h-full shadow-2xl z-10 flex flex-col p-5 overflow-y-auto animate-in slide-in-from-right duration-200">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+              <h3 className="font-extrabold text-base text-slate-900 font-['Outfit']">Student Profile & CRM</h3>
+              <button
+                onClick={() => setIsMobileCrmOpen(false)}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="text-center pb-4 border-b border-slate-100">
+              <div className="w-16 h-16 rounded-full bg-slate-800 text-white text-xl font-black flex items-center justify-center mx-auto mb-2 shadow-sm font-['Outfit']">
+                {activeConv.contactName.charAt(0)}
+              </div>
+              <h3 className="text-base font-bold text-slate-900">{activeConv.contactName}</h3>
+              <p className="text-xs text-slate-500 font-mono mt-0.5">{activeConv.phone}</p>
+              <span className="inline-block mt-2 text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+                Opted-In via Inbound Chat
+              </span>
+            </div>
+
+            {/* CRM Lead Pipeline Status */}
+            <div className="py-4 border-b border-slate-100 space-y-2">
+              <label className="text-xs font-bold text-slate-600 uppercase tracking-wider block">
+                Lead Pipeline Stage
+              </label>
+              <select
+                value={activeConv.leadStatus}
+                onChange={(e) => onUpdateLeadStatus(activeConv.phone, e.target.value as LeadStatus)}
+                className="w-full text-sm font-bold p-2.5 bg-slate-50 rounded-xl border border-slate-200 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 h-11"
+              >
+                <option value="NEW">🟢 New Enquiry</option>
+                <option value="QUALIFIED">🔵 Qualified Lead</option>
+                <option value="INTERESTED">🟣 Interested</option>
+                <option value="DEMO_BOOKED">📅 Demo Booked</option>
+                <option value="DEMO_ATTENDED">🎓 Demo Attended</option>
+                <option value="ADMITTED">🏆 Admitted / Converted</option>
+                <option value="LOST">⚪ Closed / Lost</option>
+              </select>
+            </div>
+
+            {/* Academic Details */}
+            <div className="py-4 border-b border-slate-100 space-y-2.5 text-xs sm:text-sm">
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500 font-medium">Target Exam:</span>
+                <span className="font-bold text-slate-800">{activeConv.leadCourse || 'JEE Main'}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500 font-medium">City:</span>
+                <span className="font-bold text-slate-800">Delhi NCR</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-500 font-medium">Agent:</span>
+                <span className="font-bold text-slate-800">{assignedAgent}</span>
+              </div>
+            </div>
+
+            {/* Notes */}
+            <div className="pt-4 space-y-2 flex-1">
+              <label className="text-xs font-bold text-slate-600 uppercase tracking-wider block">
+                Internal Notes
+              </label>
+              <div className="space-y-2 max-h-48 overflow-y-auto">
+                {notesList.map((note, i) => (
+                  <div key={i} className="bg-amber-50/70 border border-amber-200/60 p-2.5 rounded-xl text-xs text-amber-900 leading-normal flex items-start justify-between gap-1 shadow-2xs">
+                    <span>{note}</span>
+                    <button
+                      onClick={() => setNotesList(prev => prev.filter((_, idx) => idx !== i))}
+                      className="text-amber-500 hover:text-amber-800 text-xs font-bold p-0.5"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-2 pt-2">
+                <input
+                  type="text"
+                  value={internalNote}
+                  onChange={(e) => setInternalNote(e.target.value)}
+                  placeholder="Add note..."
+                  className="flex-1 text-xs p-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-slate-800"
+                />
+                <button
+                  onClick={handleAddNote}
+                  className="px-3 py-2 bg-slate-800 text-white rounded-xl text-xs font-bold hover:bg-slate-700 transition-colors shrink-0"
+                >
+                  Add
+                </button>
+              </div>
             </div>
           </div>
         </div>
