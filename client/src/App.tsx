@@ -29,6 +29,7 @@ import { LandingPage } from './components/landing/LandingPage';
 import { UserLoginPage } from './components/auth/UserLoginPage';
 import { PlatformAdminLoginPage } from './components/auth/PlatformAdminLoginPage';
 import { PlatformConsoleView } from './components/platform/PlatformConsoleView';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { authApi } from './services/api';
 import { 
   TabType, 
@@ -722,14 +723,16 @@ export const App: React.FC = () => {
           )}
 
           {currentTab === 'automation' && (
-            <AutomationView
-              rules={rules}
-              onToggleRule={handleToggleRule}
-              onAddRule={handleAddRule}
-              onUpdateRule={handleUpdateRule}
-              onDeleteRule={handleDeleteRule}
-              userRole={currentUser.role}
-            />
+            <ErrorBoundary fallbackTitle="WhatsApp Automation Rules">
+              <AutomationView
+                rules={rules}
+                onToggleRule={handleToggleRule}
+                onAddRule={handleAddRule}
+                onUpdateRule={handleUpdateRule}
+                onDeleteRule={handleDeleteRule}
+                userRole={currentUser.role}
+              />
+            </ErrorBoundary>
           )}
 
           {currentTab === 'ai' && (

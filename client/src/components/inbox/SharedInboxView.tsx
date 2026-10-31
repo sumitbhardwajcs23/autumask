@@ -333,53 +333,53 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
   return (
     <div className="h-full flex-1 flex overflow-hidden bg-white min-h-0">
       {/* 1. Left: Conversation List */}
-      <div className="w-80 border-r border-slate-200 flex flex-col h-full bg-slate-50/50 flex-shrink-0 min-h-0">
+      <div className="w-80 md:w-88 xl:w-96 border-r border-slate-200 flex flex-col h-full bg-slate-50/50 flex-shrink-0 min-h-0">
         {/* Inbox Header */}
         <div className="p-4 border-b border-slate-200">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-extrabold text-slate-800 font-['Outfit']">Shared Inbox</h2>
-            <span className="text-[11px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">
+            <h2 className="text-lg sm:text-xl font-black text-slate-800 font-['Outfit']">Shared Inbox</h2>
+            <span className="text-xs font-bold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full">
               {conversations.length} Active
             </span>
           </div>
 
           {/* Search */}
-          <div className="relative mb-2.5">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <div className="relative mb-3">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search chat or phone..."
-              className="w-full pl-8 pr-3 py-1.5 text-xs bg-white rounded-xl border border-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full pl-9 pr-3 py-2 text-sm bg-white rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 font-medium"
             />
           </div>
 
           {/* Filter Pills */}
-          <div className="flex items-center gap-1.5 text-[11px]">
+          <div className="flex items-center gap-2 text-xs sm:text-sm">
             <button
               onClick={() => setFilterType('ALL')}
-              className={`px-2.5 py-1 rounded-lg font-semibold transition-colors ${
-                filterType === 'ALL' ? 'bg-slate-800 text-white' : 'bg-slate-200/70 text-slate-600 hover:bg-slate-200'
+              className={`px-3 py-1.5 rounded-xl font-bold transition-colors ${
+                filterType === 'ALL' ? 'bg-slate-800 text-white' : 'bg-slate-200/70 text-slate-700 hover:bg-slate-200'
               }`}
             >
               All
             </button>
             <button
               onClick={() => setFilterType('UNREAD')}
-              className={`px-2.5 py-1 rounded-lg font-semibold transition-colors ${
-                filterType === 'UNREAD' ? 'bg-emerald-600 text-white' : 'bg-slate-200/70 text-slate-600 hover:bg-slate-200'
+              className={`px-3 py-1.5 rounded-xl font-bold transition-colors ${
+                filterType === 'UNREAD' ? 'bg-emerald-600 text-white' : 'bg-slate-200/70 text-slate-700 hover:bg-slate-200'
               }`}
             >
               Unread
             </button>
             <button
               onClick={() => setFilterType('TAKEOVER')}
-              className={`px-2.5 py-1 rounded-lg font-semibold transition-colors ${
-                filterType === 'TAKEOVER' ? 'bg-blue-600 text-white' : 'bg-slate-200/70 text-slate-600 hover:bg-slate-200'
+              className={`px-3 py-1.5 rounded-xl font-bold transition-colors ${
+                filterType === 'TAKEOVER' ? 'bg-blue-600 text-white' : 'bg-slate-200/70 text-slate-700 hover:bg-slate-200'
               }`}
             >
-              Human Takeover
+              Takeover
             </button>
           </div>
         </div>
@@ -392,37 +392,37 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
               <div
                 key={conv.id}
                 onClick={() => onSelectConversation(conv)}
-                className={`p-3.5 cursor-pointer transition-all ${
-                  isSelected ? 'bg-emerald-50/80 border-l-4 border-emerald-600' : 'hover:bg-slate-100/60'
+                className={`p-4 cursor-pointer transition-all ${
+                  isSelected ? 'bg-emerald-50/80 border-l-4 border-emerald-600 shadow-2xs' : 'hover:bg-slate-100/60'
                 }`}
               >
-                <div className="flex items-center justify-between mb-1">
-                  <div className="flex items-center gap-1.5 min-w-0">
-                    <span className="text-xs font-bold text-slate-800 truncate">{conv.contactName}</span>
+                <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-sm sm:text-base font-bold text-slate-900 truncate">{conv.contactName}</span>
                     {conv.takeoverActive && (
-                      <span className="text-[9px] bg-blue-100 text-blue-700 font-bold px-1.5 py-0.2 rounded">
+                      <span className="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-md">
                         Agent
                       </span>
                     )}
                   </div>
-                  <span className="text-[10px] text-slate-400 font-medium">{conv.lastMessageAt}</span>
+                  <span className="text-xs text-slate-500 font-medium shrink-0">{conv.lastMessageAt}</span>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <p className="text-xs text-slate-500 truncate flex-1 pr-2">{conv.lastMessage}</p>
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-xs sm:text-sm text-slate-600 truncate flex-1">{conv.lastMessage}</p>
                   {conv.unreadCount > 0 && (
-                    <span className="w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center flex-shrink-0">
+                    <span className="w-5 h-5 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">
                       {conv.unreadCount}
                     </span>
                   )}
                 </div>
 
-                <div className="flex items-center gap-1.5 mt-2">
-                  <span className="text-[10px] font-semibold bg-white border border-slate-200 text-slate-600 px-1.5 py-0.5 rounded">
+                <div className="flex items-center gap-2 mt-2.5">
+                  <span className="text-xs font-semibold bg-white border border-slate-200 text-slate-700 px-2 py-0.5 rounded-md">
                     {conv.leadStatus}
                   </span>
                   {conv.leadCourse && (
-                    <span className="text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">
+                    <span className="text-xs text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">
                       {conv.leadCourse}
                     </span>
                   )}
@@ -437,17 +437,17 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
       {activeConv ? (
         <div className="flex-1 flex flex-col h-full bg-[#f8fafc] border-r border-slate-200 min-w-0 min-h-0">
           {/* Thread Header */}
-          <div className="p-3.5 bg-white border-b border-slate-200 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center shadow-xs">
+          <div className="p-4 sm:p-4.5 bg-white border-b border-slate-200 flex items-center justify-between">
+            <div className="flex items-center gap-3.5">
+              <div className="w-12 h-12 rounded-full bg-emerald-600 text-white font-extrabold text-base flex items-center justify-center shadow-xs">
                 {activeConv.contactName.charAt(0)}
               </div>
               <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-bold text-slate-800">{activeConv.contactName}</h3>
-                  <span className="text-xs text-slate-400 font-mono">{activeConv.phone}</span>
+                <div className="flex items-center gap-2.5">
+                  <h3 className="text-base sm:text-lg font-bold text-slate-900">{activeConv.contactName}</h3>
+                  <span className="text-xs sm:text-sm text-slate-500 font-mono">{activeConv.phone}</span>
                 </div>
-                <div className="flex items-center gap-2 text-[11px] text-emerald-600 font-medium">
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-emerald-600 font-medium">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                   <span>WhatsApp Business Cloud API</span>
                 </div>
@@ -458,7 +458,7 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
             <div className="flex items-center gap-3">
               <button
                 onClick={() => onToggleTakeover(activeConv.id)}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all border ${
                   activeConv.takeoverActive
                     ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
                     : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
@@ -466,12 +466,12 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
               >
                 {activeConv.takeoverActive ? (
                   <>
-                    <UserIcon className="w-3.5 h-3.5" />
+                    <UserIcon className="w-4 h-4" />
                     <span>Human Takeover (Bot Paused)</span>
                   </>
                 ) : (
                   <>
-                    <Bot className="w-3.5 h-3.5 text-emerald-600" />
+                    <Bot className="w-4 h-4 text-emerald-600" />
                     <span>Take Over Chat</span>
                   </>
                 )}
@@ -480,12 +480,12 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
           </div>
 
           {/* 24-hr Service Window Banner (WA-07, WA-08, WA-09) */}
-          <div className={`border-b px-4 py-2 flex items-center justify-between text-xs transition-colors ${
+          <div className={`border-b px-4 py-2.5 flex items-center justify-between text-xs sm:text-sm transition-colors ${
             isWindowExpiredSimulated 
               ? 'bg-rose-50 border-rose-200 text-rose-900' 
               : 'bg-emerald-50 border-emerald-200/80 text-emerald-900'
           }`}>
-            <div className="flex items-center gap-2 font-medium text-[11px]">
+            <div className="flex items-center gap-2.5 font-medium text-xs sm:text-sm">
               {isWindowExpiredSimulated ? (
                 <>
                   <AlertTriangle className="w-4 h-4 text-rose-600 flex-shrink-0" />
@@ -497,18 +497,18 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
                 <>
                   <Clock className="w-4 h-4 text-emerald-600 flex-shrink-0" />
                   <span>
-                    Customer Service Window: <strong className="text-emerald-700">21h 36m remaining</strong> for free-form replies.
+                    Customer Service Window: <strong className="text-emerald-700 font-bold">21h 36m remaining</strong> for free-form replies.
                   </span>
                 </>
               )}
             </div>
 
             {/* Simulation switch for testing compliance */}
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Test Window:</span>
+            <div className="flex items-center gap-2 shrink-0">
+              <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider hidden sm:inline">Test Window:</span>
               <button
                 onClick={() => setIsWindowExpiredSimulated(prev => !prev)}
-                className={`text-[10px] font-bold px-2.5 py-1 rounded-lg border transition-all ${
+                className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${
                   isWindowExpiredSimulated
                     ? 'bg-rose-600 text-white border-rose-600 shadow-xs'
                     : 'bg-white text-emerald-800 border-emerald-300 hover:bg-emerald-100/50'
@@ -523,7 +523,7 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
           {/* Messages Area */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar bg-[#f1f5f9]/50 min-h-0">
             {accessedViaGrant && (
-              <div className="p-2.5 bg-indigo-50 border border-indigo-200 text-indigo-900 text-xs rounded-2xl flex items-center gap-2 mb-2 shadow-xs">
+              <div className="p-3 bg-indigo-50 border border-indigo-200 text-indigo-900 text-xs sm:text-sm rounded-2xl flex items-center gap-2.5 mb-2 shadow-xs">
                 <ShieldAlert className="w-4 h-4 text-indigo-600 flex-shrink-0" />
                 <span>
                   <strong>SRS Line 615 Privacy Safeguard:</strong> Message content accessed via active Owner-issued support grant.
@@ -532,31 +532,31 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
             )}
 
             {messageError && (
-              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-800 text-xs rounded-2xl flex items-center justify-between gap-2 shadow-xs">
+              <div className="p-3.5 bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm rounded-2xl flex items-center justify-between gap-3 shadow-xs">
                 <div className="flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0" />
                   <span>{messageError}</span>
                 </div>
                 <button
                   onClick={() => loadMessages(activeConv.id)}
-                  className="px-2.5 py-1 bg-rose-600 text-white font-bold rounded-lg text-[10px] hover:bg-rose-700 transition-colors flex items-center gap-1"
+                  className="px-3 py-1.5 bg-rose-600 text-white font-bold rounded-xl text-xs hover:bg-rose-700 transition-colors flex items-center gap-1.5 shrink-0"
                 >
-                  <RefreshCw className="w-3 h-3" />
+                  <RefreshCw className="w-3.5 h-3.5" />
                   <span>Retry</span>
                 </button>
               </div>
             )}
 
             {loadingMessages ? (
-              <div className="flex flex-col items-center justify-center py-16 text-slate-400 space-y-2">
-                <Loader2 className="w-6 h-6 animate-spin text-emerald-600" />
-                <span className="text-xs font-medium">Fetching real conversation history...</span>
+              <div className="flex flex-col items-center justify-center py-20 text-slate-400 space-y-3">
+                <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
+                <span className="text-sm font-semibold">Fetching real conversation history...</span>
               </div>
             ) : threadMessages.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-16 text-slate-400 space-y-1">
-                <Bot className="w-8 h-8 text-slate-300" />
-                <p className="text-xs font-semibold text-slate-600">No messages in this conversation yet</p>
-                <p className="text-[11px] text-slate-400">Send an initial reply or template to start chatting.</p>
+              <div className="flex flex-col items-center justify-center py-20 text-slate-400 space-y-2">
+                <Bot className="w-12 h-12 text-slate-300" />
+                <p className="text-base font-bold text-slate-700">No messages in this conversation yet</p>
+                <p className="text-xs sm:text-sm text-slate-400">Send an initial reply or template to start chatting.</p>
               </div>
             ) : (
               threadMessages.map((msg) => {
@@ -569,28 +569,28 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
                     className={`flex ${isOutbound ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[70%] rounded-2xl p-3 text-xs leading-relaxed shadow-xs ${
+                      className={`max-w-[75%] rounded-2xl p-3.5 sm:p-4 text-sm sm:text-base leading-relaxed shadow-xs ${
                         isOutbound
                           ? 'bg-emerald-600 text-white rounded-tr-none'
                           : 'bg-white text-slate-800 rounded-tl-none border border-slate-200'
                       }`}
                     >
-                      <div className="flex items-center gap-1.5 mb-1 text-[10px] opacity-80">
+                      <div className="flex items-center gap-2 mb-1.5 text-xs opacity-85">
                         {isOutbound ? (
-                          <span>{isBot ? '🤖 AutoMask AI Bot' : `👨‍💼 ${msg.senderName || activeConv.assignedToName || assignedAgent || 'Counsellor'}`}</span>
+                          <span className="font-semibold">{isBot ? '🤖 AutoMask AI Bot' : `👨‍💼 ${msg.senderName || activeConv.assignedToName || assignedAgent || 'Counsellor'}`}</span>
                         ) : (
-                          <span className="font-semibold text-slate-700">{activeConv.contactName}</span>
+                          <span className="font-bold text-slate-800">{activeConv.contactName}</span>
                         )}
                         {msg.type === 'template' && (
-                          <span className="bg-emerald-700 text-white text-[9px] px-1.5 py-0.2 rounded font-mono">
+                          <span className="bg-emerald-700 text-white text-[10px] px-2 py-0.5 rounded font-mono font-bold">
                             Meta Template
                           </span>
                         )}
                       </div>
-                      <p className="whitespace-pre-wrap">{msg.body}</p>
-                      <div className={`flex items-center justify-end gap-1 text-[9px] mt-1 ${isOutbound ? 'text-emerald-100' : 'text-slate-400'}`}>
+                      <p className="whitespace-pre-wrap font-normal">{msg.body}</p>
+                      <div className={`flex items-center justify-end gap-1.5 text-xs mt-1.5 ${isOutbound ? 'text-emerald-100' : 'text-slate-400'}`}>
                         <span>{msg.timestamp}</span>
-                        {isOutbound && <CheckCheck className="w-3.5 h-3.5" />}
+                        {isOutbound && <CheckCheck className="w-4 h-4" />}
                       </div>
                     </div>
                   </div>
@@ -601,26 +601,26 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
 
           {/* Quick Canned Replies Bar (Audio 5 Requirement) */}
           {!isWindowExpiredSimulated && (
-            <div className="bg-slate-50/90 px-3 py-2 border-t border-slate-200 flex items-center gap-2 overflow-x-auto no-scrollbar">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1 shrink-0">
-                <Sparkles className="w-3 h-3 text-emerald-500" />
+            <div className="bg-slate-50/95 px-4 py-2.5 border-t border-slate-200 flex items-center gap-2.5 overflow-x-auto no-scrollbar">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1 shrink-0">
+                <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
                 Quick:
               </span>
 
               {/* Keyword Filter */}
               <div className="relative shrink-0">
-                <Search className="w-3 h-3 text-slate-400 absolute left-2 top-1/2 -translate-y-1/2" />
+                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   value={quickFilterKeyword}
                   onChange={(e) => setQuickFilterKeyword(e.target.value)}
                   placeholder="Filter /keyword..."
-                  className="pl-6 pr-2 py-1 text-[11px] bg-white border border-slate-200 rounded-lg w-28 focus:outline-none focus:w-36 focus:ring-1 focus:ring-emerald-500 transition-all text-slate-800 placeholder:text-slate-400"
+                  className="pl-8 pr-2.5 py-1.5 text-xs sm:text-sm bg-white border border-slate-200 rounded-xl w-32 focus:outline-none focus:w-44 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-slate-800 placeholder:text-slate-400"
                 />
               </div>
 
               {/* Dynamic Shortcut Chips */}
-              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
                 {quickReplies
                   .filter(q => !quickFilterKeyword || 
                     q.keyword.toLowerCase().includes(quickFilterKeyword.toLowerCase()) || 
@@ -631,9 +631,9 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
                       key={q.id}
                       onClick={() => setInputText(q.body)}
                       title={q.body}
-                      className="text-[11px] font-medium bg-white hover:bg-emerald-50 hover:border-emerald-300 border border-slate-200 text-slate-700 px-2.5 py-1 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1.5 shrink-0 shadow-2xs group"
+                      className="text-xs sm:text-sm font-semibold bg-white hover:bg-emerald-50 hover:border-emerald-300 border border-slate-200 text-slate-700 px-3 py-1.5 rounded-xl transition-colors whitespace-nowrap flex items-center gap-2 shrink-0 shadow-2xs group"
                     >
-                      <span className="font-mono text-[10px] text-emerald-600 font-bold bg-emerald-50 group-hover:bg-emerald-100 px-1 py-0.2 rounded">
+                      <span className="font-mono text-xs text-emerald-700 font-bold bg-emerald-50 group-hover:bg-emerald-100 px-1.5 py-0.5 rounded-md">
                         {q.keyword}
                       </span>
                       <span>{q.title}</span>
@@ -644,10 +644,10 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
               {/* Manage & Add Shortcuts Button */}
               <button
                 onClick={handleOpenAddQuickReply}
-                className="text-[11px] font-bold bg-slate-800 hover:bg-slate-900 text-white px-2.5 py-1 rounded-lg transition-colors whitespace-nowrap flex items-center gap-1 shrink-0 shadow-2xs ml-auto"
+                className="text-xs sm:text-sm font-bold bg-slate-800 hover:bg-slate-900 text-white px-3 py-1.5 rounded-xl transition-colors whitespace-nowrap flex items-center gap-1.5 shrink-0 shadow-2xs ml-auto"
                 title="Create or edit canned responses"
               >
-                <Plus className="w-3 h-3 text-emerald-400" />
+                <Plus className="w-3.5 h-3.5 text-emerald-400" />
                 <span>+ Canned Library</span>
               </button>
             </div>
@@ -655,8 +655,8 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
 
           {/* Chat Input or Expired Window Guard */}
           {isWindowExpiredSimulated ? (
-            <div className="p-4 bg-rose-50/50 border-t border-rose-200 flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="flex items-center gap-2 text-xs text-rose-800">
+            <div className="p-4 sm:p-5 bg-rose-50/50 border-t border-rose-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5 text-xs sm:text-sm text-rose-800 font-medium">
                 <Lock className="w-4 h-4 text-rose-600 flex-shrink-0" />
                 <span>
                   Free-form messaging locked. Send a verified Meta template message to restart the 24-hr conversation window.
@@ -664,16 +664,16 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
               </div>
               <button
                 onClick={() => setIsTemplateModalOpen(true)}
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center gap-2 transition-all shadow-sm whitespace-nowrap"
+                className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all shadow-sm whitespace-nowrap"
               >
-                <FileText className="w-3.5 h-3.5" />
+                <FileText className="w-4 h-4" />
                 <span>Choose Approved Template</span>
               </button>
             </div>
           ) : (
-            <div className="p-3 bg-white border-t border-slate-200 flex items-center gap-2">
-              <button className="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100">
-                <Paperclip className="w-4 h-4" />
+            <div className="p-3 sm:p-4 bg-white border-t border-slate-200 flex items-center gap-2.5">
+              <button className="text-slate-400 hover:text-slate-600 p-2 rounded-xl hover:bg-slate-100 transition-colors">
+                <Paperclip className="w-5 h-5" />
               </button>
               <input
                 type="text"
@@ -681,47 +681,47 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                 placeholder={activeConv.takeoverActive ? "Type counsellor reply to student..." : "Type reply (or enable Human Takeover to pause AI)..."}
-                className="flex-1 bg-slate-50 border border-slate-200 text-xs px-3.5 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-slate-800 placeholder:text-slate-400"
+                className="flex-1 bg-slate-50 border border-slate-200 text-sm sm:text-base px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 text-slate-800 placeholder:text-slate-400 h-12"
               />
               <button
                 onClick={handleSend}
-                className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors shadow-sm"
+                className="px-5 sm:px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm sm:text-base font-bold flex items-center gap-2 transition-colors shadow-sm h-12 shrink-0 cursor-pointer"
               >
-                <Send className="w-3.5 h-3.5" />
+                <Send className="w-4 h-4" />
                 <span>Send</span>
               </button>
             </div>
           )}
         </div>
       ) : (
-        <div className="flex-1 flex items-center justify-center text-slate-400">
+        <div className="flex-1 flex items-center justify-center text-slate-400 text-base font-semibold">
           Select a conversation from the list
         </div>
       )}
 
       {/* 3. Right: Student Contact Card & CRM Details */}
       {activeConv && (
-        <div className="hidden xl:flex w-72 bg-white flex-col h-full overflow-y-auto p-4 custom-scrollbar flex-shrink-0 min-h-0 border-l border-slate-200">
-          <div className="text-center pb-4 border-b border-slate-100">
-            <div className="w-16 h-16 rounded-full bg-slate-800 text-white text-xl font-black flex items-center justify-center mx-auto mb-2 shadow-sm font-['Outfit']">
+        <div className="hidden xl:flex w-80 2xl:w-88 bg-white flex-col h-full overflow-y-auto p-5 custom-scrollbar flex-shrink-0 min-h-0 border-l border-slate-200">
+          <div className="text-center pb-5 border-b border-slate-100">
+            <div className="w-20 h-20 rounded-full bg-slate-800 text-white text-2xl font-black flex items-center justify-center mx-auto mb-2.5 shadow-sm font-['Outfit']">
               {activeConv.contactName.charAt(0)}
             </div>
-            <h3 className="text-sm font-bold text-slate-800">{activeConv.contactName}</h3>
-            <p className="text-xs text-slate-500 font-mono mt-0.5">{activeConv.phone}</p>
-            <span className="inline-block mt-2 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+            <h3 className="text-base sm:text-lg font-bold text-slate-900">{activeConv.contactName}</h3>
+            <p className="text-xs sm:text-sm text-slate-500 font-mono mt-0.5">{activeConv.phone}</p>
+            <span className="inline-block mt-2.5 text-xs font-bold px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
               Opted-In via Inbound Chat
             </span>
           </div>
 
           {/* CRM Lead Pipeline Status */}
-          <div className="py-4 border-b border-slate-100 space-y-2">
-            <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
+          <div className="py-4.5 border-b border-slate-100 space-y-2.5">
+            <label className="text-xs font-bold text-slate-600 uppercase tracking-wider block">
               Lead Pipeline Stage
             </label>
             <select
               value={activeConv.leadStatus}
               onChange={(e) => onUpdateLeadStatus(activeConv.phone, e.target.value as LeadStatus)}
-              className="w-full text-xs font-bold p-2 bg-slate-50 rounded-xl border border-slate-200 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+              className="w-full text-sm font-bold p-2.5 bg-slate-50 rounded-xl border border-slate-200 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 h-11"
             >
               <option value="NEW">🟢 New Enquiry</option>
               <option value="QUALIFIED">🔵 Qualified Lead</option>
@@ -734,21 +734,21 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
           </div>
 
           {/* Student Academic Details */}
-          <div className="py-4 border-b border-slate-100 space-y-2.5 text-xs">
-            <div className="flex justify-between">
-              <span className="text-slate-400">Target Exam:</span>
-              <span className="font-semibold text-slate-700">{activeConv.leadCourse || 'JEE Main'}</span>
+          <div className="py-4.5 border-b border-slate-100 space-y-3 text-sm">
+            <div className="flex justify-between items-center">
+              <span className="text-xs sm:text-sm text-slate-500 font-medium">Target Exam:</span>
+              <span className="font-bold text-sm sm:text-base text-slate-800">{activeConv.leadCourse || 'JEE Main'}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-slate-400">City / Location:</span>
-              <span className="font-semibold text-slate-700">Delhi NCR</span>
+            <div className="flex justify-between items-center">
+              <span className="text-xs sm:text-sm text-slate-500 font-medium">City / Location:</span>
+              <span className="font-bold text-sm sm:text-base text-slate-800">Delhi NCR</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-slate-400">Assigned Agent:</span>
+              <span className="text-xs sm:text-sm text-slate-500 font-medium">Assigned Agent:</span>
               <select
                 value={assignedAgent}
                 onChange={(e) => setAssignedAgent(e.target.value)}
-                className="text-xs font-semibold text-slate-700 bg-slate-50 border border-slate-200 rounded-md p-1 focus:outline-none"
+                className="text-xs sm:text-sm font-semibold text-slate-700 bg-slate-50 border border-slate-200 rounded-xl p-2 focus:outline-none"
               >
                 <option value="Sumit Bhardwaj">Sumit Bhardwaj (Admin)</option>
                 <option value="Priya Sharma">Priya Sharma (Agent)</option>
@@ -759,34 +759,34 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
           </div>
 
           {/* Counsellor Internal Notes */}
-          <div className="pt-4 space-y-2">
-            <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
+          <div className="pt-4.5 space-y-2.5">
+            <label className="text-xs font-bold text-slate-600 uppercase tracking-wider block">
               Internal Counsellor Notes
             </label>
-            <div className="space-y-1.5 max-h-36 overflow-y-auto">
+            <div className="space-y-2 max-h-44 overflow-y-auto">
               {notesList.map((note, i) => (
-                <div key={i} className="bg-amber-50/70 border border-amber-200/60 p-2 rounded-lg text-[11px] text-amber-900 leading-tight flex items-start justify-between gap-1">
+                <div key={i} className="bg-amber-50/70 border border-amber-200/60 p-3 rounded-xl text-xs sm:text-sm text-amber-900 leading-normal flex items-start justify-between gap-2 shadow-2xs">
                   <span>{note}</span>
                   <button
                     onClick={() => setNotesList(prev => prev.filter((_, idx) => idx !== i))}
-                    className="text-amber-500 hover:text-amber-800 text-[10px] font-bold"
+                    className="text-amber-500 hover:text-amber-800 text-sm font-bold shrink-0 p-0.5"
                   >
                     ×
                   </button>
                 </div>
               ))}
             </div>
-            <div className="flex gap-1.5 pt-1">
+            <div className="flex gap-2 pt-1.5">
               <input
                 type="text"
                 value={internalNote}
                 onChange={(e) => setInternalNote(e.target.value)}
                 placeholder="Add private note..."
-                className="flex-1 text-[11px] p-1.5 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none"
+                className="flex-1 text-xs sm:text-sm p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 text-slate-800 placeholder:text-slate-400"
               />
               <button
                 onClick={handleAddNote}
-                className="px-2.5 py-1 bg-slate-800 text-white rounded-lg text-[11px] font-semibold hover:bg-slate-700"
+                className="px-3.5 py-2 bg-slate-800 text-white rounded-xl text-xs sm:text-sm font-bold hover:bg-slate-700 transition-colors shrink-0"
               >
                 Add
               </button>
@@ -805,32 +805,32 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
                   📨
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-800 font-['Outfit']">
+                  <h3 className="text-base sm:text-lg font-bold text-slate-800 font-['Outfit']">
                     Send Meta-Approved WhatsApp Template
                   </h3>
-                  <p className="text-[11px] text-slate-500">
+                  <p className="text-xs text-slate-500">
                     Compliant re-engagement for expired 24h customer window (SRS WA-08)
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setIsTemplateModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 text-lg font-bold"
+                className="text-slate-400 hover:text-slate-600 text-xl font-bold"
               >
                 ×
               </button>
             </div>
 
             {/* Template Selector */}
-            <div className="space-y-3">
+            <div className="space-y-3.5">
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">
+                <label className="text-xs sm:text-sm font-bold text-slate-700 block mb-1.5">
                   Choose Template:
                 </label>
                 <select
                   value={selectedTemplate}
                   onChange={(e) => setSelectedTemplate(e.target.value)}
-                  className="w-full text-xs font-medium p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                  className="w-full text-xs sm:text-sm font-semibold p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
                 >
                   <option value="demo_reminder_physics">demo_reminder_physics (Category: UTILITY)</option>
                   <option value="batch_admission_open">batch_admission_open (Category: MARKETING)</option>
@@ -839,26 +839,26 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
               </div>
 
               {/* Variable Fields */}
-              <div className="space-y-2 bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <span className="text-[11px] font-bold text-slate-600 block">Template Parameters:</span>
-                <div className="flex items-center justify-between text-xs">
+              <div className="space-y-2.5 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                <span className="text-xs sm:text-sm font-bold text-slate-700 block">Template Parameters:</span>
+                <div className="flex items-center justify-between text-xs sm:text-sm">
                   <span className="text-slate-500 font-mono">{'{{1}}'} Student Name:</span>
-                  <span className="font-semibold text-slate-800">{activeConv?.contactName || 'Student'}</span>
+                  <span className="font-bold text-slate-800">{activeConv?.contactName || 'Student'}</span>
                 </div>
-                <div className="flex items-center justify-between text-xs">
+                <div className="flex items-center justify-between text-xs sm:text-sm">
                   <span className="text-slate-500 font-mono">{'{{2}}'} Session Time:</span>
                   <input
                     type="text"
                     value={templateVar}
                     onChange={(e) => setTemplateVar(e.target.value)}
-                    className="w-48 text-xs px-2 py-1 bg-white border border-slate-200 rounded-lg text-slate-800"
+                    className="w-52 text-xs sm:text-sm px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-800 font-medium"
                   />
                 </div>
               </div>
 
               {/* Template Body Preview */}
-              <div className="bg-emerald-50/50 border border-emerald-200/80 p-3 rounded-xl text-xs text-slate-800 leading-relaxed font-sans">
-                <span className="text-[10px] font-bold text-emerald-800 block mb-1 uppercase tracking-wider">
+              <div className="bg-emerald-50/50 border border-emerald-200/80 p-4 rounded-xl text-xs sm:text-sm text-slate-800 leading-relaxed font-sans">
+                <span className="text-xs font-bold text-emerald-800 block mb-1.5 uppercase tracking-wider">
                   Template Preview (Meta Approved):
                 </span>
                 {selectedTemplate === 'demo_reminder_physics' && (
@@ -879,19 +879,19 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+            <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
               <button
                 onClick={() => setIsTemplateModalOpen(false)}
-                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl"
+                className="px-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-xl"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSendTemplateSubmit}
                 disabled={isSending}
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors flex items-center gap-1.5"
+                className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs transition-colors flex items-center gap-2"
               >
-                {isSending && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+                {isSending && <Loader2 className="w-4 h-4 animate-spin" />}
                 <span>Send Template via Cloud API</span>
               </button>
             </div>
@@ -910,10 +910,10 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
                   ⚡
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-800 font-['Outfit']">
+                  <h3 className="text-base sm:text-lg font-bold text-slate-800 font-['Outfit']">
                     Canned Replies & Shortcut Library
                   </h3>
-                  <p className="text-[11px] text-slate-500">
+                  <p className="text-xs text-slate-500">
                     Create, edit, and manage instant response shortcuts triggered by keywords (e.g. /fees, /demo)
                   </p>
                 </div>
@@ -922,16 +922,16 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
                 onClick={() => setIsQuickManagerOpen(false)}
                 className="text-slate-400 hover:text-slate-600 p-1 rounded-lg"
               >
-                <X className="w-4 h-4" />
+                <X className="w-5 h-5" />
               </button>
             </div>
 
             <div className="overflow-y-auto py-3 space-y-5 custom-scrollbar">
               {/* Form to Add or Edit */}
-              <form onSubmit={handleSaveQuickReply} className="bg-slate-50/80 p-4 rounded-2xl border border-slate-200/80 space-y-3">
+              <form onSubmit={handleSaveQuickReply} className="bg-slate-50/80 p-4 sm:p-5 rounded-2xl border border-slate-200/80 space-y-3.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                    <Edit3 className="w-3.5 h-3.5 text-emerald-600" />
+                  <span className="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2">
+                    <Edit3 className="w-4 h-4 text-emerald-600" />
                     {editingQuickReply ? `Edit Shortcut: ${editingQuickReply.keyword}` : 'Add New Canned Shortcut'}
                   </span>
                   {editingQuickReply && (
@@ -943,44 +943,44 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
                         setQrTitle('');
                         setQrBody('');
                       }}
-                      className="text-[10px] text-slate-500 hover:text-slate-700 font-semibold underline"
+                      className="text-xs text-slate-500 hover:text-slate-700 font-semibold underline"
                     >
                       Clear / Create New Instead
                     </button>
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
-                    <label className="text-[11px] font-bold text-slate-600 block mb-1">Shortcut Keyword *</label>
+                    <label className="text-xs font-bold text-slate-700 block mb-1">Shortcut Keyword *</label>
                     <input
                       type="text"
                       value={qrKeyword}
                       onChange={e => setQrKeyword(e.target.value)}
                       placeholder="/fees, /demo, /hostel"
-                      className="w-full text-xs font-mono p-2 bg-white rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                      className="w-full text-xs sm:text-sm font-mono p-2.5 bg-white rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-bold"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-bold text-slate-600 block mb-1">Short Title *</label>
+                    <label className="text-xs font-bold text-slate-700 block mb-1">Short Title *</label>
                     <input
                       type="text"
                       value={qrTitle}
                       onChange={e => setQrTitle(e.target.value)}
                       placeholder="e.g. Fee Structure Breakdown"
-                      className="w-full text-xs p-2 bg-white rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                      className="w-full text-xs sm:text-sm p-2.5 bg-white rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-bold text-slate-600 block mb-1">Category</label>
+                    <label className="text-xs font-bold text-slate-700 block mb-1">Category</label>
                     <select
                       value={qrCategory}
                       onChange={e => setQrCategory(e.target.value)}
-                      className="w-full text-xs p-2 bg-white rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium"
+                      className="w-full text-xs sm:text-sm p-2.5 bg-white rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 font-medium"
                     >
                       <option value="Admissions">Admissions</option>
                       <option value="Bookings">Bookings / Demo</option>
@@ -993,13 +993,13 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-bold text-slate-600 block mb-1">Canned Reply Message Body *</label>
+                  <label className="text-xs font-bold text-slate-700 block mb-1">Canned Reply Message Body *</label>
                   <textarea
                     rows={3}
                     value={qrBody}
                     onChange={e => setQrBody(e.target.value)}
                     placeholder="Enter the complete response text sent to students when this shortcut is selected..."
-                    className="w-full text-xs p-2.5 bg-white rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 leading-relaxed text-slate-800 placeholder:text-slate-400"
+                    className="w-full text-xs sm:text-sm p-3 bg-white rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 leading-relaxed text-slate-800 placeholder:text-slate-400 font-medium"
                     required
                   />
                 </div>
@@ -1007,49 +1007,49 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
                 <div className="flex justify-end gap-2 pt-1">
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors shadow-xs flex items-center gap-1.5"
+                    className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold transition-colors shadow-xs flex items-center gap-2 cursor-pointer"
                   >
-                    <CheckCircle className="w-3.5 h-3.5" />
+                    <CheckCircle className="w-4 h-4" />
                     <span>{editingQuickReply ? 'Update Shortcut' : 'Save New Shortcut'}</span>
                   </button>
                 </div>
               </form>
 
               {/* Existing Shortcuts List */}
-              <div className="space-y-2">
-                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
+              <div className="space-y-2.5">
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">
                   Configured Shortcuts ({quickReplies.length})
                 </span>
 
-                <div className="space-y-2">
+                <div className="space-y-2.5">
                   {quickReplies.map((qr) => (
                     <div
                       key={qr.id}
-                      className="p-3 bg-white border border-slate-200/90 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 hover:border-slate-300 transition-colors shadow-2xs"
+                      className="p-3.5 bg-white border border-slate-200/90 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 hover:border-slate-300 transition-colors shadow-2xs"
                     >
-                      <div className="space-y-1 flex-1">
+                      <div className="space-y-1.5 flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-mono text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-lg">
+                          <span className="font-mono text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg">
                             {qr.keyword}
                           </span>
-                          <span className="text-xs font-bold text-slate-800">{qr.title}</span>
-                          <span className="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.2 rounded font-medium">
+                          <span className="text-sm font-bold text-slate-900">{qr.title}</span>
+                          <span className="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md font-medium">
                             {qr.category || 'General'}
                           </span>
                         </div>
-                        <p className="text-[11px] text-slate-600 line-clamp-2 leading-relaxed">
+                        <p className="text-xs sm:text-sm text-slate-600 line-clamp-2 leading-relaxed">
                           {qr.body}
                         </p>
                       </div>
 
-                      <div className="flex items-center gap-1.5 shrink-0 self-end sm:self-center">
+                      <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
                         <button
                           type="button"
                           onClick={() => {
                             setInputText(qr.body);
                             setIsQuickManagerOpen(false);
                           }}
-                          className="px-2.5 py-1 bg-slate-100 hover:bg-emerald-100 text-slate-700 hover:text-emerald-800 rounded-lg text-[11px] font-semibold transition-colors"
+                          className="px-3 py-1.5 bg-slate-100 hover:bg-emerald-100 text-slate-700 hover:text-emerald-800 rounded-xl text-xs sm:text-sm font-semibold transition-colors"
                           title="Insert this reply into the chat message box"
                         >
                           Use in Chat
@@ -1057,18 +1057,18 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
                         <button
                           type="button"
                           onClick={() => handleEditQuickReply(qr)}
-                          className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition-colors"
+                          className="p-2 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition-colors"
                           title="Edit shortcut"
                         >
-                          <Edit3 className="w-3.5 h-3.5" />
+                          <Edit3 className="w-4 h-4" />
                         </button>
                         <button
                           type="button"
                           onClick={() => handleDeleteQuickReply(qr.id)}
-                          className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors"
+                          className="p-2 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors"
                           title="Delete shortcut"
                         >
-                          <Trash2 className="w-3.5 h-3.5" />
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
                     </div>
@@ -1081,7 +1081,7 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
               <button
                 type="button"
                 onClick={() => setIsQuickManagerOpen(false)}
-                className="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-bold transition-colors shadow-xs"
+                className="px-5 py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs sm:text-sm font-bold transition-colors shadow-xs"
               >
                 Done
               </button>

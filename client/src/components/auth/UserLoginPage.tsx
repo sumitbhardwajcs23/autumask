@@ -355,15 +355,15 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
       {/* =========================================================================
           LEFT COLUMN: Product Showcase & High-Fidelity Dashboard Mockup (Full Viewport)
           ========================================================================= */}
-      <div className="hidden lg:flex lg:w-7/12 xl:w-3/5 bg-white border-r border-slate-200/80 p-8 xl:p-12 2xl:p-16 flex-col justify-between overflow-y-auto">
+      <div className="hidden lg:flex lg:w-1/2 xl:w-7/12 bg-white border-r border-slate-200/80 p-8 xl:p-12 2xl:p-16 flex-col justify-between overflow-y-auto">
         
         {/* Top Logo */}
         <div 
           onClick={onBackToHome}
           className="flex items-center gap-3 cursor-pointer group select-none shrink-0"
         >
-          <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-sm transition-transform group-hover:scale-105">
-            <MessageSquare className="w-5 h-5 fill-white/20" />
+          <div className="w-11 h-11 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-sm transition-transform group-hover:scale-105">
+            <MessageSquare className="w-6 h-6 fill-white/20" />
           </div>
           <span className="font-black text-2xl xl:text-3xl text-slate-900 tracking-tight font-['Outfit']">
             Auto<span className="text-emerald-700">Mask</span>
@@ -375,7 +375,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
           
           {/* Main Headline */}
           <div className="space-y-3.5">
-            <h1 className="text-4xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tight leading-[1.15] font-['Outfit']">
+            <h1 className="text-4xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tight leading-[1.12] font-['Outfit']">
               Automate Your <br />
               <span className="text-emerald-700">WhatsApp Conversations</span> <br />
               and Grow Faster
@@ -425,7 +425,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
           </div>
 
           {/* High-Fidelity Product Dashboard Mockup Card */}
-          <div className="w-full max-w-2xl xl:max-w-3xl bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden flex select-none pointer-events-none transition-all duration-300">
+          <div className="w-full max-w-2xl xl:max-w-3xl 2xl:max-w-4xl bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden flex select-none pointer-events-none transition-all duration-300">
             {/* Mock Dark Navy Sidebar */}
             <div className="w-44 bg-[#0b131e] text-slate-400 p-4 flex flex-col justify-between shrink-0 border-r border-[#152332]">
               <div className="space-y-4">
@@ -578,16 +578,16 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
       {/* =========================================================================
           RIGHT COLUMN: Centered Framed Card Layout (Matches Reference Screenshot)
           ========================================================================= */}
-      <div className="w-full lg:w-5/12 xl:w-2/5 min-h-screen bg-[#f8fafc] p-4 sm:p-8 xl:p-12 flex flex-col justify-between overflow-y-auto">
+      <div className="w-full lg:w-1/2 xl:w-5/12 min-h-screen bg-[#f8fafc] p-6 sm:p-10 lg:p-12 flex flex-col justify-center items-center overflow-y-auto relative">
         
         {/* Top Bar: Mobile Logo + Top-Right Sign Up Toggle */}
-        <div className="flex items-center justify-between w-full max-w-[480px] xl:max-w-[500px] mx-auto shrink-0 pb-3">
+        <div className="flex items-center justify-between w-full max-w-[480px] shrink-0 mb-5">
           <div 
             onClick={onBackToHome}
             className="flex lg:hidden items-center gap-2.5 cursor-pointer select-none"
           >
-            <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white shadow-xs">
-              <MessageSquare className="w-4.5 h-4.5 fill-white/20" />
+            <div className="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-xs">
+              <MessageSquare className="w-5 h-5 fill-white/20" />
             </div>
             <span className="font-black text-2xl text-slate-900 tracking-tight font-['Outfit']">
               Auto<span className="text-emerald-700">Mask</span>
@@ -632,7 +632,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
         </div>
 
         {/* Center Main Login Card Form (Elevated Rounded-3xl Card) */}
-        <div className="w-full max-w-[480px] xl:max-w-[500px] mx-auto my-auto bg-white rounded-3xl border border-slate-200/90 shadow-xl p-7 sm:p-9 space-y-6">
+        <div className="w-full max-w-[480px] bg-white rounded-3xl border border-slate-200/90 shadow-xl p-7 sm:p-8 space-y-5">
           
           {/* Card Header: Prominent Brand + Large Headings */}
           <div>
@@ -721,7 +721,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
               </button>
 
               {/* Clean Divider */}
-              <div className="relative flex py-1 items-center">
+              <div className="relative flex py-0.5 items-center">
                 <div className="flex-grow border-t border-slate-200"></div>
                 <span className="flex-shrink mx-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
                   OR
@@ -857,7 +857,7 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full h-12 sm:h-13 mt-3 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-xl text-base font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                  className="w-full h-12 sm:h-13 mt-2 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-xl text-base font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
                 >
                   {isLoading ? (
                     <>
@@ -875,8 +875,8 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
 
               {/* Quick Demo Logins Section */}
               {authMode === 'signin' && (
-                <div className="pt-4 border-t border-slate-100">
-                  <div className="text-xs font-bold text-slate-400 tracking-wider uppercase text-center mb-3">
+                <div className="pt-3 border-t border-slate-100">
+                  <div className="text-xs font-bold text-slate-400 tracking-wider uppercase text-center mb-2.5">
                     QUICK DEMO LOGINS
                   </div>
                   <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
@@ -981,8 +981,8 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
 
         </div>
 
-        {/* Bottom Footer Info */}
-        <div className="pt-4 flex items-center justify-between text-xs sm:text-sm text-slate-400 w-full max-w-[480px] xl:max-w-[500px] mx-auto shrink-0 font-medium">
+        {/* Bottom Footer Info: Directly below the card */}
+        <div className="mt-5 flex items-center justify-between text-xs sm:text-sm text-slate-400 w-full max-w-[480px] shrink-0 font-medium">
           <span>© 2026 AutoMask Inc.</span>
           <div className="flex items-center gap-3">
             <span className="hover:text-slate-600 cursor-pointer">Privacy</span>

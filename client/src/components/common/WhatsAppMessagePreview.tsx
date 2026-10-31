@@ -105,30 +105,30 @@ export const WhatsAppMessagePreview: React.FC<WhatsAppMessagePreviewProps> = ({
 
         {/* Header Text */}
         {headerText && (
-          <div className="text-xs font-black text-emerald-800 tracking-tight pb-1.5 mb-1.5 border-b border-emerald-50 flex items-center gap-1.5 font-['Outfit']">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          <div className="text-xs sm:text-sm font-black text-emerald-800 tracking-tight pb-1.5 mb-1.5 border-b border-emerald-50 flex items-center gap-1.5 font-['Outfit']">
+            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
             <span>{headerText}</span>
           </div>
         )}
 
         {/* Body Text */}
-        <div className="text-xs text-slate-700 whitespace-pre-wrap leading-relaxed font-sans font-normal">
+        <div className="text-xs sm:text-sm text-slate-800 whitespace-pre-wrap leading-relaxed font-sans font-normal">
           {bodyText || <span className="text-slate-400 italic">Type your WhatsApp automated message body...</span>}
         </div>
 
         {/* Footer Text & Timestamp */}
-        <div className="mt-2 pt-1 border-t border-slate-100/80 flex items-center justify-between text-[10px] text-slate-400">
-          <span className="font-medium text-slate-500 italic">
+        <div className="mt-2 pt-1 border-t border-slate-100/80 flex items-center justify-between text-xs text-slate-400">
+          <span className="font-medium text-slate-500 italic text-[11px]">
             {footerText || 'Prakash Institute • Official Desk'}
           </span>
-          <span className="text-[9px] font-mono">{currentTime}</span>
+          <span className="text-[10px] font-mono">{currentTime}</span>
         </div>
 
         {/* Attached Interactive Quick Reply Buttons */}
         {buttons && buttons.length > 0 && (
-          <div className="mt-2.5 pt-2 border-t border-slate-100 space-y-1.5">
-            <div className="text-[9px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1 mb-1">
-              <Sparkles className="w-2.5 h-2.5 text-emerald-500" />
+          <div className="mt-2.5 pt-2 border-t border-slate-100 space-y-2">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1 mb-1">
+              <Sparkles className="w-3 h-3 text-emerald-500" />
               <span>Interactive Quick Links ({buttons.length}/3):</span>
             </div>
 
@@ -137,7 +137,7 @@ export const WhatsAppMessagePreview: React.FC<WhatsAppMessagePreviewProps> = ({
                 key={btn.id || idx}
                 type="button"
                 onClick={() => handleSimulateButtonClick(btn)}
-                className="w-full text-left py-2 px-3 bg-slate-50/90 hover:bg-emerald-50 hover:border-emerald-300 text-emerald-700 rounded-xl border border-slate-200/90 text-xs font-semibold flex items-center justify-between transition-all group shadow-2xs active:scale-[0.98]"
+                className="w-full text-left py-2.5 px-3.5 bg-slate-50/90 hover:bg-emerald-50 hover:border-emerald-300 text-emerald-700 rounded-xl border border-slate-200/90 text-xs sm:text-sm font-semibold flex items-center justify-between transition-all group shadow-2xs active:scale-[0.98]"
               >
                 <div className="flex items-center gap-2 truncate">
                   {btn.type === 'URL' && <ExternalLink className="w-3.5 h-3.5 text-sky-600 shrink-0" />}
@@ -148,7 +148,7 @@ export const WhatsAppMessagePreview: React.FC<WhatsAppMessagePreviewProps> = ({
                   <span className="truncate group-hover:text-emerald-800">{btn.title || `Button #${idx + 1}`}</span>
                 </div>
 
-                <span className="text-[9px] text-slate-400 group-hover:text-emerald-600 font-mono bg-white px-1.5 py-0.5 rounded border border-slate-200 shrink-0 ml-1">
+                <span className="text-[10px] text-slate-400 group-hover:text-emerald-600 font-mono bg-white px-2 py-0.5 rounded border border-slate-200 shrink-0 ml-1">
                   {btn.type === 'URL' ? 'Open URL' : btn.type === 'CALL' ? 'Call' : 'Tap Info'}
                 </span>
               </button>
@@ -214,7 +214,7 @@ export const WhatsAppMessagePreview: React.FC<WhatsAppMessagePreviewProps> = ({
   return (
     <div className={`relative flex flex-col items-center ${className}`}>
       {/* Smartphone Outer Casing */}
-      <div className="w-[340px] h-[580px] bg-slate-950 rounded-[42px] shadow-2xl p-2.5 border-[3px] border-slate-700 relative flex flex-col overflow-hidden ring-1 ring-slate-800">
+      <div className="w-[360px] h-[600px] bg-slate-950 rounded-[44px] shadow-2xl p-2.5 border-[3px] border-slate-700 relative flex flex-col overflow-hidden ring-1 ring-slate-800">
         
         {/* Dynamic Island / Speaker */}
         <div className="absolute top-3.5 left-1/2 -translate-x-1/2 w-24 h-4 bg-black rounded-full z-30 flex items-center justify-end pr-2">
