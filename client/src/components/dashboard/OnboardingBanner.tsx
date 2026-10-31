@@ -104,17 +104,17 @@ export const OnboardingBanner: React.FC<OnboardingBannerProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-3 self-end sm:self-center shrink-0">
+        <div className="flex items-center gap-2.5 sm:gap-3 w-full sm:w-auto shrink-0 mt-1 sm:mt-0">
           <button
             onClick={onOpenSimulator}
-            className="h-11 sm:h-12 px-5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-sm sm:text-base rounded-2xl flex items-center gap-2.5 transition-colors shadow-2xs cursor-pointer"
+            className="flex-1 sm:flex-initial h-11 sm:h-12 px-4 sm:px-5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-sm sm:text-base rounded-2xl flex items-center justify-center gap-2.5 transition-colors shadow-2xs cursor-pointer"
           >
             <Smartphone className="w-4.5 h-4.5" />
             <span>Test Phone Simulator</span>
           </button>
           <button
             onClick={() => setIsExpanded(prev => !prev)}
-            className="w-11 sm:w-12 h-11 sm:h-12 rounded-2xl bg-white/10 hover:bg-white/20 text-slate-300 flex items-center justify-center transition-colors cursor-pointer"
+            className="w-11 sm:w-12 h-11 sm:h-12 rounded-2xl bg-white/10 hover:bg-white/20 text-slate-300 flex items-center justify-center transition-colors cursor-pointer shrink-0"
             title="Toggle Milestone Details"
           >
             {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}

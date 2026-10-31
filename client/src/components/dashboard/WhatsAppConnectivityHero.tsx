@@ -69,11 +69,11 @@ export const WhatsAppConnectivityHero: React.FC<WhatsAppConnectivityHeroProps> =
         </div>
 
         {/* Quick Action Buttons */}
-        <div className="flex flex-wrap items-center gap-3 shrink-0">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 shrink-0 w-full lg:w-auto">
           {onOpenSimulator && (
             <button
               onClick={onOpenSimulator}
-              className="h-11 sm:h-12 px-5 bg-slate-800 hover:bg-slate-700 text-slate-100 rounded-2xl text-sm sm:text-base font-extrabold transition-colors border border-slate-700/70 flex items-center gap-2.5 shadow-2xs cursor-pointer"
+              className="w-full sm:w-auto h-11 sm:h-12 px-4 sm:px-5 bg-slate-800 hover:bg-slate-700 text-slate-100 rounded-2xl text-sm sm:text-base font-extrabold transition-colors border border-slate-700/70 flex items-center justify-center gap-2.5 shadow-2xs cursor-pointer"
               title="Test WhatsApp webhook delivery and AI response"
             >
               <Zap className="w-4.5 h-4.5 text-amber-400" />
@@ -84,7 +84,7 @@ export const WhatsAppConnectivityHero: React.FC<WhatsAppConnectivityHeroProps> =
           {onOpenBroadcast && (
             <button
               onClick={onOpenBroadcast}
-              className="h-11 sm:h-12 px-5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl text-sm sm:text-base font-extrabold transition-all shadow-2xs flex items-center gap-2.5 cursor-pointer"
+              className="w-full sm:w-auto h-11 sm:h-12 px-4 sm:px-5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl text-sm sm:text-base font-extrabold transition-all shadow-2xs flex items-center justify-center gap-2.5 cursor-pointer"
             >
               <Send className="w-4.5 h-4.5" />
               <span>New Broadcast</span>
@@ -93,7 +93,7 @@ export const WhatsAppConnectivityHero: React.FC<WhatsAppConnectivityHeroProps> =
 
           <button
             onClick={() => onNavigate('inbox')}
-            className="h-11 sm:h-12 px-5 bg-slate-800 hover:bg-slate-700 text-slate-100 rounded-2xl text-sm sm:text-base font-extrabold transition-colors border border-slate-700/70 flex items-center gap-2.5 shadow-2xs cursor-pointer"
+            className="w-full sm:w-auto h-11 sm:h-12 px-4 sm:px-5 bg-slate-800 hover:bg-slate-700 text-slate-100 rounded-2xl text-sm sm:text-base font-extrabold transition-colors border border-slate-700/70 flex items-center justify-center gap-2.5 shadow-2xs cursor-pointer"
           >
             <MessageSquare className="w-4.5 h-4.5 text-emerald-400" />
             <span>Open Inbox</span>

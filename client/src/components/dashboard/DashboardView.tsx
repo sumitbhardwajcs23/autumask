@@ -229,17 +229,17 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </p>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 w-full md:w-auto shrink-0">
             <button
               onClick={onOpenBroadcastModal}
-              className="h-11 sm:h-12 px-5 rounded-2xl text-sm sm:text-base font-extrabold bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-2xs flex items-center gap-2.5 cursor-pointer"
+              className="flex-1 sm:flex-initial h-11 sm:h-12 px-4 sm:px-5 rounded-2xl text-sm sm:text-base font-extrabold bg-emerald-600 hover:bg-emerald-500 text-white transition-all shadow-2xs flex items-center justify-center gap-2.5 cursor-pointer"
             >
               <Sparkles className="w-4.5 h-4.5" />
               <span>{currentIndustry.primaryAction}</span>
             </button>
             <button
               onClick={() => onNavigate('automation')}
-              className="h-11 sm:h-12 px-5 rounded-2xl text-sm sm:text-base font-extrabold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all flex items-center gap-2.5 cursor-pointer"
+              className="flex-1 sm:flex-initial h-11 sm:h-12 px-4 sm:px-5 rounded-2xl text-sm sm:text-base font-extrabold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all flex items-center justify-center gap-2.5 cursor-pointer"
             >
               <span>View Rules</span>
               <ArrowRight className="w-4.5 h-4.5" />

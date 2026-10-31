@@ -351,14 +351,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-3.5">
-                <span className="text-lg sm:text-xl font-mono font-bold bg-slate-100 border border-slate-200 px-5 py-3 rounded-2xl text-slate-900">
+              <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+                <span className="text-base sm:text-xl font-mono font-bold bg-slate-100 border border-slate-200 px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl text-slate-900 w-full sm:w-auto text-center">
                   {account?.displayPhoneNumber || account?.displayNumber || '+1 555-660-3701'}
                 </span>
 
                 <button
                   onClick={() => setShowConnectModal(true)}
-                  className="h-12 px-5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-sm sm:text-base font-extrabold transition-all shadow-xs flex items-center gap-2.5 cursor-pointer"
+                  className="w-full sm:w-auto h-11 sm:h-12 px-4 sm:px-5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-sm sm:text-base font-extrabold transition-all shadow-xs flex items-center justify-center gap-2.5 cursor-pointer"
                 >
                   <RefreshCw className="w-4.5 h-4.5" />
                   <span>{account?.status === 'CONNECTED' ? 'Change / Reconnect Number' : 'Connect WhatsApp Number'}</span>
@@ -366,7 +366,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
 
                 <button
                   onClick={() => setShowTestMessageDrawer(!showTestMessageDrawer)}
-                  className="h-12 px-5 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 text-indigo-700 rounded-2xl text-sm sm:text-base font-extrabold transition-colors flex items-center gap-2.5 cursor-pointer"
+                  className="w-full sm:w-auto h-11 sm:h-12 px-4 sm:px-5 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 text-indigo-700 rounded-2xl text-sm sm:text-base font-extrabold transition-colors flex items-center justify-center gap-2.5 cursor-pointer"
                 >
                   <Send className="w-4.5 h-4.5" />
                   <span>Send Test Message</span>
@@ -375,7 +375,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
                 {account?.status === 'CONNECTED' && (
                   <button
                     onClick={handleDisconnect}
-                    className="h-12 w-12 flex items-center justify-center text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-2xl border border-slate-200 transition-colors cursor-pointer"
+                    className="h-11 sm:h-12 w-11 sm:w-12 flex items-center justify-center text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-2xl border border-slate-200 transition-colors cursor-pointer shrink-0"
                     title="Disconnect number"
                   >
                     <LogOut className="w-5 h-5" />
@@ -718,9 +718,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
 
             <div className="divide-y divide-slate-100">
               {team.map((member) => (
-                <div key={member.id} className="py-4.5 flex items-center justify-between">
-                  <div className="flex items-center gap-4 sm:gap-5">
-                    <div className="relative">
+                <div key={member.id} className="py-4.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-4 sm:gap-5 min-w-0">
+                    <div className="relative shrink-0">
                       <div className="w-13 h-13 rounded-full bg-slate-900 text-white font-black text-lg flex items-center justify-center shadow-xs">
                         {member.fullName.charAt(0)}
                       </div>
@@ -728,13 +728,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
                         <span className="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-emerald-500 ring-2 ring-white"></span>
                       )}
                     </div>
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-base sm:text-lg">{member.fullName}</h4>
-                      <p className="text-sm sm:text-base text-slate-500 mt-0.5">{member.email}</p>
+                    <div className="min-w-0">
+                      <h4 className="font-extrabold text-slate-900 text-base sm:text-lg truncate">{member.fullName}</h4>
+                      <p className="text-sm sm:text-base text-slate-500 mt-0.5 truncate">{member.email}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3 sm:gap-4 shrink-0 self-end sm:self-auto">
                     <span className="text-xs sm:text-sm font-extrabold uppercase px-3.5 py-1.5 rounded-xl bg-slate-100 text-slate-700 border border-slate-200">
                       {member.role}
                     </span>

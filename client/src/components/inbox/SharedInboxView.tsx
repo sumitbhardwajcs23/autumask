@@ -701,7 +701,7 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
 
       {/* 3. Right: Student Contact Card & CRM Details */}
       {activeConv && (
-        <div className="w-72 bg-white flex flex-col h-full overflow-y-auto p-4 custom-scrollbar flex-shrink-0 min-h-0">
+        <div className="hidden xl:flex w-72 bg-white flex-col h-full overflow-y-auto p-4 custom-scrollbar flex-shrink-0 min-h-0 border-l border-slate-200">
           <div className="text-center pb-4 border-b border-slate-100">
             <div className="w-16 h-16 rounded-full bg-slate-800 text-white text-xl font-black flex items-center justify-center mx-auto mb-2 shadow-sm font-['Outfit']">
               {activeConv.contactName.charAt(0)}

@@ -637,13 +637,13 @@ export const App: React.FC = () => {
         />
 
         {/* Live Backend Connection & Sync Pill */}
-        <div className="w-full px-6 sm:px-8 lg:px-10 pt-5 pb-1 flex items-center justify-between text-sm sm:text-base text-slate-700">
-          <div className="flex items-center gap-3">
-            <span className={`w-3 h-3 rounded-full ${apiConnected ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`} />
-            <span className="font-bold text-slate-800 text-sm sm:text-base">
-              Backend API: <code className="text-slate-600 font-mono text-xs sm:text-sm bg-slate-100 px-2 py-0.5 rounded-md">http://localhost:5000/api/v1</code>
+        <div className="w-full px-4 sm:px-8 lg:px-10 pt-4 pb-1 flex flex-wrap items-center justify-between gap-3 text-sm sm:text-base text-slate-700">
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+            <span className={`w-3 h-3 rounded-full shrink-0 ${apiConnected ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`} />
+            <span className="font-bold text-slate-800 text-xs sm:text-base">
+              Backend API: <code className="text-slate-600 font-mono text-[11px] sm:text-sm bg-slate-100 px-2 py-0.5 rounded-md">http://localhost:5000/api/v1</code>
             </span>
-            <span className={`px-3 py-1 rounded-lg font-bold text-xs sm:text-sm ${
+            <span className={`px-2.5 sm:px-3 py-1 rounded-lg font-bold text-xs sm:text-sm ${
               apiConnected ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'
             }`}>
               {apiConnected ? 'REST Connected' : 'Offline / Error'}
@@ -656,7 +656,7 @@ export const App: React.FC = () => {
           <button
             onClick={() => fetchAllData()}
             disabled={isSyncing}
-            className="flex items-center gap-2 h-10 px-4 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 text-sm font-bold transition-colors shadow-2xs cursor-pointer"
+            className="flex items-center gap-2 h-10 px-4 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-bold transition-colors shadow-2xs cursor-pointer ml-auto sm:ml-0"
           >
             <RefreshCw className={`w-4 h-4 text-slate-500 ${isSyncing ? 'animate-spin' : ''}`} />
             <span>{isSyncing ? 'Syncing...' : 'Sync Server'}</span>
