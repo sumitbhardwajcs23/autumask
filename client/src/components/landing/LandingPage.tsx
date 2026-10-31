@@ -296,7 +296,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-7 text-[14px] font-semibold text-slate-600">
+          <nav className="hidden lg:flex items-center gap-7 xl:gap-9 text-base xl:text-lg font-bold text-slate-700">
             <a href="#features" className="hover:text-[#059669] transition-colors">Features</a>
             <a href="#how-it-works" className="hover:text-[#059669] transition-colors">How It Works</a>
             
@@ -414,7 +414,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <button
               id="nav-book-demo-btn"
               onClick={() => setIsDemoModalOpen(true)}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold text-white bg-[#065f46] hover:bg-[#047857] transition-all shadow-sm hover:shadow-md active:scale-98"
+              className="flex items-center gap-2 px-6 py-2.5 xl:py-3 rounded-xl text-base xl:text-lg font-bold text-white bg-[#065f46] hover:bg-[#047857] transition-all shadow-sm hover:shadow-md active:scale-98"
             >
               <span>Book a Demo</span>
               <ArrowRight className="w-4 h-4" />
@@ -445,13 +445,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </div>
 
               {/* Main Headline */}
-              <h1 className="text-4xl sm:text-5xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-black text-slate-900 tracking-tight leading-[1.1] font-['Outfit']">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-black text-slate-900 tracking-tight leading-[1.08] font-['Outfit']">
                 Convert More Customers.<br />
                 <span className="text-[#059669]">Automatically on WhatsApp.</span>
               </h1>
 
               {/* Subheading */}
-              <p className="text-base sm:text-lg xl:text-xl 2xl:text-2xl text-slate-600 leading-relaxed max-w-xl xl:max-w-2xl 2xl:max-w-3xl">
+              <p className="text-lg sm:text-xl xl:text-2xl 2xl:text-3xl text-slate-600 leading-relaxed max-w-xl xl:max-w-3xl 2xl:max-w-4xl font-normal">
                 AutoMask helps businesses, D2C brands, real estate firms, clinics, and service providers 
                 capture leads, answer product FAQs, book consultations, run automated follow-ups, and drive revenue — 
                 all on WhatsApp, with the power of AI.
@@ -465,8 +465,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     <Zap className="w-4 h-4 text-emerald-600" />
                   </div>
                   <div>
-                    <h2 className="text-xs font-bold text-slate-900">24/7 Instant Responses</h2>
-                    <p className="text-[11px] text-slate-500">Never miss a lead or customer query</p>
+                    <h2 className="text-sm sm:text-base xl:text-lg font-black text-slate-900">24/7 Instant Responses</h2>
+                    <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-0.5">Never miss a lead or customer query</p>
                   </div>
                 </div>
 
@@ -476,8 +476,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     <Calendar className="w-4 h-4 text-blue-600" />
                   </div>
                   <div>
-                    <h2 className="text-xs font-bold text-slate-900">Automated Bookings & Orders</h2>
-                    <p className="text-[11px] text-slate-500">Real-time calendar & catalog sync</p>
+                    <h2 className="text-sm sm:text-base xl:text-lg font-black text-slate-900">Automated Bookings & Orders</h2>
+                    <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-0.5">Real-time calendar & catalog sync</p>
                   </div>
                 </div>
 
@@ -487,8 +487,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     <Sparkles className="w-4 h-4 text-purple-600" />
                   </div>
                   <div>
-                    <h2 className="text-xs font-bold text-slate-900">Smart Follow-ups</h2>
-                    <p className="text-[11px] text-slate-500">Turn prospects into paying clients</p>
+                    <h2 className="text-sm sm:text-base xl:text-lg font-black text-slate-900">Smart Follow-ups</h2>
+                    <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-0.5">Turn prospects into paying clients</p>
                   </div>
                 </div>
 
@@ -498,8 +498,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     <Users className="w-4 h-4 text-orange-600" />
                   </div>
                   <div>
-                    <h2 className="text-xs font-bold text-slate-900">Human Takeover</h2>
-                    <p className="text-[11px] text-slate-500">Your sales & support team stays in control</p>
+                    <h2 className="text-sm sm:text-base xl:text-lg font-black text-slate-900">Human Takeover</h2>
+                    <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-0.5">Your sales & support team stays in control</p>
                   </div>
                 </div>
               </div>
@@ -509,7 +509,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <button
                   id="hero-book-demo-btn"
                   onClick={() => setIsDemoModalOpen(true)}
-                  className="flex items-center gap-2.5 px-7 py-3.5 xl:px-9 xl:py-4 rounded-xl text-sm xl:text-base font-bold text-white bg-[#065f46] hover:bg-[#047857] transition-all shadow-md shadow-emerald-900/15 hover:shadow-lg active:scale-98"
+                  className="flex items-center gap-3 px-8 py-4 xl:px-10 xl:py-5 rounded-2xl text-base sm:text-lg xl:text-xl font-black text-white bg-[#065f46] hover:bg-[#047857] transition-all shadow-lg shadow-emerald-900/20 hover:shadow-xl active:scale-98"
                 >
                   <span>Book a Free Demo</span>
                   <ArrowRight className="w-4 h-4" />
@@ -521,7 +521,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     const el = document.getElementById('dashboard');
                     el?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="flex items-center gap-2 px-6 py-3.5 xl:px-8 xl:py-4 rounded-xl text-sm xl:text-base font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 transition-all shadow-xs"
+                  className="flex items-center gap-2.5 px-7 py-4 xl:px-9 xl:py-5 rounded-2xl text-base sm:text-lg xl:text-xl font-black text-slate-800 bg-white hover:bg-slate-50 border-2 border-slate-300 transition-all shadow-xs"
                 >
                   <Play className="w-4 h-4 text-[#059669] fill-[#059669]" />
                   <span>See How It Works</span>
@@ -529,7 +529,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </div>
 
               {/* Trust Checkmarks */}
-              <div className="flex flex-wrap items-center gap-6 pt-2 text-xs font-medium text-slate-600">
+              <div className="flex flex-wrap items-center gap-6 xl:gap-8 pt-3 text-sm sm:text-base xl:text-lg font-bold text-slate-700">
                 <div className="flex items-center gap-1.5">
                   <Check className="w-4 h-4 text-[#059669] stroke-[3]" />
                   <span>No credit card required</span>
@@ -644,11 +644,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                           <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-300 border border-[#075e54]" />
                         </div>
                         <div>
-                          <div className="font-bold text-xs leading-tight flex items-center gap-1">
+                          <div className="font-black text-sm xl:text-base leading-tight flex items-center gap-1">
                             <span>AutoMask Business</span>
                             <span className="text-[9px] bg-emerald-500/40 text-emerald-200 px-1 rounded">Verified</span>
                           </div>
-                          <div className="text-[10px] text-emerald-100/90 font-medium">Sales & Support Assistant</div>
+                          <div className="text-xs xl:text-sm text-emerald-100/90 font-medium">Sales & Support Assistant</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-2.5 text-white/90">
@@ -672,7 +672,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                           className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
                         >
                           <div 
-                            className={`max-w-[85%] rounded-2xl px-3 py-2 text-[11px] leading-relaxed shadow-xs ${
+                            className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-xs sm:text-sm xl:text-base leading-relaxed shadow-xs ${
                               msg.sender === 'user' 
                                 ? 'bg-[#dcf8c6] text-slate-900 rounded-tr-none' 
                                 : 'bg-white text-slate-800 rounded-tl-none border border-slate-100'
@@ -691,7 +691,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                                 <button
                                   key={cIdx}
                                   onClick={() => handleHeroChipClick(chip)}
-                                  className="text-left bg-white hover:bg-emerald-50 border border-emerald-400/60 text-[#047857] text-[10px] font-bold px-2.5 py-1.5 rounded-xl shadow-2xs transition-colors flex items-center justify-between"
+                                  className="text-left bg-white hover:bg-emerald-50 border border-emerald-400/60 text-[#047857] text-xs sm:text-sm font-black px-3.5 py-2.5 rounded-xl shadow-2xs transition-colors flex items-center justify-between"
                                 >
                                   <span>{chip}</span>
                                   <ChevronRight className="w-3 h-3 text-emerald-600" />
@@ -731,7 +731,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           ========================================================================= */}
       <section className="py-10 bg-white border-b border-slate-150">
         <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 text-center">
-          <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-6">
+          <p className="text-sm sm:text-base xl:text-lg font-black uppercase tracking-wider text-slate-500 mb-8">
             TRUSTED BY 500+ FAST-GROWING BUSINESSES & TEAMS ACROSS INDIA
           </p>
 
@@ -739,37 +739,37 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {/* 1. UrbanNest Realty */}
             <div className="flex items-center justify-center gap-2 text-slate-700 hover:text-emerald-700 transition-colors">
               <Home className="w-5 h-5 text-slate-500" />
-              <span className="font-bold text-sm tracking-tight font-['Outfit']">UrbanNest Realty</span>
+              <span className="font-black text-base sm:text-lg xl:text-xl tracking-tight font-['Outfit']">UrbanNest Realty</span>
             </div>
 
             {/* 2. Zenith Lifestyle */}
             <div className="flex items-center justify-center gap-2 text-slate-700 hover:text-emerald-700 transition-colors">
               <ShoppingBag className="w-5 h-5 text-slate-500" />
-              <span className="font-bold text-sm tracking-tight font-['Outfit']">Zenith Lifestyle</span>
+              <span className="font-black text-base sm:text-lg xl:text-xl tracking-tight font-['Outfit']">Zenith Lifestyle</span>
             </div>
 
             {/* 3. CarePlus Clinics */}
             <div className="flex items-center justify-center gap-2 text-slate-700 hover:text-emerald-700 transition-colors">
               <Stethoscope className="w-5 h-5 text-slate-500" />
-              <span className="font-bold text-sm tracking-tight font-['Outfit']">CarePlus Clinics</span>
+              <span className="font-black text-base sm:text-lg xl:text-xl tracking-tight font-['Outfit']">CarePlus Clinics</span>
             </div>
 
             {/* 4. Apex Capital */}
             <div className="flex items-center justify-center gap-2 text-slate-700 hover:text-emerald-700 transition-colors">
               <Briefcase className="w-5 h-5 text-slate-500" />
-              <span className="font-bold text-sm tracking-tight font-['Outfit']">Apex Capital</span>
+              <span className="font-black text-base sm:text-lg xl:text-xl tracking-tight font-['Outfit']">Apex Capital</span>
             </div>
 
             {/* 5. Lakshya Academy */}
             <div className="flex items-center justify-center gap-2 text-slate-700 hover:text-emerald-700 transition-colors">
               <GraduationCap className="w-5 h-5 text-slate-500" />
-              <span className="font-bold text-sm tracking-tight font-['Outfit']">Lakshya Academy</span>
+              <span className="font-black text-base sm:text-lg xl:text-xl tracking-tight font-['Outfit']">Lakshya Academy</span>
             </div>
 
             {/* 6. NextWave Media */}
             <div className="flex items-center justify-center gap-2 text-slate-700 hover:text-emerald-700 transition-colors">
               <Laptop className="w-5 h-5 text-slate-500" />
-              <span className="font-bold text-sm tracking-tight font-['Outfit']">NextWave Media</span>
+              <span className="font-black text-base sm:text-lg xl:text-xl tracking-tight font-['Outfit']">NextWave Media</span>
             </div>
           </div>
         </div>
@@ -788,8 +788,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <Zap className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-xs font-bold text-slate-900 leading-snug">AI-Powered Responses</h3>
-                <p className="text-[11px] text-slate-500 mt-0.5">Accurate answers from your business catalogs & docs</p>
+                <h3 className="text-sm sm:text-base xl:text-lg font-black text-slate-900 leading-snug">AI-Powered Responses</h3>
+                <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-1">Accurate answers from your business catalogs & docs</p>
               </div>
             </div>
 
@@ -799,8 +799,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <Calendar className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-xs font-bold text-slate-900 leading-snug">Smart Booking Engine</h3>
-                <p className="text-[11px] text-slate-500 mt-0.5">Real-time calendar slots & zero double-booking</p>
+                <h3 className="text-sm sm:text-base xl:text-lg font-black text-slate-900 leading-snug">Smart Booking Engine</h3>
+                <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-1">Real-time calendar slots & zero double-booking</p>
               </div>
             </div>
 
@@ -810,8 +810,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <Sparkles className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-xs font-bold text-slate-900 leading-snug">Follow-up Sequences</h3>
-                <p className="text-[11px] text-slate-500 mt-0.5">Automated personalized WhatsApp nurturing</p>
+                <h3 className="text-sm sm:text-base xl:text-lg font-black text-slate-900 leading-snug">Follow-up Sequences</h3>
+                <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-1">Automated personalized WhatsApp nurturing</p>
               </div>
             </div>
 
@@ -821,8 +821,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <Users className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-xs font-bold text-slate-900 leading-snug">Human Takeover</h3>
-                <p className="text-[11px] text-slate-500 mt-0.5">Seamless handover to your sales & support team</p>
+                <h3 className="text-sm sm:text-base xl:text-lg font-black text-slate-900 leading-snug">Human Takeover</h3>
+                <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-1">Seamless handover to your sales & support team</p>
               </div>
             </div>
 
@@ -832,8 +832,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <Shield className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-xs font-bold text-slate-900 leading-snug">100% Secure & Private</h3>
-                <p className="text-[11px] text-slate-500 mt-0.5">Enterprise-grade Meta Cloud API with tenant isolation</p>
+                <h3 className="text-sm sm:text-base xl:text-lg font-black text-slate-900 leading-snug">100% Secure & Private</h3>
+                <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-1">Enterprise-grade Meta Cloud API with tenant isolation</p>
               </div>
             </div>
 
@@ -852,7 +852,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <span>HOW IT WORKS</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-['Outfit'] mb-14">
+          <h2 className="text-3xl sm:text-4xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tight font-['Outfit'] mb-14">
             Get started in minutes. Start converting in hours.
           </h2>
 
@@ -864,8 +864,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <div className="w-16 h-16 rounded-2xl bg-emerald-50 border-2 border-emerald-200 flex items-center justify-center text-emerald-600 mb-5 shadow-xs group-hover:scale-105 transition-transform">
                 <MessageCircle className="w-8 h-8" />
               </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Connect WhatsApp</h3>
-              <p className="text-xs text-slate-500 leading-relaxed max-w-[220px]">
+              <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900 mb-2.5">Connect WhatsApp</h3>
+              <p className="text-sm sm:text-base xl:text-lg text-slate-600 leading-relaxed max-w-[260px]">
                 Link your official WhatsApp Business number via Meta's secure embedded onboarding.
               </p>
 
@@ -880,8 +880,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <div className="w-16 h-16 rounded-2xl bg-blue-50 border-2 border-blue-200 flex items-center justify-center text-blue-600 mb-5 shadow-xs group-hover:scale-105 transition-transform">
                 <FileText className="w-8 h-8" />
               </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Set up your Business</h3>
-              <p className="text-xs text-slate-500 leading-relaxed max-w-[220px]">
+              <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900 mb-2.5">Set up your Business</h3>
+              <p className="text-sm sm:text-base xl:text-lg text-slate-600 leading-relaxed max-w-[260px]">
                 Add products, services, pricing, FAQs, and appointment availability slots.
               </p>
 
@@ -896,8 +896,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <div className="w-16 h-16 rounded-2xl bg-purple-50 border-2 border-purple-200 flex items-center justify-center text-purple-600 mb-5 shadow-xs group-hover:scale-105 transition-transform">
                 <Zap className="w-8 h-8" />
               </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Automate with AI</h3>
-              <p className="text-xs text-slate-500 leading-relaxed max-w-[220px]">
+              <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900 mb-2.5">Automate with AI</h3>
+              <p className="text-sm sm:text-base xl:text-lg text-slate-600 leading-relaxed max-w-[260px]">
                 Activate ready-made business workflows. AI answers customer queries 24/7 with zero hallucination.
               </p>
 
@@ -912,8 +912,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <div className="w-16 h-16 rounded-2xl bg-teal-50 border-2 border-teal-200 flex items-center justify-center text-teal-600 mb-5 shadow-xs group-hover:scale-105 transition-transform">
                 <TrendingUp className="w-8 h-8" />
               </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Convert more customers</h3>
-              <p className="text-xs text-slate-500 leading-relaxed max-w-[220px]">
+              <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900 mb-2.5">Convert more customers</h3>
+              <p className="text-sm sm:text-base xl:text-lg text-slate-600 leading-relaxed max-w-[260px]">
                 Capture leads, book consultations, recover lost enquiries, and track ROI in one dashboard.
               </p>
             </div>
@@ -933,7 +933,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wider uppercase mb-3">
               <span>BUILT FOR MODERN BUSINESSES</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-['Outfit']">
+            <h2 className="text-3xl sm:text-4xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tight font-['Outfit']">
               Perfect for every industry & business model
             </h2>
           </div>
@@ -951,7 +951,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <button
                 key={tab.id}
                 onClick={() => setActiveSegment(tab.id as any)}
-                className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all ${
+                className={`px-6 py-3 rounded-full text-sm sm:text-base xl:text-lg font-bold transition-all ${
                   activeSegment === tab.id
                     ? 'bg-[#065f46] text-white shadow-md shadow-emerald-900/15'
                     : 'bg-white text-slate-600 hover:text-slate-900 border border-slate-200 hover:bg-slate-50'
@@ -982,10 +982,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               {/* Right Column: Segment Capabilities */}
               <div className="lg:col-span-6 p-8 sm:p-12 space-y-6">
                 <div>
-                  <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-['Outfit'] mb-3">
+                  <h3 className="text-2xl sm:text-3xl xl:text-4xl font-black text-slate-900 tracking-tight font-['Outfit'] mb-4">
                     {currentSegment.title}
                   </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">
+                  <p className="text-base sm:text-lg xl:text-xl text-slate-600 leading-relaxed">
                     {currentSegment.desc}
                   </p>
                 </div>
@@ -997,7 +997,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                       <div className="w-5 h-5 rounded-full bg-emerald-50 border border-emerald-300 flex items-center justify-center shrink-0 mt-0.5">
                         <Check className="w-3.5 h-3.5 text-emerald-700 stroke-[3]" />
                       </div>
-                      <span className="text-xs sm:text-sm font-semibold text-slate-800">{pt}</span>
+                      <span className="text-sm sm:text-base xl:text-lg font-bold text-slate-800">{pt}</span>
                     </div>
                   ))}
                 </div>
@@ -1030,7 +1030,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wider uppercase mb-3">
               <span>SIMPLE. POWERFUL. COMPLETE.</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-['Outfit']">
+            <h2 className="text-3xl sm:text-4xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tight font-['Outfit']">
               Everything your business needs in one dashboard
             </h2>
           </div>
@@ -1055,8 +1055,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   <MessageSquare className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">Shared Team Inbox</h3>
-                  <p className="text-xs text-slate-500 mt-0.5">Manage customer chats with multi-agent assignment</p>
+                  <h3 className="text-base sm:text-lg xl:text-xl font-black text-slate-900">Shared Team Inbox</h3>
+                  <p className="text-sm sm:text-base text-slate-600 mt-1">Manage customer chats with multi-agent assignment</p>
                 </div>
               </button>
 
@@ -1075,8 +1075,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   <Users className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">Lead & CRM Pipeline</h3>
-                  <p className="text-xs text-slate-500 mt-0.5">Track enquiries from new lead to closed sale</p>
+                  <h3 className="text-base sm:text-lg xl:text-xl font-black text-slate-900">Lead & CRM Pipeline</h3>
+                  <p className="text-sm sm:text-base text-slate-600 mt-1">Track enquiries from new lead to closed sale</p>
                 </div>
               </button>
 
@@ -1095,8 +1095,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   <Calendar className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">Appointments & Demos</h3>
-                  <p className="text-xs text-slate-500 mt-0.5">Automated calendar slots & zero double-booking</p>
+                  <h3 className="text-base sm:text-lg xl:text-xl font-black text-slate-900">Appointments & Demos</h3>
+                  <p className="text-sm sm:text-base text-slate-600 mt-1">Automated calendar slots & zero double-booking</p>
                 </div>
               </button>
 
@@ -1115,8 +1115,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   <Zap className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">Automation & Journeys</h3>
-                  <p className="text-xs text-slate-500 mt-0.5">Keyword triggers, drip campaigns & RAG AI</p>
+                  <h3 className="text-base sm:text-lg xl:text-xl font-black text-slate-900">Automation & Journeys</h3>
+                  <p className="text-sm sm:text-base text-slate-600 mt-1">Keyword triggers, drip campaigns & RAG AI</p>
                 </div>
               </button>
 
@@ -1135,8 +1135,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   <BarChart3 className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900">Analytics & Sales ROI</h3>
-                  <p className="text-xs text-slate-500 mt-0.5">First response time, conversions & agent metrics</p>
+                  <h3 className="text-base sm:text-lg xl:text-xl font-black text-slate-900">Analytics & Sales ROI</h3>
+                  <p className="text-sm sm:text-base text-slate-600 mt-1">First response time, conversions & agent metrics</p>
                 </div>
               </button>
 
@@ -1464,7 +1464,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mb-5 group-hover:scale-105 transition-transform">
                 <Target className="w-6 h-6" />
               </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">More Revenue & Sales</h3>
+              <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900 mb-2.5">More Revenue & Sales</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
                 Engage hot inbound prospects in seconds before they research your competitors.
               </p>
@@ -1475,7 +1475,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 mb-5 group-hover:scale-105 transition-transform">
                 <Clock className="w-6 h-6" />
               </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Save 70% Team Time</h3>
+              <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900 mb-2.5">Save 70% Team Time</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
                 Automate FAQs, catalog questions, and scheduling so your sales team can focus on closing deals.
               </p>
@@ -1486,7 +1486,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 mb-5 group-hover:scale-105 transition-transform">
                 <Percent className="w-6 h-6" />
               </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Transparent & Affordable</h3>
+              <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900 mb-2.5">Transparent & Affordable</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
                 Simple monthly plans with transparent limits. Zero hidden fees and zero cut of your sales revenue.
               </p>
@@ -1497,7 +1497,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <div className="w-12 h-12 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-600 mb-5 group-hover:scale-105 transition-transform">
                 <Shield className="w-6 h-6" />
               </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">100% Official & Compliant</h3>
+              <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900 mb-2.5">100% Official & Compliant</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
                 Built strictly on Meta’s official WhatsApp Cloud API. Safe from number bans with enterprise tenant privacy.
               </p>
@@ -1612,7 +1612,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wider uppercase mb-3">
               <span>SIMPLE & TRANSPARENT PRICING</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-['Outfit'] mb-6">
+            <h2 className="text-3xl sm:text-4xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tight font-['Outfit'] mb-6">
               Plans for every stage of business growth
             </h2>
 
@@ -1650,11 +1650,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {/* Plan 1: Free */}
             <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-col justify-between hover:shadow-md transition-shadow">
               <div>
-                <h3 className="text-lg font-bold text-slate-900 font-['Outfit']">Free</h3>
+                <h3 className="text-xl sm:text-2xl xl:text-3xl font-black text-slate-900 font-['Outfit']">Free</h3>
                 <p className="text-xs text-slate-500 mt-0.5 mb-4">Get started & test AutoMask</p>
 
                 <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-3xl font-black text-slate-900">₹0</span>
+                  <span className="text-4xl sm:text-5xl xl:text-6xl font-black text-slate-900">₹0</span>
                   <span className="text-xs text-slate-500 font-medium">/month</span>
                 </div>
 
@@ -1691,11 +1691,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {/* Plan 2: Starter */}
             <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-col justify-between hover:shadow-md transition-shadow">
               <div>
-                <h3 className="text-lg font-bold text-slate-900 font-['Outfit']">Starter</h3>
+                <h3 className="text-xl sm:text-2xl xl:text-3xl font-black text-slate-900 font-['Outfit']">Starter</h3>
                 <p className="text-xs text-slate-500 mt-0.5 mb-4">For local businesses & clinics</p>
 
                 <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-3xl font-black text-slate-900">
+                  <span className="text-4xl sm:text-5xl xl:text-6xl font-black text-slate-900">
                     ₹{billingCycle === 'monthly' ? '499' : '399'}
                   </span>
                   <span className="text-xs text-slate-500 font-medium">/month</span>
@@ -1739,11 +1739,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </div>
 
               <div>
-                <h3 className="text-lg font-bold text-slate-900 font-['Outfit']">Growth</h3>
+                <h3 className="text-xl sm:text-2xl xl:text-3xl font-black text-slate-900 font-['Outfit']">Growth</h3>
                 <p className="text-xs text-slate-500 mt-0.5 mb-4">For growing D2C & sales teams</p>
 
                 <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-3xl font-black text-slate-900">
+                  <span className="text-4xl sm:text-5xl xl:text-6xl font-black text-slate-900">
                     ₹{billingCycle === 'monthly' ? '999' : '799'}
                   </span>
                   <span className="text-xs text-slate-500 font-medium">/month</span>
@@ -1782,11 +1782,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {/* Plan 4: Pro */}
             <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-col justify-between hover:shadow-md transition-shadow">
               <div>
-                <h3 className="text-lg font-bold text-slate-900 font-['Outfit']">Pro</h3>
+                <h3 className="text-xl sm:text-2xl xl:text-3xl font-black text-slate-900 font-['Outfit']">Pro</h3>
                 <p className="text-xs text-slate-500 mt-0.5 mb-4">For enterprises & high volume</p>
 
                 <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-3xl font-black text-slate-900">
+                  <span className="text-4xl sm:text-5xl xl:text-6xl font-black text-slate-900">
                     ₹{billingCycle === 'monthly' ? '2,499' : '1,999'}
                   </span>
                   <span className="text-xs text-slate-500 font-medium">/month</span>
@@ -1837,7 +1837,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wider uppercase mb-3">
               <span>FREQUENTLY ASKED QUESTIONS</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-['Outfit']">
+            <h2 className="text-3xl sm:text-4xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tight font-['Outfit']">
               Still have questions?
             </h2>
           </div>
@@ -1857,14 +1857,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     onClick={() => setActiveFaq(isOpen ? null : index)}
                     className="w-full p-4 text-left flex items-center justify-between gap-3"
                   >
-                    <span className="text-xs sm:text-sm font-bold text-slate-900 leading-snug">
+                    <span className="text-base sm:text-lg xl:text-xl font-black text-slate-900 leading-snug">
                       {faq.q}
                     </span>
                     <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${isOpen ? 'rotate-180 text-emerald-600' : ''}`} />
                   </button>
 
                   {isOpen && (
-                    <div className="px-4 pb-4 pt-1 text-xs text-slate-600 leading-relaxed border-t border-slate-150 animate-in fade-in duration-150">
+                    <div className="px-5 pb-5 pt-2 text-sm sm:text-base xl:text-lg text-slate-600 leading-relaxed border-t border-slate-150 animate-in fade-in duration-150">
                       {faq.a}
                     </div>
                   )}
@@ -1891,16 +1891,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               
               {/* Left Column Text */}
               <div className="max-w-2xl space-y-3">
-                <h2 className="text-3xl sm:text-4xl font-black tracking-tight font-['Outfit']">
+                <h2 className="text-3xl sm:text-4xl xl:text-5xl 2xl:text-6xl font-black tracking-tight font-['Outfit']">
                   Ready to convert more leads into paying customers?
                 </h2>
-                <p className="text-sm sm:text-base text-emerald-100/90 leading-relaxed">
+                <p className="text-base sm:text-lg xl:text-xl 2xl:text-2xl text-emerald-100/90 leading-relaxed font-medium">
                   Join 500+ businesses and teams already growing with AutoMask. 
                   Book a free demo and see how it accelerates your sales.
                 </p>
 
                 {/* Checkmarks */}
-                <div className="flex flex-wrap items-center gap-6 pt-4 text-xs font-semibold text-emerald-200">
+                <div className="flex flex-wrap items-center gap-6 pt-4 text-sm sm:text-base xl:text-lg font-bold text-emerald-200">
                   <div className="flex items-center gap-1.5">
                     <Check className="w-4 h-4 text-emerald-300 stroke-[3]" />
                     <span>No credit card required</span>
@@ -1920,7 +1920,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
                 <button
                   onClick={() => setIsDemoModalOpen(true)}
-                  className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm text-[#064e3b] bg-white hover:bg-emerald-50 transition-all shadow-lg active:scale-98"
+                  className="flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl font-black text-base sm:text-lg text-[#064e3b] bg-white hover:bg-emerald-50 transition-all shadow-lg active:scale-98"
                 >
                   <span>Book a Free Demo</span>
                   <ArrowRight className="w-4 h-4" />
