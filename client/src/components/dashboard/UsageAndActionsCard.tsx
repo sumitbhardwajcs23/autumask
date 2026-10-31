@@ -38,7 +38,7 @@ export const UsageAndActionsCard: React.FC<UsageAndActionsCardProps> = ({
   const tplPercent = Math.round((currentUsage.templateMessagesUsed / currentUsage.templateMessagesLimit) * 100);
 
   return (
-    <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between">
+    <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between h-full">
       {/* Top: Usage This Month */}
       <div>
         <div className="flex items-center justify-between mb-4">

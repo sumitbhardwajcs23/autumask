@@ -136,6 +136,7 @@ export const App: React.FC = () => {
   const [isBroadcastModalOpen, setIsBroadcastModalOpen] = useState(false);
   const [isSupportGrantModalOpen, setIsSupportGrantModalOpen] = useState(false);
   const [isBusinessProfileModalOpen, setIsBusinessProfileModalOpen] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   // Network & Sync status
   const [apiConnected, setApiConnected] = useState<boolean>(true);
@@ -618,11 +619,13 @@ export const App: React.FC = () => {
         userRole={currentUser.role}
         workspace={activeWorkspace}
         onOpenBusinessProfile={() => setIsBusinessProfileModalOpen(true)}
+        isMobileOpen={isMobileSidebarOpen}
+        onCloseMobile={() => setIsMobileSidebarOpen(false)}
       />
 
-      {/* Main Content Area */}
+      {/* Main Content Area: starts immediately after sidebar */}
       <div className={`flex-1 flex flex-col h-screen min-w-0 ${currentTab === 'inbox' ? 'overflow-hidden' : 'overflow-y-auto'}`}>
-        {/* Top Header */}
+        {/* Top Header: consistent h-16, sticky */}
         <Header
           currentUser={currentUser}
           onRoleChange={handleRoleChange}
@@ -630,31 +633,32 @@ export const App: React.FC = () => {
           isSimulatorOpen={isSimulatorOpen}
           onOpenSupportGrantModal={() => setIsSupportGrantModalOpen(true)}
           onLogout={handleLogout}
+          onToggleMobileSidebar={() => setIsMobileSidebarOpen(prev => !prev)}
         />
 
-        {/* Live Backend Connection & Sync Pill */}
-        <div className="px-6 sm:px-8 lg:px-10 pt-4 pb-1 flex items-center justify-between text-xs sm:text-sm text-slate-600">
-          <div className="flex items-center gap-2.5">
-            <span className={`w-2.5 h-2.5 rounded-full ${apiConnected ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`} />
+        {/* Live Backend Connection & Sync Pill: aligns with max-w-7xl content boundary */}
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-0 flex items-center justify-between text-xs text-slate-500">
+          <div className="flex items-center gap-2">
+            <span className={`w-2 h-2 rounded-full ${apiConnected ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`} />
             <span className="font-semibold text-slate-700">
-              Backend API: <code className="text-slate-600 font-mono text-xs sm:text-sm">http://localhost:5000/api/v1</code>
+              Backend API: <code className="text-slate-500 font-mono text-xs">http://localhost:5000/api/v1</code>
             </span>
-            <span className={`px-2.5 py-0.5 rounded-md font-bold text-xs ${
+            <span className={`px-2 py-0.5 rounded-md font-bold text-[10px] ${
               apiConnected ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'
             }`}>
               {apiConnected ? 'REST Connected' : 'Offline / Error'}
             </span>
             {syncError && (
-              <span className="text-rose-600 font-medium truncate max-w-xs">({syncError})</span>
+              <span className="text-rose-600 font-medium truncate max-w-xs text-xs">({syncError})</span>
             )}
           </div>
 
           <button
             onClick={() => fetchAllData()}
             disabled={isSyncing}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs sm:text-sm font-bold transition-colors shadow-xs cursor-pointer"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-colors shadow-2xs cursor-pointer"
           >
-            <RefreshCw className={`w-3.5 h-3.5 text-slate-500 ${isSyncing ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-3 h-3 text-slate-500 ${isSyncing ? 'animate-spin' : ''}`} />
             <span>{isSyncing ? 'Syncing...' : 'Sync Server'}</span>
           </button>
         </div>

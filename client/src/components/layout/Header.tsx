@@ -6,15 +6,16 @@ import {
   ChevronDown, 
   Smartphone, 
   CheckCircle2, 
-  Sparkles,
-  Command,
-  Crown,
-  Shield,
-  Headphones,
-  GlobeLock,
-  Lock,
-  Check,
-  LogOut
+  Sparkles, 
+  Command, 
+  Crown, 
+  Shield, 
+  Headphones, 
+  GlobeLock, 
+  Lock, 
+  Check, 
+  LogOut,
+  Menu
 } from 'lucide-react';
 import { User, UserRole } from '../../types';
 
@@ -25,6 +26,7 @@ interface HeaderProps {
   isSimulatorOpen: boolean;
   onOpenSupportGrantModal?: () => void;
   onLogout?: () => void;
+  onToggleMobileSidebar?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -34,6 +36,7 @@ export const Header: React.FC<HeaderProps> = ({
   isSimulatorOpen,
   onOpenSupportGrantModal,
   onLogout,
+  onToggleMobileSidebar,
 }) => {
   const [isRoleDropdownOpen, setIsRoleDropdownOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
@@ -77,49 +80,56 @@ export const Header: React.FC<HeaderProps> = ({
   const CurrentIcon = currentRoleConfig.icon;
 
   return (
-    <header className="h-16 lg:h-18 bg-white border-b border-slate-200/80 px-6 lg:px-8 flex items-center justify-between sticky top-0 z-20">
-      {/* Left: Search Bar */}
-      <div className="flex items-center gap-4 flex-1 max-w-lg">
+    <header className="h-16 bg-white/95 backdrop-blur-sm border-b border-slate-200/80 px-4 sm:px-6 lg:px-8 flex items-center justify-between sticky top-0 z-20">
+      {/* Left: Mobile Menu & Search Bar */}
+      <div className="flex items-center gap-2.5 sm:gap-4 flex-1 max-w-md">
+        {onToggleMobileSidebar && (
+          <button
+            onClick={onToggleMobileSidebar}
+            className="lg:hidden p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer shrink-0"
+            title="Open navigation"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+        )}
+
         <div className="relative w-full">
-          <Search className="w-4.5 h-4.5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search (Ctrl + K)"
-            className="w-full pl-10 pr-12 py-2.5 bg-slate-50 hover:bg-slate-100/80 focus:bg-white text-xs sm:text-sm text-slate-700 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all placeholder:text-slate-400"
+            className="w-full h-9 pl-9 pr-10 bg-slate-50 hover:bg-slate-100/80 focus:bg-white text-xs sm:text-sm text-slate-700 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all placeholder:text-slate-400"
           />
-          <div className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-0.5 text-[11px] text-slate-400 bg-white border border-slate-200 px-2 py-0.5 rounded shadow-xs">
+          <div className="hidden sm:flex absolute right-2.5 top-1/2 -translate-y-1/2 items-center gap-0.5 text-[10px] text-slate-400 bg-white border border-slate-200 px-1.5 py-0.5 rounded shadow-xs">
             <span>⌘</span>
             <span>K</span>
           </div>
         </div>
       </div>
 
-      {/* Right Controls */}
-      <div className="flex items-center gap-3.5">
+      {/* Right Controls: Exactly h-9 height for perfect vertical centering */}
+      <div className="flex items-center gap-2 sm:gap-2.5">
         {/* Interactive Dev Role Switcher */}
         <div className="relative">
           <button
             onClick={() => setIsRoleDropdownOpen(prev => !prev)}
-            className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition-all group cursor-pointer"
-            title="Switch User Role to test SRS Section 3 RBAC permissions"
+            className="h-9 flex items-center gap-2 px-2.5 sm:px-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition-all group cursor-pointer"
+            title="Switch User Role"
           >
-            <div className={`w-6 h-6 rounded-lg flex items-center justify-center border ${currentRoleConfig.color}`}>
-              <CurrentIcon className="w-3.5 h-3.5" />
+            <div className={`w-5 h-5 rounded-md flex items-center justify-center border ${currentRoleConfig.color} shrink-0`}>
+              <CurrentIcon className="w-3 h-3" />
             </div>
-            <div className="text-left">
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs sm:text-sm font-bold text-slate-800 leading-none">
+            <div className="text-left hidden sm:block">
+              <div className="flex items-center gap-1.5 leading-none">
+                <span className="text-xs font-bold text-slate-800">
                   {currentRoleConfig.title}
                 </span>
-                <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-slate-200/70 text-slate-700">
+                <span className="text-[9px] font-extrabold uppercase px-1 py-0.2 rounded bg-slate-200/70 text-slate-700">
                   {currentUser.role}
                 </span>
               </div>
-              <span className="text-[10px] text-emerald-700 font-semibold block leading-none mt-1">
-                Dev RBAC Switcher
-              </span>
             </div>
-            <ChevronDown className="w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-transform" />
+            <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-600 transition-transform shrink-0" />
           </button>
 
           {/* Role Dropdown Menu */}
@@ -127,7 +137,7 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 animate-in fade-in duration-150">
               <div className="px-3.5 py-2 border-b border-slate-100">
                 <div className="text-xs font-bold text-slate-800 flex items-center justify-between">
-                  <span>Switch Role (SRS §3 Testing)</span>
+                  <span>Switch Role</span>
                   <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.2 rounded">
                     Enforced
                   </span>
@@ -179,7 +189,7 @@ export const Header: React.FC<HeaderProps> = ({
                     className="w-full text-[11px] font-bold text-amber-800 bg-amber-100/70 hover:bg-amber-200/70 py-1.5 px-3 rounded-xl border border-amber-300/50 flex items-center justify-center gap-1.5 transition-colors"
                   >
                     <Lock className="w-3.5 h-3.5 text-amber-700" />
-                    <span>Manage Platform Admin Support Grants (SRS §615)</span>
+                    <span>Manage Support Grants (SRS §615)</span>
                   </button>
                 </div>
               )}
@@ -190,35 +200,35 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Interactive WhatsApp Simulator Toggle Button */}
         <button
           onClick={onToggleSimulator}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 shadow-xs cursor-pointer ${
+          className={`h-9 flex items-center gap-1.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 shadow-2xs cursor-pointer shrink-0 ${
             isSimulatorOpen
               ? 'bg-emerald-600 text-white ring-2 ring-emerald-500/30'
               : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200/80 hover:border-emerald-300'
           }`}
           title="Open WhatsApp Chat Simulator"
         >
-          <Smartphone className="w-4 h-4 text-emerald-600" />
-          <span>WhatsApp Simulator</span>
+          <Smartphone className="w-3.5 h-3.5 text-emerald-600" />
+          <span className="hidden sm:inline">WhatsApp Simulator</span>
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
         </button>
 
-        {/* Date Filter */}
-        <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-100 cursor-pointer transition-colors shadow-2xs">
-          <Calendar className="w-4 h-4 text-slate-400" />
-          <span>Oct 1, 2026 – Oct 13, 2026</span>
-          <ChevronDown className="w-4 h-4 text-slate-400" />
+        {/* Date Filter (hidden on small mobile) */}
+        <div className="hidden md:flex h-9 items-center gap-2 bg-slate-50 border border-slate-200 px-3 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-100 cursor-pointer transition-colors shadow-2xs shrink-0">
+          <Calendar className="w-3.5 h-3.5 text-slate-400" />
+          <span>Oct 1 – Oct 13, 2026</span>
+          <ChevronDown className="w-3 h-3 text-slate-400" />
         </div>
 
-        {/* Prominent Notification Bell with Alert Dropdown */}
-        <div className="relative">
+        {/* Notification Bell */}
+        <div className="relative shrink-0">
           <button 
             type="button"
             onClick={() => setIsNotificationsOpen(prev => !prev)}
-            className="w-10 h-10 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center relative transition-all shadow-2xs group cursor-pointer"
-            title="System Notifications & Meta Alerts"
+            className="w-9 h-9 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center relative transition-all shadow-2xs group cursor-pointer"
+            title="System Notifications"
           >
-            <Bell className="w-4.5 h-4.5 text-slate-600 group-hover:text-indigo-600 transition-colors" />
-            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-rose-500 text-white text-[10px] font-extrabold flex items-center justify-center ring-2 ring-white shadow-xs">
+            <Bell className="w-4 h-4 text-slate-600 group-hover:text-indigo-600 transition-colors" />
+            <span className="absolute -top-1 -right-1 w-4.5 h-4.5 rounded-full bg-rose-500 text-white text-[9px] font-extrabold flex items-center justify-center ring-2 ring-white shadow-xs">
               3
             </span>
           </button>
@@ -284,10 +294,10 @@ export const Header: React.FC<HeaderProps> = ({
         {onLogout && (
           <button
             onClick={onLogout}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 hover:text-rose-600 bg-slate-50 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 transition-colors shadow-2xs cursor-pointer"
-            title="Sign out to landing page"
+            className="h-9 flex items-center gap-1.5 px-3 rounded-xl text-xs font-bold text-slate-700 hover:text-rose-600 bg-slate-50 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 transition-colors shadow-2xs cursor-pointer shrink-0"
+            title="Sign out"
           >
-            <LogOut className="w-4 h-4 text-slate-500 hover:text-rose-600 transition-colors" />
+            <LogOut className="w-3.5 h-3.5 text-slate-500 hover:text-rose-600 transition-colors" />
             <span className="hidden sm:inline">Sign Out</span>
           </button>
         )}

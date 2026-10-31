@@ -218,14 +218,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
   const onlineMembersCount = team.filter(m => m.isOnline).length;
 
   return (
-    <div className="p-6 sm:p-8 max-w-[1550px] w-full mx-auto space-y-7 animate-in fade-in">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 animate-in fade-in">
       {/* Title */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight font-['Outfit'] flex items-center gap-2.5">
+          <h1 className="text-xl sm:text-2xl font-extrabold text-slate-800 tracking-tight font-['Outfit'] flex items-center gap-2.5">
             Settings & Workspace Preferences
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
             Configure Meta WhatsApp Cloud API credentials, automated lead routing switches, staff alerts, and security policies.
           </p>
         </div>
@@ -248,7 +248,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
           <button
             onClick={handleSaveSettings}
             disabled={isSaving}
-            className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold shadow-sm transition-all cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold shadow-xs transition-all cursor-pointer"
           >
             <Save className={`w-4 h-4 ${isSaving ? 'animate-spin' : ''}`} />
             <span>{isSaving ? 'Saving...' : 'Save All Settings'}</span>
@@ -257,64 +257,64 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
       </div>
 
       {/* Sub-Tabs Navigation */}
-      <div className="flex items-center gap-2.5 border-b border-slate-200 pb-2.5 overflow-x-auto">
+      <div className="flex items-center gap-2 border-b border-slate-200 pb-2.5 overflow-x-auto">
         <button
           onClick={() => setActiveSubTab('whatsapp')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
             activeSubTab === 'whatsapp'
-              ? 'bg-emerald-500 text-white shadow-sm'
+              ? 'bg-emerald-500 text-white shadow-xs'
               : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
-          <Phone className="w-4 h-4" />
+          <Phone className="w-3.5 h-3.5" />
           <span>WhatsApp Cloud API</span>
         </button>
 
         <button
           onClick={() => setActiveSubTab('general')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
             activeSubTab === 'general'
-              ? 'bg-emerald-500 text-white shadow-sm'
+              ? 'bg-emerald-500 text-white shadow-xs'
               : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
-          <Building className="w-4 h-4" />
+          <Building className="w-3.5 h-3.5" />
           <span>General Profile</span>
         </button>
 
         <button
           onClick={() => setActiveSubTab('notifications')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
             activeSubTab === 'notifications'
-              ? 'bg-emerald-500 text-white shadow-sm'
+              ? 'bg-emerald-500 text-white shadow-xs'
               : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
-          <Bell className="w-4 h-4" />
+          <Bell className="w-3.5 h-3.5" />
           <span>Notification Switches</span>
         </button>
 
         <button
           onClick={() => setActiveSubTab('routing')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
             activeSubTab === 'routing'
-              ? 'bg-emerald-500 text-white shadow-sm'
+              ? 'bg-emerald-500 text-white shadow-xs'
               : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
-          <Sliders className="w-4 h-4" />
+          <Sliders className="w-3.5 h-3.5" />
           <span>Routing & Auto-Assignment</span>
         </button>
 
         <button
           onClick={() => setActiveSubTab('security')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
             activeSubTab === 'security'
-              ? 'bg-emerald-500 text-white shadow-sm'
+              ? 'bg-emerald-500 text-white shadow-xs'
               : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
-          <ShieldCheck className="w-4 h-4" />
+          <ShieldCheck className="w-3.5 h-3.5" />
           <span>Security & RLS Isolation</span>
         </button>
       </div>
@@ -323,7 +323,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
       {activeSubTab === 'whatsapp' && (
         <div className="space-y-6">
           {/* Main Account Connection Card */}
-          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs space-y-6">
+          <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs space-y-5">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-5 border-b border-slate-100">
               <div className="flex items-center gap-4">
                 <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm shrink-0 ${
@@ -705,7 +705,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ whatsappAccount: pro
           )}
 
           {/* Team Staff Quick Overview */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs space-y-4">
+          <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-base sm:text-lg font-bold text-slate-800">Institute Counselling Staff</h3>

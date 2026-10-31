@@ -36,7 +36,7 @@ export const SourceDonut: React.FC<SourceDonutProps> = ({
   let accumulatedPercent = 0;
 
   return (
-    <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between h-full">
+    <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs flex flex-col justify-between h-full">
       {/* Title */}
       <div className="flex items-center justify-between mb-2">
         <div>
