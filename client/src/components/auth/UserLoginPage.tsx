@@ -636,13 +636,28 @@ export const UserLoginPage: React.FC<UserLoginPageProps> = ({
           
           {/* Card Header: Prominent Brand + Large Headings */}
           <div>
-            <div className="flex items-center gap-2.5 mb-3.5">
-              <div className="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-xs">
-                <MessageSquare className="w-5 h-5 fill-white/20" />
+            <div className="flex items-center justify-between gap-2.5 mb-3.5">
+              <div 
+                onClick={onBackToHome}
+                className="flex items-center gap-2.5 cursor-pointer group"
+                title="Back to Landing Page"
+              >
+                <div className="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform">
+                  <MessageSquare className="w-5 h-5 fill-white/20" />
+                </div>
+                <span className="font-black text-2xl sm:text-3xl text-slate-900 tracking-tight font-['Outfit']">
+                  Auto<span className="text-emerald-700">Mask</span>
+                </span>
               </div>
-              <span className="font-black text-2xl sm:text-3xl text-slate-900 tracking-tight font-['Outfit']">
-                Auto<span className="text-emerald-700">Mask</span>
-              </span>
+
+              <button
+                type="button"
+                onClick={onBackToHome}
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-emerald-200 transition-all cursor-pointer"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Home</span>
+              </button>
             </div>
 
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 font-['Outfit'] tracking-tight leading-tight">

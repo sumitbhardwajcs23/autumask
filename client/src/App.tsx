@@ -82,15 +82,19 @@ export const App: React.FC = () => {
     const view = params.get('view');
     const token = localStorage.getItem('automask_token');
 
-    // Only allow entering 'app' if token exists
-    if ((view === 'app' || view === 'admin' || view === 'platform') && token) {
-      return 'app';
+    // Explicit views via query parameter
+    if (view === 'landing') {
+      return 'landing';
     }
     if (view === 'user-login' || view === 'admin-login') {
       return view as PageView;
     }
-    // If not authenticated, default to user-login (or landing)
-    return token ? 'app' : 'user-login';
+    if ((view === 'app' || view === 'admin' || view === 'platform') && token) {
+      return 'app';
+    }
+
+    // Default when opening website: Landing page should open first!
+    return 'landing';
   });
 
   // Verify existing session on mount
@@ -107,12 +111,12 @@ export const App: React.FC = () => {
         } else {
           setIsAuthenticated(false);
           localStorage.removeItem('automask_token');
-          setActiveView('user-login');
+          setActiveView(prev => prev === 'app' ? 'user-login' : prev);
         }
       }).catch(() => {
         setIsAuthenticated(false);
         localStorage.removeItem('automask_token');
-        setActiveView('user-login');
+        setActiveView(prev => prev === 'app' ? 'user-login' : prev);
       });
     } else {
       setIsAuthenticated(false);
@@ -550,7 +554,7 @@ export const App: React.FC = () => {
     }
     setIsAuthenticated(false);
     localStorage.removeItem('automask_token');
-    setActiveView('user-login');
+    setActiveView('landing');
   };
 
   // Strict Auth Guard: Nobody can access 'app' without being authenticated!
@@ -559,7 +563,7 @@ export const App: React.FC = () => {
       <UserLoginPage
         onLoginSuccess={handleLoginSuccess}
         onNavigateToAdminLogin={() => setActiveView('admin-login')}
-        onBackToHome={() => setActiveView('user-login')}
+        onBackToHome={() => setActiveView('landing')}
       />
     );
   }
@@ -571,6 +575,8 @@ export const App: React.FC = () => {
         onNavigateToUserLogin={() => setActiveView('user-login')}
         onNavigateToAdminLogin={() => setActiveView('admin-login')}
         onLaunchDemo={handleLaunchDemo}
+        isAuthenticated={isAuthenticated}
+        onNavigateToApp={() => setActiveView('app')}
       />
     );
   }

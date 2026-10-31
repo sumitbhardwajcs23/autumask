@@ -56,12 +56,16 @@ interface LandingPageProps {
   onNavigateToUserLogin: () => void;
   onNavigateToAdminLogin: () => void;
   onLaunchDemo: (role?: UserRole) => void;
+  isAuthenticated?: boolean;
+  onNavigateToApp?: () => void;
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({
   onNavigateToUserLogin,
   onNavigateToAdminLogin,
   onLaunchDemo,
+  isAuthenticated = false,
+  onNavigateToApp,
 }) => {
   // Navigation & Dropdown states
   const [solutionsOpen, setSolutionsOpen] = useState(false);
@@ -388,13 +392,24 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
           {/* Right Actions */}
           <div className="flex items-center gap-3">
-            <button
-              id="nav-login-btn"
-              onClick={onNavigateToUserLogin}
-              className="px-4 py-2 text-sm font-bold text-slate-700 hover:text-[#047857] transition-colors"
-            >
-              Login
-            </button>
+            {isAuthenticated && onNavigateToApp ? (
+              <button
+                id="nav-dashboard-btn"
+                onClick={onNavigateToApp}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-all shadow-xs active:scale-98"
+              >
+                <span>Dashboard</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            ) : (
+              <button
+                id="nav-login-btn"
+                onClick={onNavigateToUserLogin}
+                className="px-4 py-2 text-sm font-bold text-slate-700 hover:text-[#047857] transition-colors"
+              >
+                Login
+              </button>
+            )}
 
             <button
               id="nav-book-demo-btn"
