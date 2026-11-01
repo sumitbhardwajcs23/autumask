@@ -17,6 +17,7 @@
     "test:platform": "tsx src/tests/runPlatformVsClientTests.ts",
     "test:all": "tsx src/tests/runMasterTestSuite.ts",
     "test:security": "tsx src/tests/runSecurityTests.ts",
+    "test:enterprise": "tsx src/tests/runEnterpriseMultiTenantSecurityTests.ts",
     "test:workflows": "tsx src/tests/runWorkflowTests.ts",
     "test:multitenant": "tsx src/tests/runMultiTenantTests.ts",
     "verify:rds": "tsx src/database/verifyRdsDeployment.ts"

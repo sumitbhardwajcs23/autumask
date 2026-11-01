@@ -857,4 +857,34 @@ export const platformApi = {
   },
 };
 
+// ==========================================
+// 23. Enterprise Multi-Tenant & Agency Workspaces API
+// ==========================================
+export const workspaceApi = {
+  list: async (): Promise<{ workspaces: any[]; currentWorkspaceId: string }> => {
+    return apiClient.get('/workspaces');
+  },
+
+  switch: async (targetWorkspaceId: string): Promise<{ success: boolean; token: string; workspace: any; role: string }> => {
+    return apiClient.post('/workspaces/switch', { targetWorkspaceId });
+  },
+
+  updateIndustry: async (industryType: string, industryConfig?: any): Promise<{ success: boolean; workspace: any }> => {
+    return apiClient.put('/workspaces/industry', { industryType, industryConfig });
+  },
+
+  getAgencyOrganization: async (): Promise<{ organization: any }> => {
+    return apiClient.get('/agency/organization');
+  },
+
+  getAgencyWorkspaces: async (): Promise<{ workspaces: any[] }> => {
+    return apiClient.get('/agency/workspaces');
+  },
+
+  createAgencyWorkspace: async (data: { name: string; industryType?: string; planId?: string }): Promise<{ success: boolean; workspace: any }> => {
+    return apiClient.post('/agency/workspaces', data);
+  },
+};
+
+
 

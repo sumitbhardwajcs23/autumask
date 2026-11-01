@@ -10,12 +10,17 @@ dotenv.config();
 
 const app = express();
 
-// Unconditional bulletproof CORS Middleware
+// CORS Middleware with Strict Allowed Origins Allow-list
+const allowedOrigins = env.CORS_ORIGIN.split(',').map(o => o.trim());
+
 app.use((req, res, next) => {
   const origin = req.headers.origin;
   if (origin) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    const isAllowed = env.NODE_ENV !== 'production' || allowedOrigins.includes(origin) || origin.endsWith('.amplifyapp.com');
+    if (isAllowed) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+    }
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Cookie, X-Requested-With, X-Hub-Signature-256, Accept');
   } else {

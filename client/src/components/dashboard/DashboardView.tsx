@@ -33,6 +33,7 @@ import { OnboardingBanner } from './OnboardingBanner';
 import { WhatsAppConnectivityHero } from './WhatsAppConnectivityHero';
 import { Conversation, AutomationRule, UsageQuota, TabType, User, WhatsAppAccount } from '../../types';
 import { IndustryType, INDUSTRIES, getIndustryConfig } from '../../config/industries';
+import { workspaceApi } from '../../services/api';
 
 const ICON_MAP: Record<string, any> = {
   ShoppingCart,
@@ -143,8 +144,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </span>
         </div>
 
-        {/* 6 Industry Tabs: Strictly Equal Heights & Comfortable Typography */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+        {/* 10 Industry Vertical Switcher: Strictly Equal Heights & Responsive Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 xl:grid-cols-10 gap-2.5 sm:gap-3">
           {(Object.keys(INDUSTRIES) as IndustryType[]).map((indKey) => {
             const ind = INDUSTRIES[indKey];
             const isSelected = selectedIndustry === indKey;
@@ -152,15 +153,26 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <button
                 key={indKey}
                 type="button"
-                onClick={() => setSelectedIndustry(indKey)}
-                className={`h-14 px-4 rounded-2xl text-sm sm:text-base transition-all flex items-center justify-center gap-3 border text-center cursor-pointer shadow-xs ${
+                onClick={() => {
+                  setSelectedIndustry(indKey);
+                  try {
+                    workspaceApi.updateIndustry(indKey.toUpperCase(), {
+                      name: ind.demoAccount.workspaceName,
+                      customerTerm: ind.customerTerm,
+                    });
+                  } catch (e: any) {
+                    console.warn('Industry update notice:', e?.message);
+                  }
+                }}
+                className={`h-13 px-2 rounded-2xl text-xs sm:text-sm transition-all flex flex-col items-center justify-center gap-1 border text-center cursor-pointer shadow-xs ${
                   isSelected
                     ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm font-black'
                     : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200 font-bold'
                 }`}
+                title={`${ind.name} (${ind.customerTerm})`}
               >
-                <span className="text-xl sm:text-2xl">{ind.icon}</span>
-                <span className="truncate">{ind.shortLabel}</span>
+                <span className="text-lg">{ind.icon}</span>
+                <span className="truncate w-full text-center px-1 font-semibold">{ind.shortLabel}</span>
               </button>
             );
           })}

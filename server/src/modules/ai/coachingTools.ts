@@ -182,32 +182,17 @@ export class CoachingTools {
         }
       }
 
-      // 1. Lock slot row with FOR UPDATE to prevent race condition overbooking
+      // 1. Lock slot row with FOR UPDATE and explicit workspace check to prevent race condition overbooking
       const slotRes = await client.query(
         `SELECT id, title, start_at, end_at, capacity, booked_count, status
          FROM slots
-         WHERE id = $1 AND status = 'AVAILABLE'
+         WHERE id = $1 AND workspace_id = $2 AND status = 'AVAILABLE'
          FOR UPDATE;`,
-        [slotId]
+        [slotId, workspaceId]
       );
 
       if (slotRes.rows.length === 0) {
-        // Fallback to mockStore slot check
-        const mockSlot = mockStore.slots.find(s => s.id === slotId);
-        if (!mockSlot) throw new Error('Requested demo slot was not found');
-        if (mockSlot.bookedCount >= mockSlot.capacity) {
-          throw new Error('SLOT_CAPACITY_EXCEEDED: Slot has reached maximum student capacity');
-        }
-        const appt = mockStore.bookSlot(slotId, studentName, cleanPhone);
-        return {
-          success: true,
-          bookingId: appt.id,
-          slotDate: mockSlot.startAt,
-          timeRange: mockSlot.title,
-          studentName,
-          phone: cleanPhone,
-          status: 'CONFIRMED',
-        };
+        throw new Error('Requested demo slot was not found in this workspace or is not available');
       }
 
       const slot = slotRes.rows[0];
@@ -219,10 +204,10 @@ export class CoachingTools {
         throw new Error('SLOT_CAPACITY_EXCEEDED: Slot has reached maximum student capacity');
       }
 
-      // 3. Increment slot bookings
+      // 3. Increment slot bookings with strict workspace boundary
       await client.query(
-        `UPDATE slots SET booked_count = booked_count + 1 WHERE id = $1;`,
-        [slotId]
+        `UPDATE slots SET booked_count = booked_count + 1 WHERE id = $1 AND workspace_id = $2;`,
+        [slotId, workspaceId]
       );
 
       // 4. Upsert contact
@@ -317,14 +302,14 @@ export class CoachingTools {
         throw new Error('SLOT_CAPACITY_EXCEEDED: New slot is full');
       }
 
-      // 3. Decrement old slot and increment new slot
-      await client.query(`UPDATE slots SET booked_count = GREATEST(0, booked_count - 1) WHERE id = $1;`, [oldSlotId]);
-      await client.query(`UPDATE slots SET booked_count = booked_count + 1 WHERE id = $1;`, [newSlotId]);
+      // 3. Decrement old slot and increment new slot with strict workspace scoping
+      await client.query(`UPDATE slots SET booked_count = GREATEST(0, booked_count - 1) WHERE id = $1 AND workspace_id = $2;`, [oldSlotId, workspaceId]);
+      await client.query(`UPDATE slots SET booked_count = booked_count + 1 WHERE id = $1 AND workspace_id = $2;`, [newSlotId, workspaceId]);
 
       // 4. Update appointment
       await client.query(
-        `UPDATE appointments SET slot_id = $1, status = 'RESCHEDULED' WHERE id = $2;`,
-        [newSlotId, appointmentId]
+        `UPDATE appointments SET slot_id = $1, status = 'RESCHEDULED' WHERE id = $2 AND workspace_id = $3;`,
+        [newSlotId, appointmentId, workspaceId]
       );
 
       return { success: true, appointmentId, oldSlotId, newSlotId, status: 'RESCHEDULED' };
@@ -336,10 +321,10 @@ export class CoachingTools {
    */
   public static async requestHumanHandoff(workspaceId: string, conversationId: string, reason: string) {
     return withTenantContext(workspaceId, async (client) => {
-      // 1. Mark takeover active
+      // 1. Mark takeover active with strict workspace scoping
       await client.query(
-        `UPDATE conversations SET takeover_active = TRUE WHERE id = $1;`,
-        [conversationId]
+        `UPDATE conversations SET takeover_active = TRUE WHERE id = $1 AND workspace_id = $2;`,
+        [conversationId, workspaceId]
       );
 
       // Update in mockStore

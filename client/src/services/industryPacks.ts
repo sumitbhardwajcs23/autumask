@@ -10,6 +10,9 @@ export type BusinessSectorId =
   | 'AUTOMOTIVE'
   | 'EDUCATION'
   | 'FINANCIAL_SERVICES'
+  | 'AD_BOOKING'
+  | 'IT_SERVICES'
+  | 'AGENCY_SAAS'
   | 'SERVICES';
 
 export interface IndustryTemplatePreset {
@@ -542,6 +545,98 @@ export const BUSINESS_SECTORS: Record<Exclude<BusinessSectorId, 'ALL'>, Business
       },
     ],
   },
+  AD_BOOKING: {
+    id: 'AD_BOOKING',
+    label: 'Ad Booking & Media Publications',
+    shortName: 'Ad Booking',
+    iconName: 'Tv',
+    badgeClass: 'bg-pink-50 text-pink-700 border-pink-300',
+    sampleBrandName: 'PrimeMedia Advertising & Broadcast',
+    customerTermSingle: 'Advertiser',
+    customerTermPlural: 'Advertisers',
+    description: 'Print, digital, radio, outdoor billboard and TV advertisement slot booking and proof of run.',
+    recommendedTags: ['Billboard Inquiry', 'Prime Time Slot', 'Proof of Run Required', 'Print Classified', 'Digital Ad Campaign', 'Agency Media Deal'],
+    presets: [
+      {
+        id: 'ad-slot-confirm',
+        name: 'ad_slot_booking_confirmation',
+        label: '📺 Prime Ad Slot Reservation',
+        category: 'MARKETING',
+        industry: 'AD_BOOKING',
+        headerText: '📺 PrimeMedia Advertising Confirmation',
+        bodyText: 'Dear {{1}}, your commercial advertising slot for the {{2}} broadcast window has been confirmed. Review slot details and material submission specs:',
+        footerText: 'PrimeMedia Ad Operations',
+        defaultVar1: 'Brand Manager',
+        defaultVar2: 'Evening Prime',
+        buttons: [
+          { id: 'btn-ad-specs', title: '📐 Technical Specs PDF', type: 'URL', url: 'https://primemedia.com/specs.pdf' },
+          { id: 'btn-ad-proof', title: '📋 Request Proof of Run', type: 'QUICK_REPLY', payload: 'Client requested broadcast proof of run' },
+          { id: 'btn-ad-desk', title: '📞 Traffic Desk Call', type: 'CALL', phoneNumber: '+919876543210' },
+        ],
+      },
+    ],
+  },
+  IT_SERVICES: {
+    id: 'IT_SERVICES',
+    label: 'IT & Professional Services',
+    shortName: 'IT & Services',
+    iconName: 'Laptop',
+    badgeClass: 'bg-purple-50 text-purple-700 border-purple-300',
+    sampleBrandName: 'CloudScale Consulting & Solutions',
+    customerTermSingle: 'Enterprise Client',
+    customerTermPlural: 'Enterprise Clients',
+    description: 'IT consulting, bespoke software development, managed cloud services and system integration.',
+    recommendedTags: ['RFP Received', 'Tech Architecture Review', 'Discovery Call Booked', 'Signed SOW', 'Urgent Bug Ticket', 'NDA Executed'],
+    presets: [
+      {
+        id: 'it-discovery-confirm',
+        name: 'it_architecture_discovery_invite',
+        label: '💻 Tech Architecture Discovery Session',
+        category: 'UTILITY',
+        industry: 'IT_SERVICES',
+        headerText: '💻 Architecture Discovery Session',
+        bodyText: 'Hello {{1}}, our lead systems architect has been assigned to your project scope. Your technical discovery session is confirmed for {{2}}:',
+        footerText: 'CloudScale Enterprise Architecture',
+        defaultVar1: 'CTO',
+        defaultVar2: 'Tuesday 3:00 PM',
+        buttons: [
+          { id: 'btn-it-meeting', title: '📅 Open Meeting Link', type: 'URL', url: 'https://meet.google.com/abc-defg-hij' },
+          { id: 'btn-it-sow', title: '📄 Scope Draft PDF', type: 'URL', url: 'https://cloudscale.ai/scope.pdf' },
+          { id: 'btn-it-resched', title: '🔄 Reschedule Call', type: 'QUICK_REPLY', payload: 'Client requested architecture call reschedule' },
+        ],
+      },
+    ],
+  },
+  AGENCY_SAAS: {
+    id: 'AGENCY_SAAS',
+    label: 'Digital Agencies & SaaS Multi-Tenant',
+    shortName: 'Agencies & SaaS',
+    iconName: 'Building2',
+    badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-300',
+    sampleBrandName: 'ScaleOps Agency Network',
+    customerTermSingle: 'Client Sub-Account',
+    customerTermPlural: 'Client Sub-Accounts',
+    description: 'Digital marketing agencies managing multiple client sub-accounts, white-label client campaigns, and automated multi-tenant workflows.',
+    recommendedTags: ['Agency Retainer', 'Client Sub-Account', 'White-Label Request', 'High Tier Plan', 'SLA Enterprise', 'Multi-Client Campaign'],
+    presets: [
+      {
+        id: 'agency-onboarding-invite',
+        name: 'agency_client_workspace_provisioned',
+        label: '🚀 Client Workspace Activation',
+        category: 'UTILITY',
+        industry: 'AGENCY_SAAS',
+        headerText: '🚀 Dedicated Client Workspace Live',
+        bodyText: 'Hello {{1}}, your agency management workspace for {{2}} has been provisioned on AutoMask. Connect your dedicated WhatsApp number to activate live automation:',
+        footerText: 'ScaleOps Multi-Tenant Agency Network',
+        defaultVar1: 'Account Lead',
+        defaultVar2: 'Q4 Campaign',
+        buttons: [
+          { id: 'btn-agency-login', title: '🔑 Open Client Console', type: 'URL', url: 'https://app.automask.io/client' },
+          { id: 'btn-agency-support', title: '💬 Agency Partner Chat', type: 'QUICK_REPLY', payload: 'Agency requested partner support call' },
+        ],
+      },
+    ],
+  },
 };
 
 export const ALL_SECTOR_KEYS: Exclude<BusinessSectorId, 'ALL'>[] = [
@@ -552,7 +647,10 @@ export const ALL_SECTOR_KEYS: Exclude<BusinessSectorId, 'ALL'>[] = [
   'HOSPITALITY',
   'AUTOMOTIVE',
   'FINANCIAL_SERVICES',
+  'AD_BOOKING',
   'EDUCATION',
+  'IT_SERVICES',
+  'AGENCY_SAAS',
   'SERVICES',
 ];
 

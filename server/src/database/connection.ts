@@ -58,7 +58,8 @@ export const query = async <T extends QueryResultRow = any>(text: string, params
  */
 export const withTenantContext = async <T>(
   workspaceId: string,
-  callback: (client: PoolClient) => Promise<T>
+  callback: (client: PoolClient) => Promise<T>,
+  options?: { organizationId?: string; isPlatformAdmin?: boolean }
 ): Promise<T> => {
   if (!workspaceId || typeof workspaceId !== 'string') {
     throw new Error('Tenant context error: valid workspaceId is required');
@@ -69,8 +70,19 @@ export const withTenantContext = async <T>(
 
   try {
     await client.query('BEGIN');
+    
+    // Switch to non-bypassing application role inside transaction (if granted)
+    await client.query('SET LOCAL ROLE automask_app;').catch(() => {});
+
     // Set transaction-local tenant context (3rd parameter = true => local to transaction)
     await client.query("SELECT set_config('app.current_workspace_id', $1, true)", [workspaceId]);
+
+    if (options?.organizationId) {
+      await client.query("SELECT set_config('app.current_organization_id', $1, true)", [options.organizationId]);
+    }
+    if (options?.isPlatformAdmin) {
+      await client.query("SELECT set_config('app.is_platform_admin', 'true', true)");
+    }
 
     const result = await callback(client);
 

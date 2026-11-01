@@ -12,10 +12,12 @@ import {
   TrendingUp, 
   Laptop,
   Sparkles,
-  ShieldCheck
+  ShieldCheck,
+  Tv
 } from 'lucide-react';
 import { Workspace, BusinessSectorId } from '../../types';
 import { BUSINESS_SECTORS, ALL_SECTOR_KEYS } from '../../services/industryPacks';
+import { workspaceApi } from '../../services/api';
 
 interface BusinessProfileModalProps {
   isOpen: boolean;
@@ -52,6 +54,7 @@ export const BusinessProfileModal: React.FC<BusinessProfileModalProps> = ({
       case 'GraduationCap': return <GraduationCap className="w-5 h-5 text-indigo-600" />;
       case 'TrendingUp': return <TrendingUp className="w-5 h-5 text-cyan-600" />;
       case 'Laptop': return <Laptop className="w-5 h-5 text-purple-600" />;
+      case 'Tv': return <Tv className="w-5 h-5 text-pink-600" />;
       default: return <Briefcase className="w-5 h-5 text-slate-600" />;
     }
   };
@@ -68,13 +71,26 @@ export const BusinessProfileModal: React.FC<BusinessProfileModalProps> = ({
     setBusinessName(name);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    const updatedSector = selectedSector;
+    const nameToSave = businessName.trim() || 'My Business';
+    const termToSave = customerTerm.trim() || 'Customers';
+
+    try {
+      await workspaceApi.updateIndustry(updatedSector, {
+        businessName: nameToSave,
+        customerTerm: termToSave,
+      });
+    } catch (e: any) {
+      console.warn('Workspace industry API update notice:', e?.message);
+    }
+
     onSaveWorkspace({
-      name: businessName.trim() || 'My Business',
-      businessName: businessName.trim() || 'My Business',
-      industry: selectedSector,
-      category: selectedSector,
-      customerTerm: customerTerm.trim() || 'Customers',
+      name: nameToSave,
+      businessName: nameToSave,
+      industry: updatedSector,
+      category: updatedSector,
+      customerTerm: termToSave,
     });
     onClose();
   };

@@ -4,15 +4,27 @@
  */
 
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import { apiRouter } from '../routes/api';
 import { mockStore } from '../models/mockStore';
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use('/api/v1', apiRouter);
 
-// Test helper using fetch against the local running server or in-memory express
-const BASE_URL = 'http://localhost:5000/api/v1';
+let server: any;
+let BASE_URL = 'http://127.0.0.1:5000/api/v1';
+
+async function startServer(): Promise<void> {
+  return new Promise((resolve) => {
+    server = app.listen(0, '127.0.0.1', () => {
+      const port = (server.address() as any).port;
+      BASE_URL = `http://127.0.0.1:${port}/api/v1`;
+      resolve();
+    });
+  });
+}
 
 interface TestResult {
   name: string;
@@ -74,6 +86,7 @@ async function assertApi(
 }
 
 async function runSecurityTestSuite() {
+  await startServer();
   console.log('\n=============================================================');
   console.log('🔒 Starting AutoMask RBAC & SRS Line 615 Security Test Suite');
   console.log('=============================================================\n');
@@ -272,6 +285,7 @@ async function runSecurityTestSuite() {
   // -------------------------------------------------------------
   // SUMMARY
   // -------------------------------------------------------------
+  if (server) server.close();
   console.log('\n=============================================================');
   const total = results.length;
   const passed = results.filter(r => r.passed).length;

@@ -108,8 +108,8 @@ export class WebhookWorker {
         }
       }
 
-      // 3. Execute 7-Stage Response Decision Pipeline
-      const results = WebhookPipeline.processWebhookEvent(payload);
+      // 3. Execute 7-Stage Response Decision Pipeline scoped to resolved workspace
+      const results = WebhookPipeline.processWebhookEvent(payload, undefined, workspaceId);
 
       // 4. Persist in real PostgreSQL database (contacts, conversations, messages, leads)
       for (const entry of payload.entry || []) {

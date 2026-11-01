@@ -88,9 +88,6 @@ export class RAGEngine {
         );
       }
 
-      // Also maintain mockStore for backwards compatibility with existing UI
-      mockStore.addKnowledgeItem(type, title, content, fees, batches);
-
       return { id: itemId, chunksCount: chunks.length };
     });
   }
@@ -113,10 +110,10 @@ export class RAGEngine {
           `SELECT id, type, title, content, fees, batches,
                   cosine_similarity(embedding, $1::FLOAT8[]) as similarity
            FROM knowledge_items
-           WHERE active = TRUE AND embedding IS NOT NULL
+           WHERE active = TRUE AND embedding IS NOT NULL AND workspace_id = $2
            ORDER BY similarity DESC
-           LIMIT $2;`,
-          [queryVector, topK]
+           LIMIT $3;`,
+          [queryVector, workspaceId, topK]
         );
 
         return res.rows
@@ -131,36 +128,10 @@ export class RAGEngine {
           }))
           .filter(match => match.similarity >= minSimilarity);
       });
-    } catch {
-      // In-memory fallback if database vector search encounters error
-      const queryLower = queryText.toLowerCase();
-      const matches: KnowledgeMatch[] = [];
-
-      for (const item of mockStore.knowledgeItems) {
-        if (!item.active) continue;
-        const text = `${item.title} ${item.content} ${item.fees || ''}`.toLowerCase();
-        let sim = 0;
-        if (text.includes(queryLower)) {
-          sim = 0.95;
-        } else {
-          const qWords = queryLower.split(/\s+/).filter(w => w.length > 2);
-          const matched = qWords.filter(w => text.includes(w));
-          sim = qWords.length > 0 ? (matched.length / qWords.length) * 0.8 : 0;
-        }
-
-        if (sim >= minSimilarity) {
-          matches.push({
-            id: item.id,
-            type: item.type,
-            title: item.title,
-            content: item.content,
-            fees: item.fees,
-            batches: item.batches,
-            similarity: sim,
-          });
-        }
-      }
-      return matches.sort((a, b) => b.similarity - a.similarity).slice(0, topK);
+    } catch (err: any) {
+      // Fail closed: Never leak other tenants' data on error
+      console.warn(`[RAGEngine] Tenant knowledge retrieval error for workspace ${workspaceId}:`, err?.message);
+      return [];
     }
   }
 

@@ -101,6 +101,9 @@ export type BusinessSectorId =
   | 'AUTOMOTIVE'
   | 'EDUCATION'
   | 'FINANCIAL_SERVICES'
+  | 'AD_BOOKING'
+  | 'IT_SERVICES'
+  | 'AGENCY_SAAS'
   | 'SERVICES';
 
 export interface Workspace {

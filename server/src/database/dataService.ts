@@ -8,18 +8,21 @@ export class DataService {
   public static async getDashboardData(workspaceId: string, currentUser?: any) {
     // 1. Workspace
     const wsRes = await query(
-      `SELECT id, name, category, timezone, business_hours as "businessHours", plan_id as "planId" 
+      `SELECT id, name, category, timezone, business_hours as "businessHours", plan_id as "planId",
+              organization_id as "organizationId", industry_type as "industryType", industry_config as "industryConfig"
        FROM workspaces WHERE id = $1 LIMIT 1;`,
       [workspaceId]
     );
     const workspace = wsRes.rows[0] || {
       id: workspaceId,
-      name: 'Prakash Institute',
-      category: 'JEE & NEET Coaching',
+      name: 'Workspace',
+      category: 'General',
       timezone: 'Asia/Kolkata',
+      industryType: 'GENERAL',
+      industryConfig: {},
     };
 
-    // 2. WhatsApp Account
+    // 2. WhatsApp Account (Real status, fail-closed when disconnected)
     const waRes = await query(
       `SELECT id, workspace_id as "workspaceId", phone_number_id as "phoneNumberId", 
               waba_id as "wabaId", display_number as "displayNumber", status, quality_rating as "qualityRating" 
@@ -27,13 +30,13 @@ export class DataService {
       [workspaceId]
     );
     const whatsappAccount = waRes.rows[0] || {
-      id: 'wa-acc-01',
+      id: '',
       workspaceId,
-      displayNumber: '+1 555-660-3701',
-      phoneNumberId: '1317971801407031',
-      wabaId: '1789873612251308',
-      status: 'CONNECTED',
-      qualityRating: 'GREEN',
+      displayNumber: '',
+      phoneNumberId: '',
+      wabaId: '',
+      status: 'DISCONNECTED',
+      qualityRating: 'UNKNOWN',
     };
 
     // 3. Computed real counts
@@ -129,6 +132,17 @@ export class DataService {
       userRole: currentUser?.role || 'owner',
       isLimitedView: false,
     };
+  }
+
+  public static async updateWorkspaceIndustry(workspaceId: string, industryType: string, industryConfig: any) {
+    const res = await query(
+      `UPDATE workspaces 
+       SET industry_type = $1, industry_config = $2, updated_at = NOW()
+       WHERE id = $3
+       RETURNING id, name, industry_type as "industryType", industry_config as "industryConfig";`,
+      [industryType, JSON.stringify(industryConfig || {}), workspaceId]
+    );
+    return res.rows[0];
   }
 
   /**
@@ -869,39 +883,65 @@ export class DataService {
     const name = studentName || 'Prospective Student';
     const windowExpiry = new Date(Date.now() + 24 * 3600 * 1000).toISOString();
 
-    // 1. Upsert Contact
+    // 1. Check Opt-out or Re-Opt-in command
+    const optOutRegex = /^\s*(stop|unsubscribe|cancel|quit|end|ruk\s*jao|band\s*karo|donotmsg)\s*$/i;
+    const reOptInRegex = /^\s*(start|unstop|shuru\s*karo|optin)\s*$/i;
+    const isOptOut = optOutRegex.test(body.trim());
+    const isReOptIn = reOptInRegex.test(body.trim());
+
+    // 1a. Upsert Contact with proper consent state
+    const initialStatus = isOptOut ? 'OPTED_OUT' : 'OPTED_IN';
     const contactRes = await query(
       `INSERT INTO contacts (id, workspace_id, phone_e164, name, opt_in_status, opt_in_source, updated_at)
-       VALUES (gen_random_uuid(), $1, $2, $3, 'OPTED_IN', 'INBOUND_MESSAGE', NOW())
+       VALUES (gen_random_uuid(), $1, $2, $3, $4, 'INBOUND_MESSAGE', NOW())
        ON CONFLICT (workspace_id, phone_e164) DO UPDATE 
-       SET name = COALESCE(EXCLUDED.name, contacts.name), updated_at = NOW()
-       RETURNING id;`,
-      [workspaceId, cleanPhone, name]
+       SET name = COALESCE(EXCLUDED.name, contacts.name),
+           opt_in_status = CASE 
+             WHEN $5 = TRUE THEN 'OPTED_OUT' 
+             WHEN $6 = TRUE THEN 'OPTED_IN'
+             ELSE contacts.opt_in_status 
+           END,
+           updated_at = NOW()
+       RETURNING id, opt_in_status;`,
+      [workspaceId, cleanPhone, name, initialStatus, isOptOut, isReOptIn]
     );
     const contactId = contactRes.rows[0].id;
+    const currentOptInStatus = contactRes.rows[0].opt_in_status;
 
-    // 2. Find or Create Open Conversation
+    // 2. Find or Create Conversation
     let convRes = await query(
-      `SELECT id FROM conversations WHERE workspace_id = $1 AND contact_id = $2 AND status = 'OPEN' LIMIT 1;`,
+      `SELECT id, status, takeover_active FROM conversations WHERE workspace_id = $1 AND contact_id = $2 AND status = 'OPEN' LIMIT 1;`,
       [workspaceId, contactId]
     );
 
     let conversationId: string;
     if (convRes.rows.length > 0) {
       conversationId = convRes.rows[0].id;
-      await query(
-        `UPDATE conversations 
-         SET last_message_preview = $1, last_message_at = NOW(), unread_count = unread_count + 1, 
-             window_expires_at = $2, updated_at = NOW()
-         WHERE id = $3;`,
-        [body.substring(0, 150), windowExpiry, conversationId]
-      );
+      if (isOptOut) {
+        // Opt-out supersedes takeover and immediately closes conversation
+        await query(
+          `UPDATE conversations 
+           SET status = 'CLOSED', takeover_active = FALSE, last_message_preview = $1, last_message_at = NOW(), 
+               unread_count = unread_count + 1, updated_at = NOW()
+           WHERE id = $2 AND workspace_id = $3;`,
+          [body.substring(0, 150), conversationId, workspaceId]
+        );
+      } else {
+        await query(
+          `UPDATE conversations 
+           SET last_message_preview = $1, last_message_at = NOW(), unread_count = unread_count + 1, 
+               window_expires_at = $2, updated_at = NOW()
+           WHERE id = $3 AND workspace_id = $4;`,
+          [body.substring(0, 150), windowExpiry, conversationId, workspaceId]
+        );
+      }
     } else {
+      const convStatus = isOptOut ? 'CLOSED' : 'OPEN';
       const newConv = await query(
         `INSERT INTO conversations (id, workspace_id, contact_id, status, last_message_preview, last_message_at, unread_count, window_expires_at, updated_at)
-         VALUES (gen_random_uuid(), $1, $2, 'OPEN', $3, NOW(), 1, $4, NOW())
+         VALUES (gen_random_uuid(), $1, $2, $3, $4, NOW(), 1, $5, NOW())
          RETURNING id;`,
-        [workspaceId, contactId, body.substring(0, 150), windowExpiry]
+        [workspaceId, contactId, convStatus, body.substring(0, 150), windowExpiry]
       );
       conversationId = newConv.rows[0].id;
     }
@@ -923,16 +963,165 @@ export class DataService {
       [workspaceId, contactId]
     );
 
-    // 5. If bot reply was generated, record outbound message
-    if (botReply) {
+    // 5. If bot reply was generated and contact is not opted out, record outbound message and queue outbox
+    if (botReply && currentOptInStatus !== 'OPTED_OUT') {
       await query(
         `INSERT INTO messages (id, workspace_id, conversation_id, direction, provider_message_id, type, body, sender_type, status, timestamp)
          VALUES (gen_random_uuid(), $1, $2, 'OUTBOUND', $3, 'text', $4, 'bot', 'SENT', NOW());`,
         [workspaceId, conversationId, `wamid.reply.${Date.now()}`, botReply]
       );
+
+      await query(
+        `INSERT INTO outbox_events (id, workspace_id, event_type, aggregate_type, aggregate_id, payload_json, status)
+         VALUES (gen_random_uuid(), $1, 'WHATSAPP_OUTBOUND_DISPATCH', 'message', $2, $3, 'PENDING');`,
+        [workspaceId, conversationId, JSON.stringify({ phone: cleanPhone, body: botReply })]
+      );
     }
 
     return { contactId, conversationId };
+  }
+
+  // ==============================================================================
+  // Hierarchical Tenancy: Agency Organizations & Client Workspaces
+  // ==============================================================================
+
+  public static async getAgencyOrganization(organizationId: string) {
+    const res = await query(
+      `SELECT id, name, slug, type, plan_id as "planId", max_workspaces as "maxWorkspaces", status, created_at as "createdAt"
+       FROM organizations WHERE id = $1 LIMIT 1;`,
+      [organizationId]
+    );
+    return res.rows[0] || null;
+  }
+
+  public static async getAgencyWorkspaces(organizationId: string) {
+    const res = await query(
+      `SELECT w.id, w.name, w.category, w.industry_type as "industryType", w.plan_id as "planId", 
+              w.status, w.created_at as "createdAt",
+              (SELECT count(*) FROM contacts WHERE workspace_id = w.id) as "contactsCount",
+              (SELECT count(*) FROM conversations WHERE workspace_id = w.id AND status = 'OPEN') as "activeConversations",
+              wa.status as "whatsappStatus", wa.display_number as "displayNumber"
+       FROM workspaces w
+       LEFT JOIN whatsapp_accounts wa ON wa.workspace_id = w.id
+       WHERE w.organization_id = $1
+       ORDER BY w.created_at DESC;`,
+      [organizationId]
+    );
+    return res.rows.map(r => ({
+      ...r,
+      contactsCount: parseInt(r.contactsCount || '0', 10),
+      activeConversations: parseInt(r.activeConversations || '0', 10),
+      whatsappStatus: r.whatsappStatus || 'DISCONNECTED',
+    }));
+  }
+
+  public static async createClientWorkspace(organizationId: string, data: {
+    name: string;
+    industryType?: string;
+    planId?: string;
+  }) {
+    const { name, industryType = 'GENERAL', planId = 'pro' } = data;
+    
+    // Check quota
+    const orgRes = await query(
+      `SELECT max_workspaces, (SELECT count(*) FROM workspaces WHERE organization_id = $1) as current_count
+       FROM organizations WHERE id = $1;`,
+      [organizationId]
+    );
+    if (orgRes.rows.length === 0) {
+      throw new Error('Organization not found');
+    }
+    const max = orgRes.rows[0].max_workspaces || 10;
+    const current = parseInt(orgRes.rows[0].current_count || '0', 10);
+    if (current >= max) {
+      throw new Error(`Workspace quota reached for this agency organization (max ${max})`);
+    }
+
+    const wsRes = await query(
+      `INSERT INTO workspaces (id, name, organization_id, industry_type, plan_id, status)
+       VALUES (gen_random_uuid(), $1, $2, $3, $4, 'active')
+       RETURNING id, name, organization_id as "organizationId", industry_type as "industryType", plan_id as "planId", status;`,
+      [name, organizationId, industryType, planId]
+    );
+    return wsRes.rows[0];
+  }
+
+  public static async verifyUserWorkspaceAccess(userId: string, targetWorkspaceId: string): Promise<{
+    authorized: boolean;
+    role: string;
+    workspace: any;
+    organizationId?: string;
+  }> {
+    // 1. Direct workspace membership
+    const directRes = await query(
+      `SELECT wm.role, wm.status as member_status, w.id, w.name, w.organization_id, w.industry_type, w.plan_id, w.status as ws_status
+       FROM workspace_members wm
+       JOIN workspaces w ON w.id = wm.workspace_id
+       WHERE wm.workspace_id = $1 AND wm.user_id = $2
+       LIMIT 1;`,
+      [targetWorkspaceId, userId]
+    );
+
+    if (directRes.rows.length > 0) {
+      const row = directRes.rows[0];
+      if (row.member_status === 'active' && row.ws_status === 'active') {
+        return {
+          authorized: true,
+          role: row.role,
+          organizationId: row.organization_id,
+          workspace: {
+            id: row.id,
+            name: row.name,
+            organizationId: row.organization_id,
+            industryType: row.industry_type || 'GENERAL',
+            planId: row.plan_id,
+          },
+        };
+      }
+    }
+
+    // 2. Agency Organization membership (User belongs to the agency that manages this client workspace)
+    const agencyRes = await query(
+      `SELECT om.role as agency_role, om.status as org_status, o.id as org_id,
+              w.id, w.name, w.organization_id, w.industry_type, w.plan_id, w.status as ws_status
+       FROM organization_members om
+       JOIN organizations o ON o.id = om.organization_id
+       JOIN workspaces w ON w.organization_id = o.id
+       WHERE w.id = $1 AND om.user_id = $2
+       LIMIT 1;`,
+      [targetWorkspaceId, userId]
+    );
+
+    if (agencyRes.rows.length > 0) {
+      const row = agencyRes.rows[0];
+      if (row.org_status === 'active' && row.ws_status === 'active') {
+        // Map agency role to workspace operation role
+        let mappedRole = 'agent';
+        if (row.agency_role === 'agency_owner' || row.agency_role === 'agency_admin') {
+          mappedRole = 'admin';
+        } else if (row.agency_role === 'agency_manager') {
+          mappedRole = 'manager';
+        }
+        return {
+          authorized: true,
+          role: mappedRole,
+          organizationId: row.org_id,
+          workspace: {
+            id: row.id,
+            name: row.name,
+            organizationId: row.org_id,
+            industryType: row.industry_type || 'GENERAL',
+            planId: row.plan_id,
+          },
+        };
+      }
+    }
+
+    return {
+      authorized: false,
+      role: 'agent',
+      workspace: null,
+    };
   }
 
   /**

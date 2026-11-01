@@ -6,6 +6,7 @@ import { WebhookPayload } from '../../services/webhookPipeline';
 
 export interface WebhookJobData {
   eventId: string;
+  workspaceId?: string;
   payload: WebhookPayload;
   providerMessageId?: string;
   timestamp: number;
@@ -28,7 +29,7 @@ export class WebhookQueueService {
       }
 
       this.redisClient = new Redis(redisUrl || 'redis://127.0.0.1:6379', {
-        maxRetriesPerRequest: 1,
+        maxRetriesPerRequest: null,
         connectTimeout: 5000,
         lazyConnect: true,
         enableOfflineQueue: false,
@@ -100,6 +101,17 @@ export class WebhookQueueService {
         }
       }
 
+      // Resolve Workspace from phone_number_id mapping
+      const phoneId = payload.entry?.[0]?.changes?.[0]?.value?.metadata?.phone_number_id;
+      let resolvedWorkspaceId: string | undefined;
+      if (phoneId) {
+        try {
+          const { AuthService } = await import('../auth/authService');
+          const mapping = await AuthService.resolveWorkspaceFromPhoneNumberId(phoneId);
+          if (mapping) resolvedWorkspaceId = mapping.workspaceId;
+        } catch {}
+      }
+
       // 2. Durable Persistence BEFORE Queuing
       const insertRes = await query(
         `INSERT INTO webhook_events (source, signature_valid, payload_json, idempotency_key, status)
@@ -111,6 +123,7 @@ export class WebhookQueueService {
 
       const jobData: WebhookJobData = {
         eventId,
+        workspaceId: resolvedWorkspaceId,
         payload,
         providerMessageId,
         timestamp: Date.now(),

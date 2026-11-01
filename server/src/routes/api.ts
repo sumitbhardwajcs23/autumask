@@ -268,6 +268,227 @@ apiRouter.get('/auth/me', async (req: Request, res: Response) => {
 });
 
 // ==========================================
+// Multi-Tenant Hierarchy: Workspace Switching & Agency Management
+// ==========================================
+
+// List all accessible workspaces for current authenticated user
+apiRouter.get('/workspaces', async (req: Request, res: Response) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  try {
+    // 1. Direct workspace memberships
+    const directRes = await query(
+      `SELECT w.id, w.name, w.category, w.industry_type as "industryType", w.plan_id as "planId", 
+              w.organization_id as "organizationId", wm.role as "userRole"
+       FROM workspace_members wm
+       JOIN workspaces w ON w.id = wm.workspace_id
+       WHERE wm.user_id = $1 AND wm.status = 'active' AND w.status = 'active'
+       ORDER BY w.created_at ASC;`,
+      [req.user.id]
+    );
+
+    // 2. Workspaces accessible via Agency Organization membership
+    const agencyRes = await query(
+      `SELECT w.id, w.name, w.category, w.industry_type as "industryType", w.plan_id as "planId",
+              w.organization_id as "organizationId", om.role as "agencyRole"
+       FROM organization_members om
+       JOIN organizations o ON o.id = om.organization_id
+       JOIN workspaces w ON w.organization_id = o.id
+       WHERE om.user_id = $1 AND om.status = 'active' AND w.status = 'active'
+       ORDER BY w.created_at ASC;`,
+      [req.user.id]
+    );
+
+    const workspacesMap = new Map<string, any>();
+    directRes.rows.forEach(r => workspacesMap.set(r.id, r));
+    agencyRes.rows.forEach(r => {
+      if (!workspacesMap.has(r.id)) {
+        let mappedRole = 'agent';
+        if (r.agencyRole === 'agency_owner' || r.agencyRole === 'agency_admin') mappedRole = 'admin';
+        else if (r.agencyRole === 'agency_manager') mappedRole = 'manager';
+        workspacesMap.set(r.id, { ...r, userRole: mappedRole });
+      }
+    });
+
+    res.json({
+      workspaces: Array.from(workspacesMap.values()),
+      currentWorkspaceId: req.workspaceId,
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Failed to fetch workspaces', message: err.message });
+  }
+});
+
+// Secure Server-Side Workspace Switching (SRS Section 3 / Multi-Tenant Tenancy)
+apiRouter.post('/workspaces/switch', async (req: Request, res: Response) => {
+  if (!req.user) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const { targetWorkspaceId } = req.body;
+  if (!targetWorkspaceId) {
+    return res.status(400).json({ error: 'targetWorkspaceId is required' });
+  }
+
+  try {
+    // Strictly verify user authorization to switch to this workspace
+    const access = await DataService.verifyUserWorkspaceAccess(req.user.id, targetWorkspaceId);
+    if (!access.authorized || !access.workspace) {
+      return res.status(403).json({
+        error: 'Forbidden',
+        code: 'CROSS_TENANT_ACCESS_DENIED',
+        message: 'You do not have active membership or authorization to access this workspace',
+      });
+    }
+
+    // Issue new cryptographically signed token bound strictly to target workspace
+    const token = AuthService.generateToken({
+      userId: req.user.id,
+      workspaceId: targetWorkspaceId,
+      role: access.role as any,
+      email: req.user.email,
+      fullName: req.user.fullName,
+    });
+
+    // Update session cookie
+    res.cookie(env.SESSION_COOKIE_NAME, token, {
+      httpOnly: true,
+      secure: env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: '/',
+    });
+
+    return res.json({
+      success: true,
+      token,
+      workspace: access.workspace,
+      role: access.role,
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Failed to switch workspace', message: err.message });
+  }
+});
+
+// Update Workspace Industry Configuration (Section E / Configuration-Driven Engine)
+apiRouter.put('/workspaces/industry', requireRole('owner', 'admin'), async (req: Request, res: Response) => {
+  const wsId = req.workspaceId!;
+  const { industryType, industryConfig } = req.body;
+
+  const validIndustries = [
+    'GENERAL',
+    'ECOMMERCE',
+    'HEALTHCARE',
+    'REAL_ESTATE',
+    'HOSPITALITY',
+    'AUTOMOTIVE',
+    'FINTECH',
+    'AD_BOOKING',
+    'EDUCATION',
+    'IT_SERVICES',
+    'AGENCY_SAAS'
+  ];
+
+  if (!industryType || !validIndustries.includes(industryType.toUpperCase())) {
+    return res.status(400).json({
+      error: 'Invalid industryType',
+      message: `Must be one of: ${validIndustries.join(', ')}`,
+    });
+  }
+
+  try {
+    const updated = await DataService.updateWorkspaceIndustry(wsId, industryType.toUpperCase(), industryConfig);
+    res.json({
+      success: true,
+      workspace: updated,
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Failed to update workspace industry', message: err.message });
+  }
+});
+
+// Agency Organization: Get details
+apiRouter.get('/agency/organization', async (req: Request, res: Response) => {
+  if (!req.user) return res.status(401).json({ error: 'Unauthorized' });
+
+  try {
+    const orgRes = await query(
+      `SELECT o.id, o.name, o.slug, o.type, o.plan_id as "planId", o.max_workspaces as "maxWorkspaces", 
+              o.status, om.role as "userAgencyRole"
+       FROM organization_members om
+       JOIN organizations o ON o.id = om.organization_id
+       WHERE om.user_id = $1 AND om.status = 'active'
+       LIMIT 1;`,
+      [req.user.id]
+    );
+
+    if (orgRes.rows.length === 0) {
+      return res.status(404).json({ error: 'No agency organization found for this user' });
+    }
+
+    res.json({ organization: orgRes.rows[0] });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Failed to fetch agency organization', message: err.message });
+  }
+});
+
+// Agency Organization: List Client Workspaces
+apiRouter.get('/agency/workspaces', async (req: Request, res: Response) => {
+  if (!req.user) return res.status(401).json({ error: 'Unauthorized' });
+
+  try {
+    const orgRes = await query(
+      `SELECT organization_id FROM organization_members WHERE user_id = $1 AND status = 'active' LIMIT 1;`,
+      [req.user.id]
+    );
+    if (orgRes.rows.length === 0) {
+      return res.status(403).json({ error: 'User is not an active member of any agency organization' });
+    }
+
+    const workspaces = await DataService.getAgencyWorkspaces(orgRes.rows[0].organization_id);
+    res.json({ workspaces });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Failed to fetch agency workspaces', message: err.message });
+  }
+});
+
+// Agency Organization: Create Client Workspace
+apiRouter.post('/agency/workspaces', async (req: Request, res: Response) => {
+  if (!req.user) return res.status(401).json({ error: 'Unauthorized' });
+
+  const { name, industryType, planId } = req.body;
+  if (!name || name.trim().length === 0) {
+    return res.status(400).json({ error: 'Workspace name is required' });
+  }
+
+  try {
+    const orgRes = await query(
+      `SELECT organization_id, role FROM organization_members WHERE user_id = $1 AND status = 'active' LIMIT 1;`,
+      [req.user.id]
+    );
+    if (orgRes.rows.length === 0) {
+      return res.status(403).json({ error: 'User is not an active member of any agency organization' });
+    }
+    const { organization_id, role } = orgRes.rows[0];
+    if (role !== 'agency_owner' && role !== 'agency_admin') {
+      return res.status(403).json({ error: 'Only Agency Owner or Admin can provision new client workspaces' });
+    }
+
+    const newWs = await DataService.createClientWorkspace(organization_id, {
+      name,
+      industryType,
+      planId,
+    });
+
+    res.status(201).json({ success: true, workspace: newWs });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Failed to create client workspace', message: err.message });
+  }
+});
+
+// ==========================================
 // Dashboard Metrics (SRS Section 8.1 / Real Database)
 // ==========================================
 apiRouter.get('/dashboard', requirePermission('view:dashboard'), async (req: Request, res: Response) => {

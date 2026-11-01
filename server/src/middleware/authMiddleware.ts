@@ -4,6 +4,7 @@ import { env } from '../config/env';
 import { mockStore } from '../models/mockStore';
 import { query } from '../database/connection';
 import { User, UserRole, SupportGrant } from '../models/types';
+import { DataService } from '../database/dataService';
 
 // Extended Express Request
 declare global {
@@ -63,24 +64,31 @@ export const authenticateSession = async (req: Request, res: Response, next: Nex
     try {
       const decoded: AuthTokenPayload = AuthService.verifyToken(token);
       
-      // Verify active membership in the target workspace
+      // Verify active membership in the target workspace (Direct workspace or Agency organization)
       let memberRole = decoded.role;
       try {
-        const memberRes = await query(
-          `SELECT role, status FROM workspace_members WHERE workspace_id = $1 AND user_id = $2 LIMIT 1;`,
-          [decoded.workspaceId, decoded.userId]
-        );
-        if (memberRes.rows.length > 0 && memberRes.rows[0].status === 'active') {
-          memberRole = memberRes.rows[0].role as UserRole;
-        } else if (decoded.role !== 'platform_admin') {
-          return res.status(403).json({
-            error: 'Forbidden',
-            code: 'WORKSPACE_MEMBERSHIP_INVALID',
-            message: 'User is not an active member of this workspace',
-          });
+        if (decoded.role === 'platform_admin') {
+          memberRole = 'platform_admin';
+        } else {
+          const access = await DataService.verifyUserWorkspaceAccess(decoded.userId, decoded.workspaceId);
+          if (!access.authorized) {
+            return res.status(403).json({
+              error: 'Forbidden',
+              code: 'WORKSPACE_MEMBERSHIP_INVALID',
+              message: 'User is not an active member or authorized agency admin for this workspace',
+            });
+          }
+          memberRole = (access.role as UserRole) || decoded.role;
+          (req as any).organizationId = access.organizationId;
         }
       } catch {
-        // Fallback to decoded token role if DB check errors
+        if (decoded.role !== 'platform_admin') {
+          return res.status(403).json({
+            error: 'Forbidden',
+            code: 'WORKSPACE_VERIFICATION_FAILED',
+            message: 'Could not verify workspace membership context',
+          });
+        }
       }
 
       req.user = {

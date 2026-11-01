@@ -72,19 +72,22 @@ export class WebhookPipeline {
    * 5. Execute Section 4.3 Response Decision Order
    * 6. Lead capture and follow-up (Section 4.4)
    */
-  public static processWebhookEvent(payload: WebhookPayload, rawPayloadString?: string): InboundProcessingResult[] {
+  public static processWebhookEvent(payload: WebhookPayload, rawPayloadString?: string, workspaceId?: string): InboundProcessingResult[] {
     const results: InboundProcessingResult[] = [];
+    const targetWsId = workspaceId || mockStore.workspace.id;
 
-    // DD-08: Log raw webhook payload in audit trail
-    mockStore.logAudit(
-      mockStore.workspace.id,
-      'system:meta_webhook',
-      'Meta Cloud API',
-      'platform_admin',
-      'WEBHOOK_RECEIVED',
-      'raw_event_store',
-      { payload: payload }
-    );
+    // DD-08: Log raw webhook payload in audit trail if workspace is resolved
+    if (targetWsId) {
+      mockStore.logAudit(
+        targetWsId,
+        'system:meta_webhook',
+        'Meta Cloud API',
+        'platform_admin',
+        'WEBHOOK_RECEIVED',
+        'raw_event_store',
+        { payload: payload }
+      );
+    }
 
     for (const entry of payload.entry || []) {
       for (const change of entry.changes || []) {
