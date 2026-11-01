@@ -275,28 +275,28 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* =========================================================================
           1. HEADER NAVBAR
           ========================================================================= */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-150 shadow-xs">
-        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 h-20 flex items-center justify-between">
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 h-20 lg:h-24 flex items-center justify-between">
           
           {/* Brand Logo */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#047857] to-[#10b981] p-0.5 shadow-md shadow-emerald-700/20 flex items-center justify-center">
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 lg:w-12 lg:h-12 rounded-xl bg-gradient-to-tr from-[#047857] to-[#10b981] p-0.5 shadow-md shadow-emerald-700/20 flex items-center justify-center">
               <div className="w-full h-full bg-[#064e3b] rounded-[10px] flex items-center justify-center text-white">
-                <Bot className="w-5 h-5 text-[#34d399]" />
+                <Bot className="w-6 h-6 text-[#34d399]" />
               </div>
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
-                <span className="text-2xl font-black tracking-tight text-slate-900 font-['Outfit']">
+                <span className="text-2xl lg:text-3xl font-black tracking-tight text-slate-900 font-['Outfit']">
                   Auto<span className="text-[#059669]">Mask</span>
                 </span>
-                <span className="w-2 h-2 rounded-full bg-[#10b981]" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#10b981]" />
               </div>
             </div>
           </div>
 
           {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-7 xl:gap-9 text-base xl:text-lg font-bold text-slate-700">
+          <nav className="hidden lg:flex items-center gap-8 xl:gap-10 text-base lg:text-lg xl:text-xl font-bold text-slate-700">
             <a href="#features" className="hover:text-[#059669] transition-colors">Features</a>
             <a href="#how-it-works" className="hover:text-[#059669] transition-colors">How It Works</a>
             
@@ -305,53 +305,53 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <button 
                 onClick={() => setSolutionsOpen(!solutionsOpen)}
                 onMouseEnter={() => setSolutionsOpen(true)}
-                className="flex items-center gap-1 hover:text-[#059669] transition-colors py-2"
+                className="flex items-center gap-1.5 hover:text-[#059669] transition-colors py-2"
               >
                 <span>Solutions</span>
                 <ChevronDown className="w-4 h-4 text-slate-400" />
               </button>
               {solutionsOpen && (
-                <div className="absolute top-full left-0 w-72 bg-white rounded-xl shadow-xl border border-slate-150 p-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                  <a href="#solutions" onClick={() => { setActiveSegment('d2c'); setSolutionsOpen(false); }} className="flex items-center gap-2.5 p-2.5 rounded-lg hover:bg-emerald-50 text-slate-700 hover:text-[#047857]">
-                    <ShoppingBag className="w-4 h-4 text-pink-600" />
+                <div className="absolute top-full left-0 w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 p-2.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                  <a href="#solutions" onClick={() => { setActiveSegment('d2c'); setSolutionsOpen(false); }} className="flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 text-slate-700 hover:text-[#047857] transition-colors">
+                    <ShoppingBag className="w-5 h-5 text-pink-600 shrink-0" />
                     <div>
-                      <div className="font-semibold text-xs">D2C & E-Commerce</div>
-                      <div className="text-[11px] text-slate-400">Cart recovery & order tracking</div>
+                      <div className="font-bold text-sm">D2C & E-Commerce</div>
+                      <div className="text-xs text-slate-500">Cart recovery & order tracking</div>
                     </div>
                   </a>
-                  <a href="#solutions" onClick={() => { setActiveSegment('real-estate'); setSolutionsOpen(false); }} className="flex items-center gap-2.5 p-2.5 rounded-lg hover:bg-emerald-50 text-slate-700 hover:text-[#047857]">
-                    <Home className="w-4 h-4 text-amber-600" />
+                  <a href="#solutions" onClick={() => { setActiveSegment('real-estate'); setSolutionsOpen(false); }} className="flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 text-slate-700 hover:text-[#047857] transition-colors">
+                    <Home className="w-5 h-5 text-amber-600 shrink-0" />
                     <div>
-                      <div className="font-semibold text-xs">Real Estate & Developers</div>
-                      <div className="text-[11px] text-slate-400">Buyer qualification & site visits</div>
+                      <div className="font-bold text-sm">Real Estate & Developers</div>
+                      <div className="text-xs text-slate-500">Buyer qualification & site visits</div>
                     </div>
                   </a>
-                  <a href="#solutions" onClick={() => { setActiveSegment('healthcare'); setSolutionsOpen(false); }} className="flex items-center gap-2.5 p-2.5 rounded-lg hover:bg-emerald-50 text-slate-700 hover:text-[#047857]">
-                    <Stethoscope className="w-4 h-4 text-cyan-600" />
+                  <a href="#solutions" onClick={() => { setActiveSegment('healthcare'); setSolutionsOpen(false); }} className="flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 text-slate-700 hover:text-[#047857] transition-colors">
+                    <Stethoscope className="w-5 h-5 text-cyan-600 shrink-0" />
                     <div>
-                      <div className="font-semibold text-xs">Healthcare & Clinics</div>
-                      <div className="text-[11px] text-slate-400">Appointments & report dispatches</div>
+                      <div className="font-bold text-sm">Healthcare & Clinics</div>
+                      <div className="text-xs text-slate-500">Appointments & report dispatches</div>
                     </div>
                   </a>
-                  <a href="#solutions" onClick={() => { setActiveSegment('education'); setSolutionsOpen(false); }} className="flex items-center gap-2.5 p-2.5 rounded-lg hover:bg-emerald-50 text-slate-700 hover:text-[#047857]">
-                    <GraduationCap className="w-4 h-4 text-emerald-600" />
+                  <a href="#solutions" onClick={() => { setActiveSegment('education'); setSolutionsOpen(false); }} className="flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 text-slate-700 hover:text-[#047857] transition-colors">
+                    <GraduationCap className="w-5 h-5 text-emerald-600 shrink-0" />
                     <div>
-                      <div className="font-semibold text-xs">Education & Institutes</div>
-                      <div className="text-[11px] text-slate-400">Student admissions & demo classes</div>
+                      <div className="font-bold text-sm">Education & Institutes</div>
+                      <div className="text-xs text-slate-500">Student admissions & demo classes</div>
                     </div>
                   </a>
-                  <a href="#solutions" onClick={() => { setActiveSegment('services'); setSolutionsOpen(false); }} className="flex items-center gap-2.5 p-2.5 rounded-lg hover:bg-emerald-50 text-slate-700 hover:text-[#047857]">
-                    <Briefcase className="w-4 h-4 text-indigo-600" />
+                  <a href="#solutions" onClick={() => { setActiveSegment('services'); setSolutionsOpen(false); }} className="flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 text-slate-700 hover:text-[#047857] transition-colors">
+                    <Briefcase className="w-5 h-5 text-indigo-600 shrink-0" />
                     <div>
-                      <div className="font-semibold text-xs">Professional Services</div>
-                      <div className="text-[11px] text-slate-400">Client onboarding & consultation</div>
+                      <div className="font-bold text-sm">Professional Services</div>
+                      <div className="text-xs text-slate-500">Client onboarding & consultation</div>
                     </div>
                   </a>
-                  <a href="#solutions" onClick={() => { setActiveSegment('saas'); setSolutionsOpen(false); }} className="flex items-center gap-2.5 p-2.5 rounded-lg hover:bg-emerald-50 text-slate-700 hover:text-[#047857]">
-                    <Laptop className="w-4 h-4 text-purple-600" />
+                  <a href="#solutions" onClick={() => { setActiveSegment('saas'); setSolutionsOpen(false); }} className="flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 text-slate-700 hover:text-[#047857] transition-colors">
+                    <Laptop className="w-5 h-5 text-purple-600 shrink-0" />
                     <div>
-                      <div className="font-semibold text-xs">SaaS & Agencies</div>
-                      <div className="text-[11px] text-slate-400">Lead qualification & demo booking</div>
+                      <div className="font-bold text-sm">SaaS & Agencies</div>
+                      <div className="text-xs text-slate-500">Lead qualification & demo booking</div>
                     </div>
                   </a>
                 </div>
@@ -366,23 +366,23 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <button 
                 onClick={() => setResourcesOpen(!resourcesOpen)}
                 onMouseEnter={() => setResourcesOpen(true)}
-                className="flex items-center gap-1 hover:text-[#059669] transition-colors py-2"
+                className="flex items-center gap-1.5 hover:text-[#059669] transition-colors py-2"
               >
                 <span>Resources</span>
                 <ChevronDown className="w-4 h-4 text-slate-400" />
               </button>
               {resourcesOpen && (
-                <div className="absolute top-full left-0 w-64 bg-white rounded-xl shadow-xl border border-slate-150 p-2 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                  <a href="#how-it-works" onClick={() => setResourcesOpen(false)} className="flex items-center gap-2 p-2 rounded-lg hover:bg-emerald-50 text-slate-700 text-xs font-semibold">
-                    <FileText className="w-4 h-4 text-emerald-600" />
+                <div className="absolute top-full left-0 w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 p-2.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                  <a href="#how-it-works" onClick={() => setResourcesOpen(false)} className="flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 text-slate-700 text-sm font-semibold transition-colors">
+                    <FileText className="w-5 h-5 text-emerald-600 shrink-0" />
                     <span>WhatsApp Cloud API Guide</span>
                   </a>
-                  <a href="#dashboard" onClick={() => setResourcesOpen(false)} className="flex items-center gap-2 p-2 rounded-lg hover:bg-emerald-50 text-slate-700 text-xs font-semibold">
-                    <SlidersHorizontal className="w-4 h-4 text-blue-600" />
+                  <a href="#dashboard" onClick={() => setResourcesOpen(false)} className="flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 text-slate-700 text-sm font-semibold transition-colors">
+                    <SlidersHorizontal className="w-5 h-5 text-blue-600 shrink-0" />
                     <span>Interactive Console Tour</span>
                   </a>
-                  <a href="#faq" onClick={() => setResourcesOpen(false)} className="flex items-center gap-2 p-2 rounded-lg hover:bg-emerald-50 text-slate-700 text-xs font-semibold">
-                    <HelpCircle className="w-4 h-4 text-indigo-600" />
+                  <a href="#faq" onClick={() => setResourcesOpen(false)} className="flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 text-slate-700 text-sm font-semibold transition-colors">
+                    <HelpCircle className="w-5 h-5 text-indigo-600 shrink-0" />
                     <span>Business Automation FAQs</span>
                   </a>
                 </div>
@@ -391,21 +391,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </nav>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             {isAuthenticated && onNavigateToApp ? (
               <button
                 id="nav-dashboard-btn"
                 onClick={onNavigateToApp}
-                className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-all shadow-xs active:scale-98"
+                className="flex items-center gap-2.5 px-5 py-2.5 lg:px-6 lg:py-3 text-base lg:text-lg font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition-all shadow-sm active:scale-98"
               >
                 <span>Dashboard</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-5 h-5" />
               </button>
             ) : (
               <button
                 id="nav-login-btn"
                 onClick={onNavigateToUserLogin}
-                className="px-4 py-2 text-sm font-bold text-slate-700 hover:text-[#047857] transition-colors"
+                className="px-5 py-2.5 text-base lg:text-lg font-bold text-slate-700 hover:text-[#047857] transition-colors"
               >
                 Login
               </button>
@@ -414,7 +414,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <button
               id="nav-book-demo-btn"
               onClick={() => setIsDemoModalOpen(true)}
-              className="flex items-center gap-2 px-6 py-2.5 xl:py-3 rounded-xl text-base xl:text-lg font-bold text-white bg-[#065f46] hover:bg-[#047857] transition-all shadow-sm hover:shadow-md active:scale-98"
+              className="flex items-center gap-2.5 px-6 py-2.5 lg:px-8 lg:py-3.5 rounded-xl text-base lg:text-lg font-black text-white bg-[#065f46] hover:bg-[#047857] transition-all shadow-md hover:shadow-lg active:scale-98"
             >
               <span>Book a Demo</span>
               <ArrowRight className="w-4 h-4" />
@@ -426,93 +426,93 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* =========================================================================
           2. HERO SECTION
           ========================================================================= */}
-      <section className="relative py-12 xl:py-16 2xl:py-20 overflow-hidden bg-gradient-to-b from-[#f0fdf4]/50 via-white to-slate-50 border-b border-slate-150 min-h-[calc(100vh-80px)] flex items-center">
+      <section className="relative py-12 lg:py-16 xl:py-20 2xl:py-24 overflow-hidden bg-gradient-to-b from-[#f0fdf4]/60 via-white to-slate-50 border-b border-slate-200/80 min-h-[calc(100vh-80px)] flex items-center">
         
         {/* Soft Background Accents */}
-        <div className="absolute top-10 left-1/4 w-[450px] h-[450px] bg-emerald-100/40 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-20 right-10 w-[350px] h-[350px] bg-teal-100/30 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-10 left-1/4 w-[550px] h-[550px] bg-emerald-100/50 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-20 right-10 w-[450px] h-[450px] bg-teal-100/40 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-14 2xl:gap-16 items-center w-full">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 xl:gap-16 2xl:gap-20 items-center w-full">
             
             {/* Left Column: Hero Content */}
-            <div className="lg:col-span-7 xl:col-span-7 2xl:col-span-7 space-y-6 xl:space-y-8 2xl:space-y-10">
+            <div className="lg:col-span-7 xl:col-span-7 2xl:col-span-7 space-y-7 xl:space-y-9 2xl:space-y-11">
               
               {/* Category Pill Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs xl:text-sm font-bold tracking-wide uppercase">
-                <span className="w-2 h-2 rounded-full bg-[#10b981] animate-pulse" />
+              <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs sm:text-sm lg:text-base font-black tracking-wide uppercase shadow-2xs">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#10b981] animate-pulse" />
                 <span>AI-POWERED WHATSAPP AUTOMATION FOR MODERN BUSINESSES & ENTERPRISES</span>
               </div>
 
               {/* Main Headline */}
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-black text-slate-900 tracking-tight leading-[1.08] font-['Outfit']">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl xl:text-7xl 2xl:text-[5.25rem] font-black text-slate-900 tracking-tight leading-[1.08] font-['Outfit']">
                 Convert More Customers.<br />
                 <span className="text-[#059669]">Automatically on WhatsApp.</span>
               </h1>
 
               {/* Subheading */}
-              <p className="text-lg sm:text-xl xl:text-2xl 2xl:text-3xl text-slate-600 leading-relaxed max-w-xl xl:max-w-3xl 2xl:max-w-4xl font-normal">
+              <p className="text-lg sm:text-xl md:text-2xl xl:text-2xl 2xl:text-3xl text-slate-600 leading-relaxed max-w-3xl xl:max-w-4xl 2xl:max-w-5xl font-normal">
                 AutoMask helps businesses, D2C brands, real estate firms, clinics, and service providers 
                 capture leads, answer product FAQs, book consultations, run automated follow-ups, and drive revenue — 
                 all on WhatsApp, with the power of AI.
               </p>
 
               {/* 4 Feature Badge Cards (2x2 Grid) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 xl:gap-5 pt-1 max-w-2xl 2xl:max-w-3xl">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 xl:gap-6 pt-2 w-full">
                 {/* 1. 24/7 Instant Responses */}
-                <div className="flex items-center gap-3.5 p-3.5 xl:p-4 rounded-xl xl:rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:border-emerald-300 transition-all">
-                  <div className="w-9 h-9 rounded-lg bg-emerald-50 border border-emerald-200 flex items-center justify-center shrink-0">
-                    <Zap className="w-4 h-4 text-emerald-600" />
+                <div className="flex items-center gap-4 p-4 xl:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:border-emerald-400 hover:shadow-md transition-all">
+                  <div className="w-11 h-11 xl:w-12 xl:h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center shrink-0">
+                    <Zap className="w-5 h-5 xl:w-6 xl:h-6 text-emerald-600" />
                   </div>
                   <div>
-                    <h2 className="text-sm sm:text-base xl:text-lg font-black text-slate-900">24/7 Instant Responses</h2>
+                    <h2 className="text-base sm:text-lg xl:text-xl font-black text-slate-900">24/7 Instant Responses</h2>
                     <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-0.5">Never miss a lead or customer query</p>
                   </div>
                 </div>
 
                 {/* 2. Automated Bookings & Orders */}
-                <div className="flex items-center gap-3.5 p-3.5 xl:p-4 rounded-xl xl:rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:border-blue-300 transition-all">
-                  <div className="w-9 h-9 rounded-lg bg-blue-50 border border-blue-200 flex items-center justify-center shrink-0">
-                    <Calendar className="w-4 h-4 text-blue-600" />
+                <div className="flex items-center gap-4 p-4 xl:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:border-blue-400 hover:shadow-md transition-all">
+                  <div className="w-11 h-11 xl:w-12 xl:h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center shrink-0">
+                    <Calendar className="w-5 h-5 xl:w-6 xl:h-6 text-blue-600" />
                   </div>
                   <div>
-                    <h2 className="text-sm sm:text-base xl:text-lg font-black text-slate-900">Automated Bookings & Orders</h2>
+                    <h2 className="text-base sm:text-lg xl:text-xl font-black text-slate-900">Automated Bookings & Orders</h2>
                     <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-0.5">Real-time calendar & catalog sync</p>
                   </div>
                 </div>
 
                 {/* 3. Smart Follow-ups */}
-                <div className="flex items-center gap-3.5 p-3.5 xl:p-4 rounded-xl xl:rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:border-purple-300 transition-all">
-                  <div className="w-9 h-9 rounded-lg bg-purple-50 border border-purple-200 flex items-center justify-center shrink-0">
-                    <Sparkles className="w-4 h-4 text-purple-600" />
+                <div className="flex items-center gap-4 p-4 xl:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:border-purple-400 hover:shadow-md transition-all">
+                  <div className="w-11 h-11 xl:w-12 xl:h-12 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center shrink-0">
+                    <Sparkles className="w-5 h-5 xl:w-6 xl:h-6 text-purple-600" />
                   </div>
                   <div>
-                    <h2 className="text-sm sm:text-base xl:text-lg font-black text-slate-900">Smart Follow-ups</h2>
+                    <h2 className="text-base sm:text-lg xl:text-xl font-black text-slate-900">Smart Follow-ups</h2>
                     <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-0.5">Turn prospects into paying clients</p>
                   </div>
                 </div>
 
                 {/* 4. Human Takeover */}
-                <div className="flex items-center gap-3.5 p-3.5 xl:p-4 rounded-xl xl:rounded-2xl bg-white border border-slate-200/80 shadow-xs hover:border-orange-300 transition-all">
-                  <div className="w-9 h-9 rounded-lg bg-orange-50 border border-orange-200 flex items-center justify-center shrink-0">
-                    <Users className="w-4 h-4 text-orange-600" />
+                <div className="flex items-center gap-4 p-4 xl:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:border-orange-400 hover:shadow-md transition-all">
+                  <div className="w-11 h-11 xl:w-12 xl:h-12 rounded-xl bg-orange-50 border border-orange-200 flex items-center justify-center shrink-0">
+                    <Users className="w-5 h-5 xl:w-6 xl:h-6 text-orange-600" />
                   </div>
                   <div>
-                    <h2 className="text-sm sm:text-base xl:text-lg font-black text-slate-900">Human Takeover</h2>
+                    <h2 className="text-base sm:text-lg xl:text-xl font-black text-slate-900">Human Takeover</h2>
                     <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-0.5">Your sales & support team stays in control</p>
                   </div>
                 </div>
               </div>
 
               {/* CTAs */}
-              <div className="flex flex-wrap items-center gap-4 pt-2">
+              <div className="flex flex-wrap items-center gap-5 pt-3">
                 <button
                   id="hero-book-demo-btn"
                   onClick={() => setIsDemoModalOpen(true)}
-                  className="flex items-center gap-3 px-8 py-4 xl:px-10 xl:py-5 rounded-2xl text-base sm:text-lg xl:text-xl font-black text-white bg-[#065f46] hover:bg-[#047857] transition-all shadow-lg shadow-emerald-900/20 hover:shadow-xl active:scale-98"
+                  className="flex items-center gap-3.5 px-8 py-4 sm:px-10 sm:py-5 rounded-2xl text-base sm:text-lg xl:text-xl 2xl:text-2xl font-black text-white bg-[#065f46] hover:bg-[#047857] transition-all shadow-xl shadow-emerald-900/20 hover:shadow-2xl active:scale-98"
                 >
                   <span>Book a Free Demo</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-5 h-5" />
                 </button>
 
                 <button
@@ -521,25 +521,25 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     const el = document.getElementById('dashboard');
                     el?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="flex items-center gap-2.5 px-7 py-4 xl:px-9 xl:py-5 rounded-2xl text-base sm:text-lg xl:text-xl font-black text-slate-800 bg-white hover:bg-slate-50 border-2 border-slate-300 transition-all shadow-xs"
+                  className="flex items-center gap-3 px-8 py-4 sm:px-10 sm:py-5 rounded-2xl text-base sm:text-lg xl:text-xl 2xl:text-2xl font-black text-slate-800 bg-white hover:bg-slate-50 border-2 border-slate-300 transition-all shadow-sm hover:shadow-md active:scale-98"
                 >
-                  <Play className="w-4 h-4 text-[#059669] fill-[#059669]" />
+                  <Play className="w-5 h-5 text-[#059669] fill-[#059669]" />
                   <span>See How It Works</span>
                 </button>
               </div>
 
               {/* Trust Checkmarks */}
-              <div className="flex flex-wrap items-center gap-6 xl:gap-8 pt-3 text-sm sm:text-base xl:text-lg font-bold text-slate-700">
-                <div className="flex items-center gap-1.5">
-                  <Check className="w-4 h-4 text-[#059669] stroke-[3]" />
+              <div className="flex flex-wrap items-center gap-6 xl:gap-10 pt-3 text-base sm:text-lg xl:text-xl font-bold text-slate-700">
+                <div className="flex items-center gap-2">
+                  <Check className="w-5 h-5 text-[#059669] stroke-[3]" />
                   <span>No credit card required</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <Check className="w-4 h-4 text-[#059669] stroke-[3]" />
+                <div className="flex items-center gap-2">
+                  <Check className="w-5 h-5 text-[#059669] stroke-[3]" />
                   <span>Quick 20-minute demo</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <Check className="w-4 h-4 text-[#059669] stroke-[3]" />
+                <div className="flex items-center gap-2">
+                  <Check className="w-5 h-5 text-[#059669] stroke-[3]" />
                   <span>Built for modern business growth</span>
                 </div>
               </div>
@@ -547,120 +547,120 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* Right Column: Hero Visual - Smartphone + Dashboard Mockup */}
-            <div className="lg:col-span-5 xl:col-span-5 2xl:col-span-5 relative flex justify-center">
+            <div className="lg:col-span-5 xl:col-span-5 2xl:col-span-5 relative flex justify-center w-full">
               
               {/* Playful Hand-drawn Annotation Badge at Top-Right */}
-              <div className="absolute -top-8 right-2 z-30 hidden sm:flex items-center gap-2 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-emerald-300 shadow-md">
-                <span className="text-xs font-bold text-[#047857] italic">
+              <div className="absolute -top-10 right-2 z-30 hidden sm:flex items-center gap-2 bg-white/95 backdrop-blur-md px-4 py-2 rounded-full border border-emerald-300 shadow-lg">
+                <span className="text-xs sm:text-sm font-bold text-[#047857] italic">
                   Lead enquiry to closed deal on WhatsApp ⚡
                 </span>
-                <span className="text-emerald-500 text-base">↗</span>
+                <span className="text-emerald-500 text-lg">↗</span>
               </div>
 
               {/* Layered Composition Container */}
-              <div className="relative mx-auto w-full max-w-[480px] xl:max-w-[560px] 2xl:max-w-[620px]">
+              <div className="relative mx-auto w-full max-w-[540px] xl:max-w-[640px] 2xl:max-w-[720px]">
                 
                 {/* 1. Behind: Dashboard Preview Card */}
-                <div className="absolute -top-6 -right-6 xl:-top-8 xl:-right-10 w-[95%] xl:w-[105%] bg-white rounded-2xl border border-slate-200/90 shadow-2xl p-4 xl:p-5 hidden md:block z-10 transform rotate-1 transition-transform hover:rotate-0">
+                <div className="absolute -top-8 -right-8 xl:-top-10 xl:-right-12 w-[98%] xl:w-[108%] bg-white rounded-3xl border border-slate-200/90 shadow-2xl p-5 xl:p-6 hidden md:block z-10 transform rotate-1 transition-transform hover:rotate-0">
                   {/* Dashboard mini header */}
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-100 text-xs">
+                  <div className="flex items-center justify-between pb-3.5 border-b border-slate-100 text-xs sm:text-sm">
                     <div className="flex items-center gap-2">
-                      <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-                      <span className="ml-2 font-bold text-slate-700">AutoMask Business Suite</span>
+                      <div className="w-3 h-3 rounded-full bg-red-400" />
+                      <div className="w-3 h-3 rounded-full bg-amber-400" />
+                      <div className="w-3 h-3 rounded-full bg-emerald-400" />
+                      <span className="ml-2 font-bold text-slate-800">AutoMask Business Suite</span>
                     </div>
-                    <span className="text-[10px] font-semibold bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-md">Live Sync</span>
+                    <span className="text-xs font-bold bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md">Live Sync</span>
                   </div>
 
                   {/* Dashboard stats mini row */}
-                  <div className="grid grid-cols-4 gap-2 my-3">
-                    <div className="bg-slate-50 p-2 rounded-lg text-center">
-                      <div className="text-[10px] text-slate-400 font-medium">Conversations</div>
-                      <div className="text-sm font-bold text-slate-800">1,846</div>
-                      <div className="text-[9px] text-emerald-600 font-bold">+18%</div>
+                  <div className="grid grid-cols-4 gap-2.5 my-3.5">
+                    <div className="bg-slate-50 p-2.5 rounded-xl text-center">
+                      <div className="text-xs text-slate-400 font-medium">Conversations</div>
+                      <div className="text-base sm:text-lg font-black text-slate-800">1,846</div>
+                      <div className="text-xs text-emerald-600 font-bold">+18%</div>
                     </div>
-                    <div className="bg-slate-50 p-2 rounded-lg text-center">
-                      <div className="text-[10px] text-slate-400 font-medium">New Leads</div>
-                      <div className="text-sm font-bold text-slate-800">340</div>
-                      <div className="text-[9px] text-blue-600 font-bold">+42 today</div>
+                    <div className="bg-slate-50 p-2.5 rounded-xl text-center">
+                      <div className="text-xs text-slate-400 font-medium">New Leads</div>
+                      <div className="text-base sm:text-lg font-black text-slate-800">340</div>
+                      <div className="text-xs text-blue-600 font-bold">+42 today</div>
                     </div>
-                    <div className="bg-slate-50 p-2 rounded-lg text-center">
-                      <div className="text-[10px] text-slate-400 font-medium">Deals & Bookings</div>
-                      <div className="text-sm font-bold text-emerald-700">428</div>
-                      <div className="text-[9px] text-emerald-600 font-bold">+24%</div>
+                    <div className="bg-slate-50 p-2.5 rounded-xl text-center">
+                      <div className="text-xs text-slate-400 font-medium">Deals & Bookings</div>
+                      <div className="text-base sm:text-lg font-black text-emerald-700">428</div>
+                      <div className="text-xs text-emerald-600 font-bold">+24%</div>
                     </div>
-                    <div className="bg-slate-50 p-2 rounded-lg text-center">
-                      <div className="text-[10px] text-slate-400 font-medium">Conv. Rate</div>
-                      <div className="text-sm font-bold text-purple-700">26.4%</div>
-                      <div className="text-[9px] text-purple-600 font-bold">Top 5%</div>
+                    <div className="bg-slate-50 p-2.5 rounded-xl text-center">
+                      <div className="text-xs text-slate-400 font-medium">Conv. Rate</div>
+                      <div className="text-base sm:text-lg font-black text-purple-700">26.4%</div>
+                      <div className="text-xs text-purple-600 font-bold">Top 5%</div>
                     </div>
                   </div>
 
                   {/* Recent conversations list preview */}
-                  <div className="space-y-1.5 text-xs">
-                    <div className="flex items-center justify-between p-1.5 bg-emerald-50/60 rounded-md border border-emerald-100">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-emerald-200 text-emerald-800 font-bold text-[10px] flex items-center justify-center">RM</div>
+                  <div className="space-y-2 text-xs sm:text-sm">
+                    <div className="flex items-center justify-between p-2.5 bg-emerald-50/60 rounded-xl border border-emerald-100">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-full bg-emerald-200 text-emerald-800 font-bold text-xs flex items-center justify-center">RM</div>
                         <div>
-                          <div className="font-bold text-[11px] text-slate-800">Rajesh Mittal</div>
-                          <div className="text-[9px] text-slate-500">UrbanNest Realty • Site Visit</div>
+                          <div className="font-bold text-xs sm:text-sm text-slate-800">Rajesh Mittal</div>
+                          <div className="text-xs text-slate-500">UrbanNest Realty • Site Visit</div>
                         </div>
                       </div>
-                      <span className="text-[9px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded">Booked 3 PM</span>
+                      <span className="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">Booked 3 PM</span>
                     </div>
 
-                    <div className="flex items-center justify-between p-1.5 bg-slate-50 rounded-md">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-800 font-bold text-[10px] flex items-center justify-center">AS</div>
+                    <div className="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-full bg-blue-100 text-blue-800 font-bold text-xs flex items-center justify-center">AS</div>
                         <div>
-                          <div className="font-bold text-[11px] text-slate-800">Aman Singhania</div>
-                          <div className="text-[9px] text-slate-500">Zenith D2C • Order #4082</div>
+                          <div className="font-bold text-xs sm:text-sm text-slate-800">Aman Singhania</div>
+                          <div className="text-xs text-slate-500">Zenith D2C • Order #4082</div>
                         </div>
                       </div>
-                      <span className="text-[9px] font-bold text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded">Cart Recovered</span>
+                      <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded">Cart Recovered</span>
                     </div>
                   </div>
                 </div>
 
                 {/* 2. Foreground: Smartphone Mockup showing WhatsApp chat */}
-                <div className="relative z-20 w-[310px] sm:w-[330px] xl:w-[370px] 2xl:w-[410px] mx-auto bg-slate-900 rounded-[38px] xl:rounded-[44px] p-2.5 xl:p-3 shadow-2xl border-4 border-slate-800">
+                <div className="relative z-20 w-[330px] sm:w-[370px] xl:w-[420px] 2xl:w-[460px] mx-auto bg-slate-900 rounded-[44px] xl:rounded-[50px] p-3 xl:p-3.5 shadow-2xl border-4 border-slate-800">
                   {/* Phone speaker notch */}
-                  <div className="w-28 h-4 bg-slate-800 rounded-full mx-auto mb-2 flex items-center justify-center">
+                  <div className="w-32 h-4 bg-slate-800 rounded-full mx-auto mb-2.5 flex items-center justify-center">
                     <div className="w-3 h-3 rounded-full bg-slate-900/80 mr-3" />
-                    <div className="w-10 h-1 bg-slate-700 rounded-full" />
+                    <div className="w-12 h-1 bg-slate-700 rounded-full" />
                   </div>
 
                   {/* WhatsApp App Screen Container */}
-                  <div className="bg-[#efeae2] rounded-[30px] xl:rounded-[36px] overflow-hidden flex flex-col h-[530px] xl:h-[600px] 2xl:h-[660px] border border-slate-200 shadow-inner">
+                  <div className="bg-[#efeae2] rounded-[34px] xl:rounded-[40px] overflow-hidden flex flex-col h-[560px] sm:h-[600px] xl:h-[660px] 2xl:h-[720px] border border-slate-200 shadow-inner">
                     
                     {/* WhatsApp Top Header Bar */}
-                    <div className="bg-[#075e54] text-white px-3 py-2.5 flex items-center justify-between shadow-sm">
-                      <div className="flex items-center gap-2">
+                    <div className="bg-[#075e54] text-white px-3.5 py-3 flex items-center justify-between shadow-sm">
+                      <div className="flex items-center gap-2.5">
                         <div className="relative">
-                          <div className="w-8 h-8 rounded-full bg-emerald-400 text-slate-900 font-bold text-xs flex items-center justify-center shadow-xs">
+                          <div className="w-9 h-9 rounded-full bg-emerald-400 text-slate-900 font-bold text-xs flex items-center justify-center shadow-xs">
                             <Bot className="w-5 h-5 text-emerald-950" />
                           </div>
                           <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-300 border border-[#075e54]" />
                         </div>
                         <div>
-                          <div className="font-black text-sm xl:text-base leading-tight flex items-center gap-1">
+                          <div className="font-black text-sm sm:text-base xl:text-lg leading-tight flex items-center gap-1.5">
                             <span>AutoMask Business</span>
-                            <span className="text-[9px] bg-emerald-500/40 text-emerald-200 px-1 rounded">Verified</span>
+                            <span className="text-[10px] bg-emerald-500/40 text-emerald-200 px-1.5 py-0.2 rounded font-bold">Verified</span>
                           </div>
-                          <div className="text-xs xl:text-sm text-emerald-100/90 font-medium">Sales & Support Assistant</div>
+                          <div className="text-xs sm:text-sm text-emerald-100 font-medium">Sales & Support Assistant</div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2.5 text-white/90">
-                        <PhoneCall className="w-3.5 h-3.5" />
-                        <MoreVertical className="w-3.5 h-3.5" />
+                      <div className="flex items-center gap-3 text-white/90">
+                        <PhoneCall className="w-4 h-4" />
+                        <MoreVertical className="w-4 h-4" />
                       </div>
                     </div>
 
                     {/* WhatsApp Chat Area */}
-                    <div className="flex-1 p-3 space-y-2.5 overflow-y-auto custom-scrollbar text-xs">
+                    <div className="flex-1 p-3.5 space-y-3 overflow-y-auto custom-scrollbar text-xs sm:text-sm">
                       <div className="text-center my-1">
-                        <span className="bg-white/80 text-slate-500 text-[9px] px-2 py-0.5 rounded-full shadow-2xs">
+                        <span className="bg-white/80 text-slate-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-2xs">
                           TODAY
                         </span>
                       </div>
@@ -668,33 +668,33 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                       {/* Chat Messages */}
                       {heroChatMessages.map((msg, idx) => (
                         <div 
-                          key={idx}
+                           key={idx}
                           className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
                         >
                           <div 
-                            className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-xs sm:text-sm xl:text-base leading-relaxed shadow-xs ${
+                            className={`max-w-[85%] rounded-2xl px-4 py-3 text-xs sm:text-sm xl:text-base leading-relaxed shadow-xs ${
                               msg.sender === 'user' 
                                 ? 'bg-[#dcf8c6] text-slate-900 rounded-tr-none' 
                                 : 'bg-white text-slate-800 rounded-tl-none border border-slate-100'
                             }`}
                           >
                             <p>{msg.text}</p>
-                            <span className="text-[8px] text-slate-400 block text-right mt-1">
+                            <span className="text-[9px] text-slate-400 block text-right mt-1 font-medium">
                               {msg.time} {msg.sender === 'user' ? '✓✓' : ''}
                             </span>
                           </div>
 
                           {/* Quick Interactive Chips */}
                           {msg.chips && msg.chips.length > 0 && (
-                            <div className="flex flex-col gap-1 mt-1.5 w-full max-w-[88%]">
+                            <div className="flex flex-col gap-1.5 mt-2 w-full max-w-[90%]">
                               {msg.chips.map((chip, cIdx) => (
                                 <button
                                   key={cIdx}
                                   onClick={() => handleHeroChipClick(chip)}
-                                  className="text-left bg-white hover:bg-emerald-50 border border-emerald-400/60 text-[#047857] text-xs sm:text-sm font-black px-3.5 py-2.5 rounded-xl shadow-2xs transition-colors flex items-center justify-between"
+                                  className="text-left bg-white hover:bg-emerald-50 border border-emerald-400/70 text-[#047857] text-xs sm:text-sm xl:text-base font-black px-4 py-3 rounded-xl shadow-2xs transition-colors flex items-center justify-between"
                                 >
                                   <span>{chip}</span>
-                                  <ChevronRight className="w-3 h-3 text-emerald-600" />
+                                  <ChevronRight className="w-4 h-4 text-emerald-600 shrink-0" />
                                 </button>
                               ))}
                             </div>
@@ -704,13 +704,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     </div>
 
                     {/* WhatsApp Input Bar */}
-                    <div className="bg-[#f0f2f5] p-2 flex items-center gap-1.5 border-t border-slate-200">
-                      <div className="flex-1 bg-white rounded-full px-3 py-1.5 flex items-center gap-1.5 border border-slate-200 shadow-2xs">
+                    <div className="bg-[#f0f2f5] p-2.5 flex items-center gap-2 border-t border-slate-200">
+                      <div className="flex-1 bg-white rounded-full px-3.5 py-2 flex items-center gap-2 border border-slate-200 shadow-2xs">
                         <Smile className="w-4 h-4 text-slate-400 shrink-0" />
-                        <span className="text-[11px] text-slate-400 flex-1 truncate">Type a message...</span>
-                        <Paperclip className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                        <span className="text-xs text-slate-400 flex-1 truncate">Type a message...</span>
+                        <Paperclip className="w-4 h-4 text-slate-400 shrink-0" />
                       </div>
-                      <div className="w-8 h-8 rounded-full bg-[#00a884] text-white flex items-center justify-center shrink-0 shadow-xs">
+                      <div className="w-9 h-9 rounded-full bg-[#00a884] text-white flex items-center justify-center shrink-0 shadow-xs">
                         <Mic className="w-4 h-4" />
                       </div>
                     </div>
@@ -729,47 +729,47 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* =========================================================================
           3. SOCIAL PROOF / TRUSTED BY LOGOS
           ========================================================================= */}
-      <section className="py-10 bg-white border-b border-slate-150">
-        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 text-center">
-          <p className="text-sm sm:text-base xl:text-lg font-black uppercase tracking-wider text-slate-500 mb-8">
+      <section className="py-12 lg:py-16 bg-white border-b border-slate-200/80">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 text-center">
+          <p className="text-sm sm:text-base lg:text-lg font-black uppercase tracking-widest text-slate-500 mb-10">
             TRUSTED BY 500+ FAST-GROWING BUSINESSES & TEAMS ACROSS INDIA
           </p>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 xl:gap-8 items-center justify-center">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 xl:gap-12 items-center justify-center">
             {/* 1. UrbanNest Realty */}
-            <div className="flex items-center justify-center gap-2 text-slate-700 hover:text-emerald-700 transition-colors">
-              <Home className="w-5 h-5 text-slate-500" />
-              <span className="font-black text-base sm:text-lg xl:text-xl tracking-tight font-['Outfit']">UrbanNest Realty</span>
+            <div className="flex items-center justify-center gap-3 text-slate-700 hover:text-emerald-700 transition-colors">
+              <Home className="w-6 h-6 text-slate-500" />
+              <span className="font-black text-lg sm:text-xl xl:text-2xl tracking-tight font-['Outfit']">UrbanNest Realty</span>
             </div>
 
             {/* 2. Zenith Lifestyle */}
-            <div className="flex items-center justify-center gap-2 text-slate-700 hover:text-emerald-700 transition-colors">
-              <ShoppingBag className="w-5 h-5 text-slate-500" />
-              <span className="font-black text-base sm:text-lg xl:text-xl tracking-tight font-['Outfit']">Zenith Lifestyle</span>
+            <div className="flex items-center justify-center gap-3 text-slate-700 hover:text-emerald-700 transition-colors">
+              <ShoppingBag className="w-6 h-6 text-slate-500" />
+              <span className="font-black text-lg sm:text-xl xl:text-2xl tracking-tight font-['Outfit']">Zenith Lifestyle</span>
             </div>
 
             {/* 3. CarePlus Clinics */}
-            <div className="flex items-center justify-center gap-2 text-slate-700 hover:text-emerald-700 transition-colors">
-              <Stethoscope className="w-5 h-5 text-slate-500" />
-              <span className="font-black text-base sm:text-lg xl:text-xl tracking-tight font-['Outfit']">CarePlus Clinics</span>
+            <div className="flex items-center justify-center gap-3 text-slate-700 hover:text-emerald-700 transition-colors">
+              <Stethoscope className="w-6 h-6 text-slate-500" />
+              <span className="font-black text-lg sm:text-xl xl:text-2xl tracking-tight font-['Outfit']">CarePlus Clinics</span>
             </div>
 
             {/* 4. Apex Capital */}
-            <div className="flex items-center justify-center gap-2 text-slate-700 hover:text-emerald-700 transition-colors">
-              <Briefcase className="w-5 h-5 text-slate-500" />
-              <span className="font-black text-base sm:text-lg xl:text-xl tracking-tight font-['Outfit']">Apex Capital</span>
+            <div className="flex items-center justify-center gap-3 text-slate-700 hover:text-emerald-700 transition-colors">
+              <Briefcase className="w-6 h-6 text-slate-500" />
+              <span className="font-black text-lg sm:text-xl xl:text-2xl tracking-tight font-['Outfit']">Apex Capital</span>
             </div>
 
             {/* 5. Lakshya Academy */}
-            <div className="flex items-center justify-center gap-2 text-slate-700 hover:text-emerald-700 transition-colors">
-              <GraduationCap className="w-5 h-5 text-slate-500" />
-              <span className="font-black text-base sm:text-lg xl:text-xl tracking-tight font-['Outfit']">Lakshya Academy</span>
+            <div className="flex items-center justify-center gap-3 text-slate-700 hover:text-emerald-700 transition-colors">
+              <GraduationCap className="w-6 h-6 text-slate-500" />
+              <span className="font-black text-lg sm:text-xl xl:text-2xl tracking-tight font-['Outfit']">Lakshya Academy</span>
             </div>
 
             {/* 6. NextWave Media */}
-            <div className="flex items-center justify-center gap-2 text-slate-700 hover:text-emerald-700 transition-colors">
-              <Laptop className="w-5 h-5 text-slate-500" />
-              <span className="font-black text-base sm:text-lg xl:text-xl tracking-tight font-['Outfit']">NextWave Media</span>
+            <div className="flex items-center justify-center gap-3 text-slate-700 hover:text-emerald-700 transition-colors">
+              <Laptop className="w-6 h-6 text-slate-500" />
+              <span className="font-black text-lg sm:text-xl xl:text-2xl tracking-tight font-['Outfit']">NextWave Media</span>
             </div>
           </div>
         </div>
@@ -778,62 +778,62 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* =========================================================================
           4. 5-PILLAR BENEFIT STRIP
           ========================================================================= */}
-      <section className="py-8 bg-slate-50/80 border-b border-slate-200">
-        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 xl:gap-6">
+      <section className="py-10 lg:py-14 bg-slate-50/80 border-b border-slate-200">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 xl:gap-7">
             
             {/* 1. AI-Powered Responses */}
-            <div className="flex items-start gap-3.5 p-4 xl:p-5 rounded-xl xl:rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-xs transition-shadow">
-              <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
-                <Zap className="w-4 h-4" />
+            <div className="flex items-start gap-4 p-5 xl:p-6 rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-md transition-shadow">
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
+                <Zap className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm sm:text-base xl:text-lg font-black text-slate-900 leading-snug">AI-Powered Responses</h3>
-                <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-1">Accurate answers from your business catalogs & docs</p>
+                <h3 className="text-base sm:text-lg xl:text-xl font-black text-slate-900 leading-snug">AI-Powered Responses</h3>
+                <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-1.5">Accurate answers from your business catalogs & docs</p>
               </div>
             </div>
 
             {/* 2. Smart Booking & Sales */}
-            <div className="flex items-start gap-3.5 p-4 xl:p-5 rounded-xl xl:rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-xs transition-shadow">
-              <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center shrink-0">
-                <Calendar className="w-4 h-4" />
+            <div className="flex items-start gap-4 p-5 xl:p-6 rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-md transition-shadow">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center shrink-0">
+                <Calendar className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm sm:text-base xl:text-lg font-black text-slate-900 leading-snug">Smart Booking Engine</h3>
-                <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-1">Real-time calendar slots & zero double-booking</p>
+                <h3 className="text-base sm:text-lg xl:text-xl font-black text-slate-900 leading-snug">Smart Booking Engine</h3>
+                <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-1.5">Real-time calendar slots & zero double-booking</p>
               </div>
             </div>
 
             {/* 3. Follow-up Sequences */}
-            <div className="flex items-start gap-3.5 p-4 xl:p-5 rounded-xl xl:rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-xs transition-shadow">
-              <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center shrink-0">
-                <Sparkles className="w-4 h-4" />
+            <div className="flex items-start gap-4 p-5 xl:p-6 rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-md transition-shadow">
+              <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center shrink-0">
+                <Sparkles className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm sm:text-base xl:text-lg font-black text-slate-900 leading-snug">Follow-up Sequences</h3>
-                <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-1">Automated personalized WhatsApp nurturing</p>
+                <h3 className="text-base sm:text-lg xl:text-xl font-black text-slate-900 leading-snug">Follow-up Sequences</h3>
+                <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-1.5">Automated personalized WhatsApp nurturing</p>
               </div>
             </div>
 
             {/* 4. Human Takeover */}
-            <div className="flex items-start gap-3.5 p-4 xl:p-5 rounded-xl xl:rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-xs transition-shadow">
-              <div className="w-8 h-8 rounded-lg bg-orange-50 text-orange-700 flex items-center justify-center shrink-0">
-                <Users className="w-4 h-4" />
+            <div className="flex items-start gap-4 p-5 xl:p-6 rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-md transition-shadow">
+              <div className="w-10 h-10 rounded-xl bg-orange-50 text-orange-700 flex items-center justify-center shrink-0">
+                <Users className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm sm:text-base xl:text-lg font-black text-slate-900 leading-snug">Human Takeover</h3>
-                <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-1">Seamless handover to your sales & support team</p>
+                <h3 className="text-base sm:text-lg xl:text-xl font-black text-slate-900 leading-snug">Human Takeover</h3>
+                <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-1.5">Seamless handover to your sales & support team</p>
               </div>
             </div>
 
             {/* 5. 100% Secure & Private */}
-            <div className="flex items-start gap-3.5 p-4 xl:p-5 rounded-xl xl:rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-xs transition-shadow">
-              <div className="w-8 h-8 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center shrink-0">
-                <Shield className="w-4 h-4" />
+            <div className="flex items-start gap-4 p-5 xl:p-6 rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-md transition-shadow">
+              <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center shrink-0">
+                <Shield className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-sm sm:text-base xl:text-lg font-black text-slate-900 leading-snug">100% Secure & Private</h3>
-                <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-1">Enterprise-grade Meta Cloud API with tenant isolation</p>
+                <h3 className="text-base sm:text-lg xl:text-xl font-black text-slate-900 leading-snug">100% Secure & Private</h3>
+                <p className="text-xs sm:text-sm xl:text-base text-slate-600 mt-1.5">Enterprise-grade Meta Cloud API with tenant isolation</p>
               </div>
             </div>
 
@@ -844,76 +844,76 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* =========================================================================
           5. HOW IT WORKS SECTION
           ========================================================================= */}
-      <section id="how-it-works" className="py-20 bg-white border-b border-slate-150">
-        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 text-center">
+      <section id="how-it-works" className="py-20 lg:py-28 bg-white border-b border-slate-200/80">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24 text-center">
           
           {/* Badge */}
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wider uppercase mb-3">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs sm:text-sm font-black tracking-wider uppercase mb-4">
             <span>HOW IT WORKS</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tight font-['Outfit'] mb-14">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-slate-900 tracking-tight font-['Outfit'] mb-16 lg:mb-20">
             Get started in minutes. Start converting in hours.
           </h2>
 
           {/* 4 Steps Row */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 lg:gap-12 relative">
             
             {/* Step 1 */}
             <div className="flex flex-col items-center text-center relative group">
-              <div className="w-16 h-16 rounded-2xl bg-emerald-50 border-2 border-emerald-200 flex items-center justify-center text-emerald-600 mb-5 shadow-xs group-hover:scale-105 transition-transform">
-                <MessageCircle className="w-8 h-8" />
+              <div className="w-20 h-20 rounded-2xl bg-emerald-50 border-2 border-emerald-200 flex items-center justify-center text-emerald-600 mb-6 shadow-xs group-hover:scale-105 transition-transform">
+                <MessageCircle className="w-10 h-10" />
               </div>
-              <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900 mb-2.5">Connect WhatsApp</h3>
-              <p className="text-sm sm:text-base xl:text-lg text-slate-600 leading-relaxed max-w-[260px]">
+              <h3 className="text-xl sm:text-2xl xl:text-3xl font-black text-slate-900 mb-3">Connect WhatsApp</h3>
+              <p className="text-base sm:text-lg xl:text-xl text-slate-600 leading-relaxed max-w-[320px]">
                 Link your official WhatsApp Business number via Meta's secure embedded onboarding.
               </p>
 
               {/* Connecting arrow for md screens */}
-              <div className="hidden md:block absolute top-8 -right-4 w-8 text-slate-300">
-                <ArrowRight className="w-6 h-6 text-slate-300" />
+              <div className="hidden md:block absolute top-10 -right-5 w-10 text-slate-300">
+                <ArrowRight className="w-8 h-8 text-slate-300" />
               </div>
             </div>
 
             {/* Step 2 */}
             <div className="flex flex-col items-center text-center relative group">
-              <div className="w-16 h-16 rounded-2xl bg-blue-50 border-2 border-blue-200 flex items-center justify-center text-blue-600 mb-5 shadow-xs group-hover:scale-105 transition-transform">
-                <FileText className="w-8 h-8" />
+              <div className="w-20 h-20 rounded-2xl bg-blue-50 border-2 border-blue-200 flex items-center justify-center text-blue-600 mb-6 shadow-xs group-hover:scale-105 transition-transform">
+                <FileText className="w-10 h-10" />
               </div>
-              <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900 mb-2.5">Set up your Business</h3>
-              <p className="text-sm sm:text-base xl:text-lg text-slate-600 leading-relaxed max-w-[260px]">
+              <h3 className="text-xl sm:text-2xl xl:text-3xl font-black text-slate-900 mb-3">Set up your Business</h3>
+              <p className="text-base sm:text-lg xl:text-xl text-slate-600 leading-relaxed max-w-[320px]">
                 Add products, services, pricing, FAQs, and appointment availability slots.
               </p>
 
               {/* Connecting arrow for md screens */}
-              <div className="hidden md:block absolute top-8 -right-4 w-8 text-slate-300">
-                <ArrowRight className="w-6 h-6 text-slate-300" />
+              <div className="hidden md:block absolute top-10 -right-5 w-10 text-slate-300">
+                <ArrowRight className="w-8 h-8 text-slate-300" />
               </div>
             </div>
 
             {/* Step 3 */}
             <div className="flex flex-col items-center text-center relative group">
-              <div className="w-16 h-16 rounded-2xl bg-purple-50 border-2 border-purple-200 flex items-center justify-center text-purple-600 mb-5 shadow-xs group-hover:scale-105 transition-transform">
-                <Zap className="w-8 h-8" />
+              <div className="w-20 h-20 rounded-2xl bg-purple-50 border-2 border-purple-200 flex items-center justify-center text-purple-600 mb-6 shadow-xs group-hover:scale-105 transition-transform">
+                <Zap className="w-10 h-10" />
               </div>
-              <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900 mb-2.5">Automate with AI</h3>
-              <p className="text-sm sm:text-base xl:text-lg text-slate-600 leading-relaxed max-w-[260px]">
+              <h3 className="text-xl sm:text-2xl xl:text-3xl font-black text-slate-900 mb-3">Automate with AI</h3>
+              <p className="text-base sm:text-lg xl:text-xl text-slate-600 leading-relaxed max-w-[320px]">
                 Activate ready-made business workflows. AI answers customer queries 24/7 with zero hallucination.
               </p>
 
               {/* Connecting arrow for md screens */}
-              <div className="hidden md:block absolute top-8 -right-4 w-8 text-slate-300">
-                <ArrowRight className="w-6 h-6 text-slate-300" />
+              <div className="hidden md:block absolute top-10 -right-5 w-10 text-slate-300">
+                <ArrowRight className="w-8 h-8 text-slate-300" />
               </div>
             </div>
 
             {/* Step 4 */}
             <div className="flex flex-col items-center text-center group">
-              <div className="w-16 h-16 rounded-2xl bg-teal-50 border-2 border-teal-200 flex items-center justify-center text-teal-600 mb-5 shadow-xs group-hover:scale-105 transition-transform">
-                <TrendingUp className="w-8 h-8" />
+              <div className="w-20 h-20 rounded-2xl bg-teal-50 border-2 border-teal-200 flex items-center justify-center text-teal-600 mb-6 shadow-xs group-hover:scale-105 transition-transform">
+                <TrendingUp className="w-10 h-10" />
               </div>
-              <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900 mb-2.5">Convert more customers</h3>
-              <p className="text-sm sm:text-base xl:text-lg text-slate-600 leading-relaxed max-w-[260px]">
+              <h3 className="text-xl sm:text-2xl xl:text-3xl font-black text-slate-900 mb-3">Convert more customers</h3>
+              <p className="text-base sm:text-lg xl:text-xl text-slate-600 leading-relaxed max-w-[320px]">
                 Capture leads, book consultations, recover lost enquiries, and track ROI in one dashboard.
               </p>
             </div>
@@ -926,20 +926,20 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* =========================================================================
           6. BUILT FOR MODERN BUSINESSES (INDUSTRY SEGMENTS SHOWCASE)
           ========================================================================= */}
-      <section id="solutions" className="py-20 bg-slate-50 border-b border-slate-150">
-        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
+      <section id="solutions" className="py-20 lg:py-28 bg-slate-50 border-b border-slate-200/80">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
           
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wider uppercase mb-3">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs sm:text-sm font-black tracking-wider uppercase mb-4">
               <span>BUILT FOR MODERN BUSINESSES</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tight font-['Outfit']">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-slate-900 tracking-tight font-['Outfit']">
               Perfect for every industry & business model
             </h2>
           </div>
 
           {/* Segment Filter Tabs */}
-          <div className="flex flex-wrap items-center justify-center gap-2.5 mb-12">
+          <div className="flex flex-wrap items-center justify-center gap-3 lg:gap-4 mb-14">
             {[
               { id: 'd2c', label: 'D2C & E-Commerce' },
               { id: 'real-estate', label: 'Real Estate' },
@@ -951,10 +951,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <button
                 key={tab.id}
                 onClick={() => setActiveSegment(tab.id as any)}
-                className={`px-6 py-3 rounded-full text-sm sm:text-base xl:text-lg font-bold transition-all ${
+                className={`px-7 py-3.5 lg:px-9 lg:py-4 rounded-full text-base sm:text-lg xl:text-xl font-black transition-all ${
                   activeSegment === tab.id
-                    ? 'bg-[#065f46] text-white shadow-md shadow-emerald-900/15'
-                    : 'bg-white text-slate-600 hover:text-slate-900 border border-slate-200 hover:bg-slate-50'
+                    ? 'bg-[#065f46] text-white shadow-lg shadow-emerald-900/20'
+                    : 'bg-white text-slate-700 hover:text-slate-900 border border-slate-200 hover:bg-slate-50'
                 }`}
               >
                 {tab.label}
@@ -963,41 +963,41 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           {/* Segment Feature Content Box */}
-          <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xl overflow-hidden">
+          <div className="bg-white rounded-3xl border border-slate-200/90 shadow-2xl overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-center">
               
               {/* Left Column: High Quality Business / Education Photo */}
-              <div className="lg:col-span-6 relative h-[360px] sm:h-[420px] lg:h-[460px] overflow-hidden bg-slate-100">
+              <div className="lg:col-span-6 relative h-[380px] sm:h-[460px] lg:h-[540px] xl:h-[600px] overflow-hidden bg-slate-100">
                 <img 
                   src={currentSegment.image} 
                   alt={currentSegment.title} 
                   className="w-full h-full object-cover object-center transition-opacity duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:hidden" />
-                <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-800 shadow-md">
+                <div className="absolute bottom-5 left-5 bg-white/95 backdrop-blur-md px-4 py-2 rounded-full text-sm font-bold text-slate-800 shadow-md">
                   📍 {currentSegment.badge}
                 </div>
               </div>
 
               {/* Right Column: Segment Capabilities */}
-              <div className="lg:col-span-6 p-8 sm:p-12 space-y-6">
+              <div className="lg:col-span-6 p-8 sm:p-14 lg:p-16 space-y-7">
                 <div>
-                  <h3 className="text-2xl sm:text-3xl xl:text-4xl font-black text-slate-900 tracking-tight font-['Outfit'] mb-4">
+                  <h3 className="text-3xl sm:text-4xl xl:text-5xl font-black text-slate-900 tracking-tight font-['Outfit'] mb-4 leading-tight">
                     {currentSegment.title}
                   </h3>
-                  <p className="text-base sm:text-lg xl:text-xl text-slate-600 leading-relaxed">
+                  <p className="text-lg sm:text-xl xl:text-2xl text-slate-600 leading-relaxed">
                     {currentSegment.desc}
                   </p>
                 </div>
 
                 {/* Bullet Points */}
-                <div className="space-y-3 pt-2">
+                <div className="space-y-4 pt-2">
                   {currentSegment.points.map((pt, idx) => (
-                    <div key={idx} className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full bg-emerald-50 border border-emerald-300 flex items-center justify-center shrink-0 mt-0.5">
-                        <Check className="w-3.5 h-3.5 text-emerald-700 stroke-[3]" />
+                    <div key={idx} className="flex items-start gap-3.5">
+                      <div className="w-6 h-6 rounded-full bg-emerald-50 border border-emerald-300 flex items-center justify-center shrink-0 mt-1">
+                        <Check className="w-4 h-4 text-emerald-700 stroke-[3]" />
                       </div>
-                      <span className="text-sm sm:text-base xl:text-lg font-bold text-slate-800">{pt}</span>
+                      <span className="text-base sm:text-lg xl:text-xl font-bold text-slate-800 leading-snug">{pt}</span>
                     </div>
                   ))}
                 </div>
@@ -1006,10 +1006,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <div className="pt-4">
                   <button
                     onClick={() => setIsDemoModalOpen(true)}
-                    className="flex items-center gap-2 px-6 py-3.5 rounded-lg text-sm font-bold text-white bg-[#065f46] hover:bg-[#047857] transition-all shadow-md active:scale-98"
+                    className="flex items-center gap-3 px-8 py-4 sm:px-10 sm:py-4.5 rounded-xl text-base sm:text-lg font-black text-white bg-[#065f46] hover:bg-[#047857] transition-all shadow-md active:scale-98"
                   >
                     <span>Book a Demo for Your Business</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-5 h-5" />
                   </button>
                 </div>
               </div>
@@ -1023,39 +1023,39 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* =========================================================================
           7. "SIMPLE. POWERFUL. COMPLETE." - DASHBOARD PREVIEW
           ========================================================================= */}
-      <section id="dashboard" className="py-20 bg-white border-b border-slate-150">
-        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
+      <section id="dashboard" className="py-20 lg:py-28 bg-white border-b border-slate-200/80">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
           
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wider uppercase mb-3">
+          <div className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs sm:text-sm font-black tracking-wider uppercase mb-4">
               <span>SIMPLE. POWERFUL. COMPLETE.</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tight font-['Outfit']">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-slate-900 tracking-tight font-['Outfit']">
               Everything your business needs in one dashboard
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12 items-start">
             
             {/* Left Column: Interactive Feature Selector Cards */}
-            <div className="lg:col-span-4 space-y-3">
+            <div className="lg:col-span-4 space-y-4">
               
               {/* 1. Team Inbox */}
               <button
                 onClick={() => setActiveDashboardTab('inbox')}
-                className={`w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3.5 ${
+                className={`w-full text-left p-5 rounded-2xl border transition-all flex items-start gap-4 ${
                   activeDashboardTab === 'inbox'
-                    ? 'bg-emerald-50/80 border-[#059669] shadow-sm'
+                    ? 'bg-emerald-50/80 border-[#059669] shadow-md ring-1 ring-[#059669]/30'
                     : 'bg-white border-slate-200 hover:border-slate-300'
                 }`}
               >
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
+                <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${
                   activeDashboardTab === 'inbox' ? 'bg-[#065f46] text-white' : 'bg-slate-100 text-slate-600'
                 }`}>
-                  <MessageSquare className="w-4 h-4" />
+                  <MessageSquare className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base sm:text-lg xl:text-xl font-black text-slate-900">Shared Team Inbox</h3>
+                  <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900">Shared Team Inbox</h3>
                   <p className="text-sm sm:text-base text-slate-600 mt-1">Manage customer chats with multi-agent assignment</p>
                 </div>
               </button>
@@ -1063,19 +1063,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               {/* 2. Lead Management */}
               <button
                 onClick={() => setActiveDashboardTab('leads')}
-                className={`w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3.5 ${
+                className={`w-full text-left p-5 rounded-2xl border transition-all flex items-start gap-4 ${
                   activeDashboardTab === 'leads'
-                    ? 'bg-emerald-50/80 border-[#059669] shadow-sm'
+                    ? 'bg-emerald-50/80 border-[#059669] shadow-md ring-1 ring-[#059669]/30'
                     : 'bg-white border-slate-200 hover:border-slate-300'
                 }`}
               >
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
+                <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${
                   activeDashboardTab === 'leads' ? 'bg-[#065f46] text-white' : 'bg-slate-100 text-slate-600'
                 }`}>
-                  <Users className="w-4 h-4" />
+                  <Users className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base sm:text-lg xl:text-xl font-black text-slate-900">Lead & CRM Pipeline</h3>
+                  <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900">Lead & CRM Pipeline</h3>
                   <p className="text-sm sm:text-base text-slate-600 mt-1">Track enquiries from new lead to closed sale</p>
                 </div>
               </button>
@@ -1083,19 +1083,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               {/* 3. Demo & Appointment Bookings */}
               <button
                 onClick={() => setActiveDashboardTab('bookings')}
-                className={`w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3.5 ${
+                className={`w-full text-left p-5 rounded-2xl border transition-all flex items-start gap-4 ${
                   activeDashboardTab === 'bookings'
-                    ? 'bg-emerald-50/80 border-[#059669] shadow-sm'
+                    ? 'bg-emerald-50/80 border-[#059669] shadow-md ring-1 ring-[#059669]/30'
                     : 'bg-white border-slate-200 hover:border-slate-300'
                 }`}
               >
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
+                <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${
                   activeDashboardTab === 'bookings' ? 'bg-[#065f46] text-white' : 'bg-slate-100 text-slate-600'
                 }`}>
-                  <Calendar className="w-4 h-4" />
+                  <Calendar className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base sm:text-lg xl:text-xl font-black text-slate-900">Appointments & Demos</h3>
+                  <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900">Appointments & Demos</h3>
                   <p className="text-sm sm:text-base text-slate-600 mt-1">Automated calendar slots & zero double-booking</p>
                 </div>
               </button>
@@ -1103,19 +1103,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               {/* 4. Automation Rules */}
               <button
                 onClick={() => setActiveDashboardTab('automation')}
-                className={`w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3.5 ${
+                className={`w-full text-left p-5 rounded-2xl border transition-all flex items-start gap-4 ${
                   activeDashboardTab === 'automation'
-                    ? 'bg-emerald-50/80 border-[#059669] shadow-sm'
+                    ? 'bg-emerald-50/80 border-[#059669] shadow-md ring-1 ring-[#059669]/30'
                     : 'bg-white border-slate-200 hover:border-slate-300'
                 }`}
               >
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
+                <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${
                   activeDashboardTab === 'automation' ? 'bg-[#065f46] text-white' : 'bg-slate-100 text-slate-600'
                 }`}>
-                  <Zap className="w-4 h-4" />
+                  <Zap className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base sm:text-lg xl:text-xl font-black text-slate-900">Automation & Journeys</h3>
+                  <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900">Automation & Journeys</h3>
                   <p className="text-sm sm:text-base text-slate-600 mt-1">Keyword triggers, drip campaigns & RAG AI</p>
                 </div>
               </button>
@@ -1123,19 +1123,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               {/* 5. Analytics & Reports */}
               <button
                 onClick={() => setActiveDashboardTab('analytics')}
-                className={`w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3.5 ${
+                className={`w-full text-left p-5 rounded-2xl border transition-all flex items-start gap-4 ${
                   activeDashboardTab === 'analytics'
-                    ? 'bg-emerald-50/80 border-[#059669] shadow-sm'
+                    ? 'bg-emerald-50/80 border-[#059669] shadow-md ring-1 ring-[#059669]/30'
                     : 'bg-white border-slate-200 hover:border-slate-300'
                 }`}
               >
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
+                <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${
                   activeDashboardTab === 'analytics' ? 'bg-[#065f46] text-white' : 'bg-slate-100 text-slate-600'
                 }`}>
-                  <BarChart3 className="w-4 h-4" />
+                  <BarChart3 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base sm:text-lg xl:text-xl font-black text-slate-900">Analytics & Sales ROI</h3>
+                  <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900">Analytics & Sales ROI</h3>
                   <p className="text-sm sm:text-base text-slate-600 mt-1">First response time, conversions & agent metrics</p>
                 </div>
               </button>
@@ -1143,10 +1143,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <div className="pt-2">
                 <button
                   onClick={() => onLaunchDemo('admin')}
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors"
+                  className="w-full flex items-center justify-center gap-2.5 py-4 rounded-xl text-sm sm:text-base font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors"
                 >
                   <span>Launch Live Interactive Console Demo</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
+                  <ExternalLink className="w-4 h-4" />
                 </button>
               </div>
 
@@ -1445,60 +1445,60 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* =========================================================================
           8. WHY CHOOSE AUTOMASK SECTION
           ========================================================================= */}
-      <section className="py-20 bg-slate-50 border-b border-slate-150">
-        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
+      <section className="py-20 lg:py-28 bg-slate-50 border-b border-slate-200/80">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
           
-          <div className="text-center mb-14">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wider uppercase mb-3">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs sm:text-sm font-black tracking-wider uppercase mb-4">
               <span>WHY CHOOSE AUTOMASK</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-['Outfit']">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-slate-900 tracking-tight font-['Outfit']">
               Built for real business growth & high conversion
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             
             {/* 1. More Revenue & Sales */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:border-emerald-300 transition-all group">
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mb-5 group-hover:scale-105 transition-transform">
-                <Target className="w-6 h-6" />
+            <div className="p-7 xl:p-8 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-emerald-300 transition-all group">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mb-6 group-hover:scale-105 transition-transform">
+                <Target className="w-7 h-7" />
               </div>
-              <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900 mb-2.5">More Revenue & Sales</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <h3 className="text-xl sm:text-2xl xl:text-3xl font-black text-slate-900 mb-3">More Revenue & Sales</h3>
+              <p className="text-sm sm:text-base xl:text-lg text-slate-600 leading-relaxed">
                 Engage hot inbound prospects in seconds before they research your competitors.
               </p>
             </div>
 
             {/* 2. Save 70% Team Time */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:border-blue-300 transition-all group">
-              <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 mb-5 group-hover:scale-105 transition-transform">
-                <Clock className="w-6 h-6" />
+            <div className="p-7 xl:p-8 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-blue-300 transition-all group">
+              <div className="w-14 h-14 rounded-2xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 mb-6 group-hover:scale-105 transition-transform">
+                <Clock className="w-7 h-7" />
               </div>
-              <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900 mb-2.5">Save 70% Team Time</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <h3 className="text-xl sm:text-2xl xl:text-3xl font-black text-slate-900 mb-3">Save 70% Team Time</h3>
+              <p className="text-sm sm:text-base xl:text-lg text-slate-600 leading-relaxed">
                 Automate FAQs, catalog questions, and scheduling so your sales team can focus on closing deals.
               </p>
             </div>
 
             {/* 3. Transparent & Affordable */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:border-amber-300 transition-all group">
-              <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 mb-5 group-hover:scale-105 transition-transform">
-                <Percent className="w-6 h-6" />
+            <div className="p-7 xl:p-8 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-amber-300 transition-all group">
+              <div className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 mb-6 group-hover:scale-105 transition-transform">
+                <Percent className="w-7 h-7" />
               </div>
-              <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900 mb-2.5">Transparent & Affordable</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <h3 className="text-xl sm:text-2xl xl:text-3xl font-black text-slate-900 mb-3">Transparent & Affordable</h3>
+              <p className="text-sm sm:text-base xl:text-lg text-slate-600 leading-relaxed">
                 Simple monthly plans with transparent limits. Zero hidden fees and zero cut of your sales revenue.
               </p>
             </div>
 
             {/* 4. Meta Official & Safe */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs hover:border-teal-300 transition-all group">
-              <div className="w-12 h-12 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-600 mb-5 group-hover:scale-105 transition-transform">
-                <Shield className="w-6 h-6" />
+            <div className="p-7 xl:p-8 rounded-3xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-teal-300 transition-all group">
+              <div className="w-14 h-14 rounded-2xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-600 mb-6 group-hover:scale-105 transition-transform">
+                <Shield className="w-7 h-7" />
               </div>
-              <h3 className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900 mb-2.5">100% Official & Compliant</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <h3 className="text-xl sm:text-2xl xl:text-3xl font-black text-slate-900 mb-3">100% Official & Compliant</h3>
+              <p className="text-sm sm:text-base xl:text-lg text-slate-600 leading-relaxed">
                 Built strictly on Meta’s official WhatsApp Cloud API. Safe from number bans with enterprise tenant privacy.
               </p>
             </div>
@@ -1511,88 +1511,88 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* =========================================================================
           9. TESTIMONIALS (LOVED BY BUSINESS LEADERS)
           ========================================================================= */}
-      <section className="py-20 bg-white border-b border-slate-150">
-        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
+      <section className="py-20 lg:py-28 bg-white border-b border-slate-200/80">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
           
-          <div className="text-center mb-14">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wider uppercase mb-3">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs sm:text-sm font-black tracking-wider uppercase mb-4">
               <span>LOVED BY GROWING BUSINESSES</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-['Outfit']">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-slate-900 tracking-tight font-['Outfit']">
               What our business partners say
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             
             {/* Testimonial 1: Real Estate */}
-            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200/90 flex flex-col justify-between shadow-2xs hover:shadow-md transition-shadow">
-              <div className="space-y-4">
-                <div className="flex items-center gap-1 text-amber-400">
+            <div className="p-8 xl:p-10 rounded-3xl bg-slate-50 border border-slate-200/90 flex flex-col justify-between shadow-xs hover:shadow-lg transition-shadow">
+              <div className="space-y-5">
+                <div className="flex items-center gap-1.5 text-amber-400">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400" />
+                    <Star key={i} className="w-5 h-5 fill-amber-400" />
                   ))}
                 </div>
-                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
+                <p className="text-base sm:text-lg xl:text-xl text-slate-700 leading-relaxed italic">
                   "AutoMask doubled our weekend site visit bookings. Hot property enquiries are instantly qualified and sent to our agents with complete buyer requirements."
                 </p>
               </div>
 
-              <div className="flex items-center gap-3 pt-6 mt-6 border-t border-slate-200">
-                <div className="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-sm shadow-xs">
+              <div className="flex items-center gap-4 pt-6 mt-8 border-t border-slate-200">
+                <div className="w-12 h-12 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-base shadow-xs">
                   RM
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-slate-900">Rajesh Mittal</h4>
-                  <p className="text-[11px] text-slate-500">VP Sales, UrbanNest Realty</p>
+                  <h4 className="text-base font-black text-slate-900">Rajesh Mittal</h4>
+                  <p className="text-xs sm:text-sm text-slate-500 font-medium">VP Sales, UrbanNest Realty</p>
                 </div>
               </div>
             </div>
 
             {/* Testimonial 2: Healthcare */}
-            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200/90 flex flex-col justify-between shadow-2xs hover:shadow-md transition-shadow">
-              <div className="space-y-4">
-                <div className="flex items-center gap-1 text-amber-400">
+            <div className="p-8 xl:p-10 rounded-3xl bg-slate-50 border border-slate-200/90 flex flex-col justify-between shadow-xs hover:shadow-lg transition-shadow">
+              <div className="space-y-5">
+                <div className="flex items-center gap-1.5 text-amber-400">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400" />
+                    <Star key={i} className="w-5 h-5 fill-amber-400" />
                   ))}
                 </div>
-                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
+                <p className="text-base sm:text-lg xl:text-xl text-slate-700 leading-relaxed italic">
                   "Our patient consultation appointments run on autopilot. No missed calls, zero manual booking errors, and patient satisfaction has never been higher."
                 </p>
               </div>
 
-              <div className="flex items-center gap-3 pt-6 mt-6 border-t border-slate-200">
-                <div className="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm shadow-xs">
+              <div className="flex items-center gap-4 pt-6 mt-8 border-t border-slate-200">
+                <div className="w-12 h-12 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-base shadow-xs">
                   SK
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-slate-900">Dr. Sunita Kulkarni</h4>
-                  <p className="text-[11px] text-slate-500">Founder & MD, CarePlus Clinics</p>
+                  <h4 className="text-base font-black text-slate-900">Dr. Sunita Kulkarni</h4>
+                  <p className="text-xs sm:text-sm text-slate-500 font-medium">Founder & MD, CarePlus Clinics</p>
                 </div>
               </div>
             </div>
 
             {/* Testimonial 3: D2C E-Commerce */}
-            <div className="p-6 rounded-2xl bg-slate-50 border border-slate-200/90 flex flex-col justify-between shadow-2xs hover:shadow-md transition-shadow">
-              <div className="space-y-4">
-                <div className="flex items-center gap-1 text-amber-400">
+            <div className="p-8 xl:p-10 rounded-3xl bg-slate-50 border border-slate-200/90 flex flex-col justify-between shadow-xs hover:shadow-lg transition-shadow">
+              <div className="space-y-5">
+                <div className="flex items-center gap-1.5 text-amber-400">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400" />
+                    <Star key={i} className="w-5 h-5 fill-amber-400" />
                   ))}
                 </div>
-                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
+                <p className="text-base sm:text-lg xl:text-xl text-slate-700 leading-relaxed italic">
                   "Our order confirmation and abandoned cart recovery on WhatsApp generate 32% more repeat revenue with practically zero extra headcount."
                 </p>
               </div>
 
-              <div className="flex items-center gap-3 pt-6 mt-6 border-t border-slate-200">
-                <div className="w-10 h-10 rounded-full bg-purple-600 text-white font-bold flex items-center justify-center text-sm shadow-xs">
+              <div className="flex items-center gap-4 pt-6 mt-8 border-t border-slate-200">
+                <div className="w-12 h-12 rounded-full bg-purple-600 text-white font-bold flex items-center justify-center text-base shadow-xs">
                   AS
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-slate-900">Aman Singhania</h4>
-                  <p className="text-[11px] text-slate-500">Co-founder, Zenith Lifestyle D2C</p>
+                  <h4 className="text-base font-black text-slate-900">Aman Singhania</h4>
+                  <p className="text-xs sm:text-sm text-slate-500 font-medium">Co-founder, Zenith Lifestyle D2C</p>
                 </div>
               </div>
             </div>
@@ -1605,22 +1605,22 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* =========================================================================
           10. PRICING SECTION
           ========================================================================= */}
-      <section id="pricing" className="py-20 bg-slate-50 border-b border-slate-150">
-        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
+      <section id="pricing" className="py-20 lg:py-28 bg-slate-50 border-b border-slate-200/80">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
           
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wider uppercase mb-3">
+          <div className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs sm:text-sm font-black tracking-wider uppercase mb-4">
               <span>SIMPLE & TRANSPARENT PRICING</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tight font-['Outfit'] mb-6">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-slate-900 tracking-tight font-['Outfit'] mb-8">
               Plans for every stage of business growth
             </h2>
 
             {/* Monthly / Yearly Toggle */}
-            <div className="inline-flex items-center bg-white border border-slate-200 p-1 rounded-full shadow-2xs">
+            <div className="inline-flex items-center bg-white border border-slate-200 p-1.5 rounded-full shadow-xs">
               <button
                 onClick={() => setBillingCycle('monthly')}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+                className={`px-6 py-2.5 rounded-full text-sm sm:text-base font-bold transition-all ${
                   billingCycle === 'monthly'
                     ? 'bg-[#065f46] text-white shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
@@ -1630,14 +1630,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </button>
               <button
                 onClick={() => setBillingCycle('yearly')}
-                className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+                className={`flex items-center gap-2 px-6 py-2.5 rounded-full text-sm sm:text-base font-bold transition-all ${
                   billingCycle === 'yearly'
                     ? 'bg-[#065f46] text-white shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 <span>Yearly</span>
-                <span className="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-1.5 py-0.2 rounded-full">
+                <span className="bg-emerald-100 text-emerald-800 text-xs font-black px-2 py-0.5 rounded-full">
                   2 months free
                 </span>
               </button>
@@ -1645,43 +1645,43 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           {/* 4 Pricing Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 items-stretch">
             
             {/* Plan 1: Free */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div className="p-8 xl:p-10 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-lg transition-shadow">
               <div>
-                <h3 className="text-xl sm:text-2xl xl:text-3xl font-black text-slate-900 font-['Outfit']">Free</h3>
-                <p className="text-xs text-slate-500 mt-0.5 mb-4">Get started & test AutoMask</p>
+                <h3 className="text-2xl sm:text-3xl xl:text-4xl font-black text-slate-900 font-['Outfit']">Free</h3>
+                <p className="text-sm text-slate-500 mt-1 mb-6 font-medium">Get started & test AutoMask</p>
 
-                <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-4xl sm:text-5xl xl:text-6xl font-black text-slate-900">₹0</span>
-                  <span className="text-xs text-slate-500 font-medium">/month</span>
+                <div className="flex items-baseline gap-1.5 mb-8">
+                  <span className="text-5xl sm:text-6xl xl:text-7xl font-black text-slate-900">₹0</span>
+                  <span className="text-sm sm:text-base text-slate-500 font-bold">/month</span>
                 </div>
 
-                <div className="space-y-3 text-xs text-slate-700">
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
+                <div className="space-y-4 text-sm sm:text-base text-slate-700">
+                  <div className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-emerald-600 shrink-0 stroke-[2.5]" />
                     <span>1 team member</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
+                  <div className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-emerald-600 shrink-0 stroke-[2.5]" />
                     <span>100 workflows / month</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
+                  <div className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-emerald-600 shrink-0 stroke-[2.5]" />
                     <span>50 AI replies / month</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
+                  <div className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-emerald-600 shrink-0 stroke-[2.5]" />
                     <span>Basic shared inbox</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-8">
+              <div className="pt-10">
                 <button
                   onClick={() => onLaunchDemo('admin')}
-                  className="w-full py-2.5 rounded-lg border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+                  className="w-full py-3.5 rounded-xl border border-slate-300 text-sm sm:text-base font-black text-slate-700 hover:bg-slate-50 transition-colors"
                 >
                   Get Started
                 </button>
@@ -1689,42 +1689,42 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* Plan 2: Starter */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div className="p-8 xl:p-10 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-lg transition-shadow">
               <div>
-                <h3 className="text-xl sm:text-2xl xl:text-3xl font-black text-slate-900 font-['Outfit']">Starter</h3>
-                <p className="text-xs text-slate-500 mt-0.5 mb-4">For local businesses & clinics</p>
+                <h3 className="text-2xl sm:text-3xl xl:text-4xl font-black text-slate-900 font-['Outfit']">Starter</h3>
+                <p className="text-sm text-slate-500 mt-1 mb-6 font-medium">For local businesses & clinics</p>
 
-                <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-4xl sm:text-5xl xl:text-6xl font-black text-slate-900">
+                <div className="flex items-baseline gap-1.5 mb-8">
+                  <span className="text-5xl sm:text-6xl xl:text-7xl font-black text-slate-900">
                     ₹{billingCycle === 'monthly' ? '499' : '399'}
                   </span>
-                  <span className="text-xs text-slate-500 font-medium">/month</span>
+                  <span className="text-sm sm:text-base text-slate-500 font-bold">/month</span>
                 </div>
 
-                <div className="space-y-3 text-xs text-slate-700">
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
+                <div className="space-y-4 text-sm sm:text-base text-slate-700">
+                  <div className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-emerald-600 shrink-0 stroke-[2.5]" />
                     <span>2 team members</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
+                  <div className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-emerald-600 shrink-0 stroke-[2.5]" />
                     <span>1,000 workflows / month</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
+                  <div className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-emerald-600 shrink-0 stroke-[2.5]" />
                     <span>500 AI replies / month</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
+                  <div className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-emerald-600 shrink-0 stroke-[2.5]" />
                     <span>Follow-up sequences & tags</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-8">
+              <div className="pt-10">
                 <button
                   onClick={() => setIsDemoModalOpen(true)}
-                  className="w-full py-2.5 rounded-lg border border-emerald-600 text-xs font-bold text-emerald-700 hover:bg-emerald-50 transition-colors"
+                  className="w-full py-3.5 rounded-xl border-2 border-emerald-600 text-sm sm:text-base font-black text-emerald-700 hover:bg-emerald-50 transition-colors"
                 >
                   Book a Demo
                 </button>
@@ -1732,47 +1732,47 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* Plan 3: Growth (Most Popular) */}
-            <div className="relative p-6 rounded-2xl bg-white border-2 border-[#059669] shadow-xl flex flex-col justify-between transform -translate-y-1">
+            <div className="relative p-8 xl:p-10 rounded-3xl bg-white border-2 border-[#059669] shadow-xl flex flex-col justify-between transform -translate-y-2">
               {/* Most Popular Badge */}
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#065f46] text-white text-[11px] font-bold px-3 py-0.5 rounded-full shadow-sm">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#065f46] text-white text-xs font-black px-4 py-1 rounded-full shadow-md">
                 Most Popular
               </div>
 
               <div>
-                <h3 className="text-xl sm:text-2xl xl:text-3xl font-black text-slate-900 font-['Outfit']">Growth</h3>
-                <p className="text-xs text-slate-500 mt-0.5 mb-4">For growing D2C & sales teams</p>
+                <h3 className="text-2xl sm:text-3xl xl:text-4xl font-black text-slate-900 font-['Outfit']">Growth</h3>
+                <p className="text-sm text-slate-500 mt-1 mb-6 font-medium">For growing D2C & sales teams</p>
 
-                <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-4xl sm:text-5xl xl:text-6xl font-black text-slate-900">
+                <div className="flex items-baseline gap-1.5 mb-8">
+                  <span className="text-5xl sm:text-6xl xl:text-7xl font-black text-slate-900">
                     ₹{billingCycle === 'monthly' ? '999' : '799'}
                   </span>
-                  <span className="text-xs text-slate-500 font-medium">/month</span>
+                  <span className="text-sm sm:text-base text-slate-500 font-bold">/month</span>
                 </div>
 
-                <div className="space-y-3 text-xs text-slate-700">
-                  <div className="flex items-center gap-2 font-medium">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
+                <div className="space-y-4 text-sm sm:text-base text-slate-700 font-medium">
+                  <div className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-emerald-600 shrink-0 stroke-[2.5]" />
                     <span>5 team members</span>
                   </div>
-                  <div className="flex items-center gap-2 font-medium">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
+                  <div className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-emerald-600 shrink-0 stroke-[2.5]" />
                     <span>3,000 workflows / month</span>
                   </div>
-                  <div className="flex items-center gap-2 font-medium">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
+                  <div className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-emerald-600 shrink-0 stroke-[2.5]" />
                     <span>1,500 AI replies / month</span>
                   </div>
-                  <div className="flex items-center gap-2 font-medium">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
+                  <div className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-emerald-600 shrink-0 stroke-[2.5]" />
                     <span>Booking engine & custom CRM</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-8">
+              <div className="pt-10">
                 <button
                   onClick={() => setIsDemoModalOpen(true)}
-                  className="w-full py-2.5 rounded-lg bg-[#065f46] hover:bg-[#047857] text-xs font-bold text-white transition-all shadow-md active:scale-98"
+                  className="w-full py-3.5 rounded-xl bg-[#065f46] hover:bg-[#047857] text-sm sm:text-base font-black text-white transition-all shadow-md active:scale-98"
                 >
                   Book a Demo
                 </button>
@@ -1780,42 +1780,42 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* Plan 4: Pro */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-col justify-between hover:shadow-md transition-shadow">
+            <div className="p-8 xl:p-10 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between hover:shadow-lg transition-shadow">
               <div>
-                <h3 className="text-xl sm:text-2xl xl:text-3xl font-black text-slate-900 font-['Outfit']">Pro</h3>
-                <p className="text-xs text-slate-500 mt-0.5 mb-4">For enterprises & high volume</p>
+                <h3 className="text-2xl sm:text-3xl xl:text-4xl font-black text-slate-900 font-['Outfit']">Pro</h3>
+                <p className="text-sm text-slate-500 mt-1 mb-6 font-medium">For enterprises & high volume</p>
 
-                <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-4xl sm:text-5xl xl:text-6xl font-black text-slate-900">
+                <div className="flex items-baseline gap-1.5 mb-8">
+                  <span className="text-5xl sm:text-6xl xl:text-7xl font-black text-slate-900">
                     ₹{billingCycle === 'monthly' ? '2,499' : '1,999'}
                   </span>
-                  <span className="text-xs text-slate-500 font-medium">/month</span>
+                  <span className="text-sm sm:text-base text-slate-500 font-bold">/month</span>
                 </div>
 
-                <div className="space-y-3 text-xs text-slate-700">
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
+                <div className="space-y-4 text-sm sm:text-base text-slate-700">
+                  <div className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-emerald-600 shrink-0 stroke-[2.5]" />
                     <span>10 team members</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
+                  <div className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-emerald-600 shrink-0 stroke-[2.5]" />
                     <span>10,000 workflows / month</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
+                  <div className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-emerald-600 shrink-0 stroke-[2.5]" />
                     <span>4,000 AI replies / month</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0 stroke-[2.5]" />
+                  <div className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-emerald-600 shrink-0 stroke-[2.5]" />
                     <span>Dedicated account manager</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-8">
+              <div className="pt-10">
                 <button
                   onClick={() => setIsDemoModalOpen(true)}
-                  className="w-full py-2.5 rounded-lg border border-emerald-600 text-xs font-bold text-emerald-700 hover:bg-emerald-50 transition-colors"
+                  className="w-full py-3.5 rounded-xl border-2 border-emerald-600 text-sm sm:text-base font-black text-emerald-700 hover:bg-emerald-50 transition-colors"
                 >
                   Book a Demo
                 </button>
@@ -1830,41 +1830,41 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* =========================================================================
           11. FREQUENTLY ASKED QUESTIONS
           ========================================================================= */}
-      <section id="faq" className="py-20 bg-white border-b border-slate-150">
-        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
+      <section id="faq" className="py-20 lg:py-28 bg-white border-b border-slate-200/80">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
           
-          <div className="text-center mb-14">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs font-bold tracking-wider uppercase mb-3">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#ecfdf5] border border-[#a7f3d0] text-[#047857] text-xs sm:text-sm font-black tracking-wider uppercase mb-4">
               <span>FREQUENTLY ASKED QUESTIONS</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl xl:text-5xl 2xl:text-6xl font-black text-slate-900 tracking-tight font-['Outfit']">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-slate-900 tracking-tight font-['Outfit']">
               Still have questions?
             </h2>
           </div>
 
           {/* 2-Column Accordion */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-start max-w-6xl mx-auto">
             {faqs.map((faq, index) => {
               const isOpen = activeFaq === index;
               return (
                 <div 
                   key={index}
-                  className={`rounded-xl border transition-all overflow-hidden ${
-                    isOpen ? 'bg-slate-50 border-emerald-400 shadow-xs' : 'bg-white border-slate-200 hover:border-slate-300'
+                  className={`rounded-2xl border transition-all overflow-hidden ${
+                    isOpen ? 'bg-slate-50 border-emerald-400 shadow-sm' : 'bg-white border-slate-200 hover:border-slate-300'
                   }`}
                 >
                   <button
                     onClick={() => setActiveFaq(isOpen ? null : index)}
-                    className="w-full p-4 text-left flex items-center justify-between gap-3"
+                    className="w-full p-5 text-left flex items-center justify-between gap-4"
                   >
-                    <span className="text-base sm:text-lg xl:text-xl font-black text-slate-900 leading-snug">
+                    <span className="text-lg sm:text-xl xl:text-2xl font-black text-slate-900 leading-snug">
                       {faq.q}
                     </span>
-                    <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${isOpen ? 'rotate-180 text-emerald-600' : ''}`} />
+                    <ChevronDown className={`w-5 h-5 text-slate-400 shrink-0 transition-transform ${isOpen ? 'rotate-180 text-emerald-600' : ''}`} />
                   </button>
 
                   {isOpen && (
-                    <div className="px-5 pb-5 pt-2 text-sm sm:text-base xl:text-lg text-slate-600 leading-relaxed border-t border-slate-150 animate-in fade-in duration-150">
+                    <div className="px-6 pb-6 pt-2 text-base sm:text-lg xl:text-xl text-slate-600 leading-relaxed border-t border-slate-150 animate-in fade-in duration-150">
                       {faq.a}
                     </div>
                   )}
@@ -1879,51 +1879,51 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* =========================================================================
           12. FINAL CALL TO ACTION BANNER
           ========================================================================= */}
-      <section className="py-16 bg-white">
-        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
+      <section className="py-20 bg-white">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
           
-          <div className="relative rounded-3xl bg-[#064e3b] overflow-hidden p-8 sm:p-14 text-white shadow-2xl">
+          <div className="relative rounded-3xl bg-[#064e3b] overflow-hidden p-10 sm:p-16 lg:p-20 text-white shadow-2xl">
             {/* Ambient Background Glows */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-80 h-80 bg-teal-500/20 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/20 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-[450px] h-[450px] bg-teal-500/20 rounded-full blur-3xl pointer-events-none" />
 
-            <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+            <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-10">
               
               {/* Left Column Text */}
-              <div className="max-w-2xl space-y-3">
-                <h2 className="text-3xl sm:text-4xl xl:text-5xl 2xl:text-6xl font-black tracking-tight font-['Outfit']">
+              <div className="max-w-3xl space-y-4">
+                <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tight font-['Outfit'] leading-tight">
                   Ready to convert more leads into paying customers?
                 </h2>
-                <p className="text-base sm:text-lg xl:text-xl 2xl:text-2xl text-emerald-100/90 leading-relaxed font-medium">
+                <p className="text-lg sm:text-xl xl:text-2xl 2xl:text-3xl text-emerald-100/90 leading-relaxed font-medium">
                   Join 500+ businesses and teams already growing with AutoMask. 
                   Book a free demo and see how it accelerates your sales.
                 </p>
 
                 {/* Checkmarks */}
-                <div className="flex flex-wrap items-center gap-6 pt-4 text-sm sm:text-base xl:text-lg font-bold text-emerald-200">
-                  <div className="flex items-center gap-1.5">
-                    <Check className="w-4 h-4 text-emerald-300 stroke-[3]" />
+                <div className="flex flex-wrap items-center gap-6 xl:gap-8 pt-4 text-base sm:text-lg xl:text-xl font-bold text-emerald-200">
+                  <div className="flex items-center gap-2">
+                    <Check className="w-5 h-5 text-emerald-300 stroke-[3]" />
                     <span>No credit card required</span>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <Check className="w-4 h-4 text-emerald-300 stroke-[3]" />
+                  <div className="flex items-center gap-2">
+                    <Check className="w-5 h-5 text-emerald-300 stroke-[3]" />
                     <span>Live 20-min walkthrough</span>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <Check className="w-4 h-4 text-emerald-300 stroke-[3]" />
+                  <div className="flex items-center gap-2">
+                    <Check className="w-5 h-5 text-emerald-300 stroke-[3]" />
                     <span>Get your business questions answered</span>
                   </div>
                 </div>
               </div>
 
               {/* Right Column Buttons */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 shrink-0">
                 <button
                   onClick={() => setIsDemoModalOpen(true)}
-                  className="flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl font-black text-base sm:text-lg text-[#064e3b] bg-white hover:bg-emerald-50 transition-all shadow-lg active:scale-98"
+                  className="flex items-center justify-center gap-3 px-10 py-5 rounded-2xl font-black text-lg sm:text-xl text-[#064e3b] bg-white hover:bg-emerald-50 transition-all shadow-xl active:scale-98"
                 >
                   <span>Book a Free Demo</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-5 h-5" />
                 </button>
 
                 <button
@@ -1931,9 +1931,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     const el = document.getElementById('faq');
                     el?.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-white/10 hover:bg-white/15 border border-white/20 transition-all"
+                  className="flex items-center justify-center gap-2.5 px-8 py-4.5 rounded-2xl font-bold text-base sm:text-lg text-white bg-white/10 hover:bg-white/15 border border-white/20 transition-all"
                 >
-                  <Phone className="w-4 h-4" />
+                  <Phone className="w-5 h-5" />
                   <span>Talk to Our Team</span>
                 </button>
               </div>
@@ -1947,35 +1947,35 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* =========================================================================
           13. FOOTER
           ========================================================================= */}
-      <footer className="bg-slate-50 border-t border-slate-200 pt-16 pb-12 text-slate-600 text-xs">
-        <div className="w-full max-w-[1720px] 2xl:max-w-[1880px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
+      <footer className="bg-slate-50 border-t border-slate-200 pt-20 pb-16 text-slate-600 text-sm sm:text-base">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-24">
           
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-8 pb-12 border-b border-slate-200">
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-10 pb-16 border-b border-slate-200">
             
             {/* Brand column */}
-            <div className="col-span-2 space-y-4">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#064e3b] flex items-center justify-center text-white">
-                  <Bot className="w-4 h-4 text-emerald-400" />
+            <div className="col-span-2 space-y-5">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#064e3b] flex items-center justify-center text-white">
+                  <Bot className="w-5 h-5 text-emerald-400" />
                 </div>
-                <span className="text-xl font-black text-slate-900 tracking-tight font-['Outfit']">
+                <span className="text-2xl font-black text-slate-900 tracking-tight font-['Outfit']">
                   Auto<span className="text-emerald-600">Mask</span>
                 </span>
               </div>
-              <p className="text-slate-500 leading-relaxed max-w-sm">
+              <p className="text-slate-500 leading-relaxed max-w-sm text-base">
                 AI-powered WhatsApp automation for modern businesses, D2C brands, and service enterprises.
               </p>
               <div className="pt-2 flex items-center gap-3 text-slate-400">
-                <span className="text-[11px] font-semibold text-slate-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                <span className="text-xs font-bold text-slate-700 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200">
                   Meta Official Cloud API Partner
                 </span>
               </div>
             </div>
 
             {/* Product */}
-            <div className="space-y-3">
-              <h5 className="font-bold text-slate-900 uppercase tracking-wider text-[11px]">Product</h5>
-              <ul className="space-y-2">
+            <div className="space-y-3.5">
+              <h5 className="font-black text-slate-900 uppercase tracking-wider text-xs">Product</h5>
+              <ul className="space-y-2.5 font-medium">
                 <li><a href="#features" className="hover:text-emerald-700">Features</a></li>
                 <li><a href="#pricing" className="hover:text-emerald-700">Pricing</a></li>
                 <li><a href="#security" className="hover:text-emerald-700">Security</a></li>
@@ -1985,9 +1985,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* Solutions */}
-            <div className="space-y-3">
-              <h5 className="font-bold text-slate-900 uppercase tracking-wider text-[11px]">Solutions</h5>
-              <ul className="space-y-2">
+            <div className="space-y-3.5">
+              <h5 className="font-black text-slate-900 uppercase tracking-wider text-xs">Solutions</h5>
+              <ul className="space-y-2.5 font-medium">
                 <li><button onClick={() => { setActiveSegment('d2c'); document.getElementById('solutions')?.scrollIntoView(); }} className="hover:text-emerald-700 text-left">D2C & E-Commerce</button></li>
                 <li><button onClick={() => { setActiveSegment('real-estate'); document.getElementById('solutions')?.scrollIntoView(); }} className="hover:text-emerald-700 text-left">Real Estate</button></li>
                 <li><button onClick={() => { setActiveSegment('healthcare'); document.getElementById('solutions')?.scrollIntoView(); }} className="hover:text-emerald-700 text-left">Healthcare & Clinics</button></li>
@@ -1998,9 +1998,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* Resources */}
-            <div className="space-y-3">
-              <h5 className="font-bold text-slate-900 uppercase tracking-wider text-[11px]">Resources</h5>
-              <ul className="space-y-2">
+            <div className="space-y-3.5">
+              <h5 className="font-black text-slate-900 uppercase tracking-wider text-xs">Resources</h5>
+              <ul className="space-y-2.5 font-medium">
                 <li><a href="#how-it-works" className="hover:text-emerald-700">Blog</a></li>
                 <li><a href="#how-it-works" className="hover:text-emerald-700">Help Center</a></li>
                 <li><a href="#how-it-works" className="hover:text-emerald-700">Guides</a></li>
@@ -2010,9 +2010,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* Company */}
-            <div className="space-y-3">
-              <h5 className="font-bold text-slate-900 uppercase tracking-wider text-[11px]">Company</h5>
-              <ul className="space-y-2">
+            <div className="space-y-3.5">
+              <h5 className="font-black text-slate-900 uppercase tracking-wider text-xs">Company</h5>
+              <ul className="space-y-2.5 font-medium">
                 <li><a href="#how-it-works" className="hover:text-emerald-700">About Us</a></li>
                 <li><a href="#how-it-works" className="hover:text-emerald-700">Careers</a></li>
                 <li><a href="#security" className="hover:text-emerald-700">Privacy Policy</a></li>
@@ -2021,7 +2021,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <li>
                   <button 
                     onClick={onNavigateToAdminLogin}
-                    className="text-[11px] text-indigo-600 hover:text-indigo-800 font-semibold"
+                    className="text-xs text-indigo-600 hover:text-indigo-800 font-bold"
                   >
                     Super Admin Portal
                   </button>
@@ -2032,11 +2032,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           {/* Bottom Copyright Bar */}
-          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500">
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500 font-medium">
             <div>
               © 2026 AutoMask. All rights reserved.
             </div>
-            <div className="flex items-center gap-1 font-medium text-slate-600">
+            <div className="flex items-center gap-1.5 text-slate-600">
               <span>Made with</span>
               <span className="text-red-500">❤️</span>
               <span>in India</span>
