@@ -17,13 +17,15 @@ const envSchema = z.object({
   DB_SSL: z.string().transform(v => v === 'true').default('false'),
 
   // Authentication & Security
-  JWT_SECRET: z.string().default('automask-super-secret-jwt-key-2026-production-ready'),
+  JWT_SECRET: z.string().min(16, 'JWT_SECRET must be at least 16 characters').default(
+    process.env.NODE_ENV === 'production' ? (process.env.JWT_SECRET || '') : 'automask-super-secret-jwt-key-2026-production-ready'
+  ),
   JWT_EXPIRES_IN: z.string().default('7d'),
   SESSION_COOKIE_NAME: z.string().default('automask_session'),
   
   // Meta Cloud API Webhook Secrets
-  META_APP_SECRET: z.string().default('meta_app_secret_test_placeholder'),
-  META_WEBHOOK_VERIFY_TOKEN: z.string().default('automask_webhook_verify_token'),
+  META_APP_SECRET: z.string().default(process.env.META_APP_SECRET || 'meta_app_secret_test_placeholder'),
+  META_WEBHOOK_VERIFY_TOKEN: z.string().default(process.env.META_WEBHOOK_VERIFY_TOKEN || 'automask_webhook_verify_token'),
   META_ACCESS_TOKEN: z.string().optional(),
 
   // Redis & BullMQ Queue Configuration

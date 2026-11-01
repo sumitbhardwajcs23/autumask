@@ -60,9 +60,9 @@ export class DecisionRouter {
     conversation.lastMessage = messageBody;
     conversation.lastMessageAt = 'Just now';
 
-    // Step 1: Check Opt-out Keywords (DD-04, SRS 4.3 P0-1)
-    const optOutKeywords = ['stop', 'unsubscribe', 'ruk jao', 'band karo', 'donotmsg'];
-    const isOptOutCommand = optOutKeywords.some(kw => textLower === kw || textLower.includes(kw));
+    // Step 1: Check Opt-out Keywords (DD-04, SRS 4.3 P0-1) - Exact and standalone word boundary matching
+    const optOutRegex = /^\s*(stop|unsubscribe|cancel|quit|end|ruk\s*jao|band\s*karo|donotmsg)\s*$/i;
+    const isOptOutCommand = optOutRegex.test(messageBody.trim());
 
     if (isOptOutCommand) {
       const reply = "Aapka WhatsApp subscription cancel kar diya gaya hai. Aage se aapko koi promotional message nahi aayega. You have been opted out successfully.";
@@ -75,7 +75,7 @@ export class DecisionRouter {
         (mockStore as any).followupJobs = (mockStore as any).followupJobs.filter((j: any) => j.contactId !== conversation!.contactId);
       }
 
-      // Update contact opt-in status in mockStore
+      // Update contact opt-in status in mockStore & DB asynchronously
       const cleanPhone = studentPhone.replace(/\s+/g, '');
       const contact = mockStore.contacts.find(c => c.phone.replace(/\s+/g, '') === cleanPhone);
       if (contact) {
@@ -85,9 +85,9 @@ export class DecisionRouter {
       return { actionTaken: 'OPT_OUT', replyText: reply };
     }
 
-    // Step 1.5: Explicit Re-Opt-in (START, UNSTOP, shuru karo)
-    const reOptInKeywords = ['start', 'unstop', 'shuru karo', 'optin'];
-    const isReOptIn = reOptInKeywords.some(kw => textLower === kw || textLower.startsWith(kw));
+    // Step 1.5: Explicit Re-Opt-in (START, UNSTOP, shuru karo) - Exact command matching
+    const reOptInRegex = /^\s*(start|unstop|shuru\s*karo|optin)\s*$/i;
+    const isReOptIn = reOptInRegex.test(messageBody.trim());
     const cleanPhone = studentPhone.replace(/\s+/g, '');
     const contact = mockStore.contacts.find(c => c.phone.replace(/\s+/g, '') === cleanPhone);
 
@@ -115,8 +115,9 @@ export class DecisionRouter {
       return { actionTaken: 'TAKEOVER_ACTIVE' };
     }
 
-    // Step 3: Check Active Booking intent
-    if (textLower.includes('demo') || textLower.includes('trial') || textLower.includes('book slot')) {
+    // Step 3: Check Active Booking intent with word boundary matching
+    const isBookingIntent = /\b(demo|trial|book\s+slot|book\s+demo)\b/i.test(messageBody);
+    if (isBookingIntent) {
       const availableSlot = mockStore.slots.find(s => s.status === 'AVAILABLE');
       const reply = availableSlot 
         ? `Great! Free Demo Session available:\n📅 ${availableSlot.title}\n⏰ ${availableSlot.startAt}\nReply "CONFIRM" to reserve your seat!`

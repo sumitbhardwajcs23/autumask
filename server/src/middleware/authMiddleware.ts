@@ -90,6 +90,7 @@ export const authenticateSession = async (req: Request, res: Response, next: Nex
         role: memberRole,
         isOnline: true,
       };
+      (req.user as any).workspaceId = decoded.workspaceId;
 
       // CANONICAL RESOLUTION:
       // The workspace ID is strictly bound to the token's authenticated workspace.
@@ -126,14 +127,15 @@ export const authenticateSession = async (req: Request, res: Response, next: Nex
     }
   }
 
-  // 3. Fallback for Development & Testing Environments Only (Gated to non-production)
-  if (env.NODE_ENV !== 'production') {
+  // 3. Automated Test Suite Harness Only (Strictly restricted to NODE_ENV === 'test')
+  if (env.NODE_ENV === 'test') {
     const devUserId = req.headers['x-user-id'] as string;
     const devUserRole = req.headers['x-user-role'] as UserRole;
     const devWorkspaceId = (req.headers['x-workspace-id'] as string) || mockStore.workspace.id;
 
     if (devUserId && mockStore.users[devUserId]) {
       req.user = { ...mockStore.users[devUserId] };
+      (req.user as any).workspaceId = devWorkspaceId;
       if (devUserRole && ['owner', 'admin', 'manager', 'agent', 'analyst', 'platform_admin'].includes(devUserRole)) {
         req.user.role = devUserRole;
       }
@@ -151,19 +153,14 @@ export const authenticateSession = async (req: Request, res: Response, next: Nex
         role: devUserRole,
         isOnline: true,
       };
+      (req.user as any).workspaceId = devWorkspaceId;
       req.workspaceId = devWorkspaceId;
       req.memberRole = devUserRole;
       return next();
     }
-
-    // Default development fallback
-    req.user = { ...mockStore.currentUser };
-    req.workspaceId = devWorkspaceId;
-    req.memberRole = req.user.role;
-    return next();
   }
 
-  // 4. In Production without token -> 401 Unauthorized
+  // 4. Missing or invalid authentication token -> 401 Unauthorized
   return res.status(401).json({
     error: 'Unauthorized',
     code: 'AUTHENTICATION_REQUIRED',

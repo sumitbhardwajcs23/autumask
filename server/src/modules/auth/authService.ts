@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { env } from '../../config/env';
@@ -197,15 +198,19 @@ export class AuthService {
             };
           }
 
-          const validDemoPasswords = ['automask@2026', 'admin123', 'demo123', 'prakash123', 'password', 'password123', 'apexsecure2026!'];
-          const isDemoPassword = validDemoPasswords.includes(password.toLowerCase().trim());
-          if (!isDemoPassword) {
+          // In mock/test fallback, verify credentials safely
+          const mockUserPasswordHash = (mockUser as any).password_hash || (mockUser as any).password;
+          let isPasswordValid = false;
+          if (mockUserPasswordHash) {
+            isPasswordValid = await this.verifyPassword(password, mockUserPasswordHash);
+          }
+          if (!isPasswordValid) {
             this.recordFailure(rateLimitKey);
             return {
               success: false,
               status: 401,
               error: 'Unauthorized',
-              message: 'Invalid email or password. Use demo password: AutoMask@2026',
+              message: 'Invalid email or password credentials',
             };
           }
 
@@ -299,13 +304,7 @@ export class AuthService {
         };
       }
 
-      let passwordValid = await this.verifyPassword(password, user.password_hash);
-      if (!passwordValid) {
-        const validDemoPasswords = ['automask@2026', 'admin123', 'demo123', 'prakash123', 'prakashsecure2026!'];
-        if (validDemoPasswords.includes(password.toLowerCase().trim())) {
-          passwordValid = true;
-        }
-      }
+      const passwordValid = await this.verifyPassword(password, user.password_hash);
       if (!passwordValid) {
         this.recordFailure(rateLimitKey);
         return {
@@ -326,28 +325,36 @@ export class AuthService {
 
       let category = 'education';
 
-      // Check if user is platform admin
-      if (user.email === 'ops@automask.io') {
-        role = 'platform_admin';
-        const wsRes = await query(`SELECT id, name, plan_id, category FROM workspaces ORDER BY created_at ASC LIMIT 1;`);
-        if (wsRes.rows.length > 0) {
-          workspaceId = wsRes.rows[0].id;
-          workspaceName = wsRes.rows[0].name;
-          planId = wsRes.rows[0].plan_id;
-          category = wsRes.rows[0].category || 'education';
-        }
-      } else {
-        const memberRes = await query(
-          `SELECT wm.workspace_id, wm.role, wm.status, w.name as workspace_name, w.plan_id, w.category
-           FROM workspace_members wm
-           JOIN workspaces w ON w.id = wm.workspace_id
-           WHERE wm.user_id = $1 AND wm.status = 'active'
-           ORDER BY wm.created_at ASC
-           LIMIT 1;`,
-          [user.id]
-        );
+      // Check workspace membership and role strictly from database
+      const memberRes = await query(
+        `SELECT wm.workspace_id, wm.role, wm.status, w.name as workspace_name, w.plan_id, w.category
+         FROM workspace_members wm
+         JOIN workspaces w ON w.id = wm.workspace_id
+         WHERE wm.user_id = $1 AND wm.status = 'active'
+         ORDER BY wm.created_at ASC`,
+        [user.id]
+      );
 
-        if (memberRes.rows.length === 0) {
+      if (memberRes.rows.length > 0) {
+        const primary = memberRes.rows[0];
+        workspaceId = primary.workspace_id;
+        role = primary.role as UserRole;
+        workspaceName = primary.workspace_name;
+        planId = primary.plan_id || 'growth';
+        category = primary.category || 'education';
+      } else {
+        // Check if user has global platform role
+        const userRoleRes = await query(`SELECT role FROM users WHERE id = $1;`, [user.id]);
+        if (userRoleRes.rows.length > 0 && userRoleRes.rows[0].role === 'platform_admin') {
+          role = 'platform_admin';
+          const wsRes = await query(`SELECT id, name, plan_id, category FROM workspaces ORDER BY created_at ASC LIMIT 1;`);
+          if (wsRes.rows.length > 0) {
+            workspaceId = wsRes.rows[0].id;
+            workspaceName = wsRes.rows[0].name;
+            planId = wsRes.rows[0].plan_id;
+            category = wsRes.rows[0].category || 'education';
+          }
+        } else {
           return {
             success: false,
             status: 403,
@@ -355,13 +362,6 @@ export class AuthService {
             message: 'No active workspace membership found for this user',
           };
         }
-
-        const member = memberRes.rows[0];
-        workspaceId = member.workspace_id;
-        role = member.role as UserRole;
-        workspaceName = member.workspace_name;
-        planId = member.plan_id;
-        category = member.category || 'education';
       }
 
       const token = this.generateToken({
@@ -808,7 +808,6 @@ export class AuthService {
     message?: string;
     error?: string;
     expiresIn?: number;
-    demoOtp?: string;
   }> {
     const { email, password, action, fullName, workspaceName, phone, category, ipAddress = '127.0.0.1' } = params;
 
@@ -828,8 +827,8 @@ export class AuthService {
       };
     }
 
-    // Generate a secure 6-digit OTP code
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    // Generate a cryptographically secure 6-digit OTP code
+    const otp = crypto.randomInt(100000, 1000000).toString();
     const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
 
     if (action === 'login') {
@@ -868,14 +867,11 @@ export class AuthService {
         attempts: 0,
       });
 
-      console.log(`[AUTH OTP] Generated 6-digit login OTP for ${cleanEmail}: ${otp}`);
-
       return {
         success: true,
         status: 200,
         message: `A 6-digit verification code has been sent to ${cleanEmail}.`,
         expiresIn: 600,
-        demoOtp: otp,
       };
     } else {
       // action === 'signup'
@@ -929,14 +925,11 @@ export class AuthService {
         attempts: 0,
       });
 
-      console.log(`[AUTH OTP] Generated 6-digit signup OTP for ${cleanEmail}: ${otp}`);
-
       return {
         success: true,
         status: 200,
         message: `A 6-digit verification code has been sent to ${cleanEmail}.`,
         expiresIn: 600,
-        demoOtp: otp,
       };
     }
   }
@@ -1119,7 +1112,6 @@ export class AuthService {
     message?: string;
     error?: string;
     expiresIn?: number;
-    demoOtp?: string;
   }> {
     if (!email) {
       return { success: false, status: 400, error: 'Bad Request', message: 'Email is required' };
@@ -1135,20 +1127,27 @@ export class AuthService {
       };
     }
 
-    const newOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    if (session.attempts >= 5) {
+      this.pendingOtpSessions.delete(cleanEmail);
+      return {
+        success: false,
+        status: 429,
+        error: 'Too Many Attempts',
+        message: 'Maximum OTP verification attempts reached. Please start sign in again.',
+      };
+    }
+
+    const newOtp = crypto.randomInt(100000, 1000000).toString();
     session.otp = newOtp;
     session.expiresAt = Date.now() + 10 * 60 * 1000;
-    session.attempts = 0;
+    // Retain session.attempts to prevent brute force across resends
     this.pendingOtpSessions.set(cleanEmail, session);
-
-    console.log(`[AUTH OTP] Resent new 6-digit OTP for ${cleanEmail}: ${newOtp}`);
 
     return {
       success: true,
       status: 200,
       message: `A fresh 6-digit code has been sent to ${cleanEmail}.`,
       expiresIn: 600,
-      demoOtp: newOtp,
     };
   }
 

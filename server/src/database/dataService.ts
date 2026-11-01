@@ -306,7 +306,11 @@ export class DataService {
       `INSERT INTO contacts (id, workspace_id, phone_e164, name, tags, opt_in_status, opt_in_source, notes, created_at, updated_at)
        VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, 'CRM_ENTRY', $6, NOW(), NOW())
        ON CONFLICT (workspace_id, phone_e164) DO UPDATE
-       SET name = EXCLUDED.name, tags = EXCLUDED.tags, opt_in_status = EXCLUDED.opt_in_status, notes = EXCLUDED.notes, updated_at = NOW()
+       SET name = EXCLUDED.name, 
+           tags = EXCLUDED.tags, 
+           opt_in_status = CASE WHEN contacts.opt_in_status = 'OPTED_OUT' THEN 'OPTED_OUT' ELSE EXCLUDED.opt_in_status END, 
+           notes = EXCLUDED.notes, 
+           updated_at = NOW()
        RETURNING id, workspace_id as "workspaceId", phone_e164 as "phone", name, tags, opt_in_status as "optInStatus", notes, created_at as "createdAt";`,
       [workspaceId, cleanPhone, data.name, tags, optIn, data.notes || '']
     );
@@ -561,8 +565,18 @@ export class DataService {
       [workspaceId, data.slotId, contactId]
     );
 
-    // Increment slot booked count
-    await query(`UPDATE slots SET booked_count = booked_count + 1 WHERE id = $1;`, [data.slotId]);
+    // Atomically increment slot booked count with strict capacity and workspace validation
+    const slotUpdateRes = await query(
+      `UPDATE slots 
+       SET booked_count = booked_count + 1 
+       WHERE id = $1 AND workspace_id = $2 AND booked_count < capacity
+       RETURNING id;`,
+      [data.slotId, workspaceId]
+    );
+
+    if (slotUpdateRes.rows.length === 0) {
+      throw new Error('SLOT_CAPACITY_EXCEEDED: The requested demo appointment slot is full or unavailable.');
+    }
 
     return {
       ...apptRes.rows[0],

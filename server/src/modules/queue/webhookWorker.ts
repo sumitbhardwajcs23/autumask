@@ -22,7 +22,7 @@ export class WebhookWorker {
       }
 
       const redisConnection = new Redis(redisUrl || 'redis://127.0.0.1:6379', {
-        maxRetriesPerRequest: 1,
+        maxRetriesPerRequest: null,
         connectTimeout: 5000,
         lazyConnect: true,
         enableOfflineQueue: false,
@@ -73,7 +73,19 @@ export class WebhookWorker {
     const { eventId, payload, providerMessageId } = data;
 
     try {
-      // 1. Mark status as processing
+      // 1. Verify event validity and mark status as processing
+      const eventRes = await query(
+        `SELECT signature_valid FROM webhook_events WHERE id = $1;`,
+        [eventId]
+      );
+      if (eventRes.rows.length > 0 && eventRes.rows[0].signature_valid === false) {
+        await query(
+          `UPDATE webhook_events SET status = 'REJECTED', error_message = 'Invalid webhook HMAC signature' WHERE id = $1;`,
+          [eventId]
+        );
+        return;
+      }
+
       await query(
         `UPDATE webhook_events SET status = 'PROCESSING' WHERE id = $1;`,
         [eventId]

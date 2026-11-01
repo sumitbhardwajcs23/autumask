@@ -237,7 +237,7 @@ apiRouter.post('/auth/logout', (req: Request, res: Response) => {
 });
 
 apiRouter.get('/auth/me', async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const user = req.user || {
     id: 'usr-owner-01',
     role: 'owner',
@@ -271,7 +271,7 @@ apiRouter.get('/auth/me', async (req: Request, res: Response) => {
 // Dashboard Metrics (SRS Section 8.1 / Real Database)
 // ==========================================
 apiRouter.get('/dashboard', requirePermission('view:dashboard'), async (req: Request, res: Response) => {
-  const wsId = (req.user as any)?.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const data = await DataService.getDashboardData(wsId, req.user);
     res.json(data);
@@ -285,7 +285,7 @@ apiRouter.get('/dashboard', requirePermission('view:dashboard'), async (req: Req
 // Conversations & Shared Inbox (SRS Section 5.3 / Real Database)
 // ==========================================
 apiRouter.get('/conversations', requirePermission('view:inbox'), async (req: Request, res: Response) => {
-  const wsId = (req.user as any)?.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { status, search } = req.query;
 
   try {
@@ -316,7 +316,7 @@ apiRouter.get(
   validateResourceScope('conversations'),
   checkMessageContentAccess, 
   async (req: Request, res: Response) => {
-    const wsId = (req.user as any)?.workspaceId || '11111111-1111-4111-8111-111111111111';
+    const wsId = req.workspaceId!;
     const convId = req.params.id;
     try {
       const convRes = await query(
@@ -354,7 +354,7 @@ apiRouter.post(
   validateResourceScope('conversations'),
   requirePermission('send:messages'), 
   async (req: Request, res: Response) => {
-  const wsId = (req.user as any)?.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const convId = req.params.id;
   const { body, templateName, components, senderName } = req.body;
   if (!body && !templateName) {
@@ -428,7 +428,7 @@ apiRouter.post(
 });
 
 apiRouter.post('/conversations/:id/takeover', requirePermission('send:messages'), async (req: Request, res: Response) => {
-  const wsId = (req.user as any)?.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const convId = req.params.id;
   const { takeoverActive } = req.body;
 
@@ -455,7 +455,7 @@ apiRouter.post('/conversations/:id/takeover', requirePermission('send:messages')
 // Student Leads CRM (SRS Section 5.6 / Real Database)
 // ==========================================
 apiRouter.get('/leads', requirePermission('manage:leads'), async (req: Request, res: Response) => {
-  const wsId = (req.user as any)?.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const leads = await DataService.getLeads(wsId);
     res.json({ leads });
@@ -466,7 +466,7 @@ apiRouter.get('/leads', requirePermission('manage:leads'), async (req: Request, 
 
 // CSV Export: Allowed for Owner and Admin only (SRS Section 3: Agent = No)
 apiRouter.get('/leads/export', requirePermission('export:leads'), async (req: Request, res: Response) => {
-  const wsId = (req.user as any)?.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const leads = await DataService.getLeads(wsId);
     res.json({ success: true, count: leads.length, leads });
@@ -476,7 +476,7 @@ apiRouter.get('/leads/export', requirePermission('export:leads'), async (req: Re
 });
 
 apiRouter.patch('/leads/:id/status', requirePermission('manage:leads'), async (req: Request, res: Response) => {
-  const wsId = (req.user as any)?.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const leadId = req.params.id;
   const { status, reason } = req.body;
 
@@ -489,7 +489,7 @@ apiRouter.patch('/leads/:id/status', requirePermission('manage:leads'), async (r
 });
 
 apiRouter.post('/leads', requirePermission('manage:leads'), async (req: Request, res: Response) => {
-  const wsId = (req.user as any)?.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { contactName, phone, course, classGrade, preferredBatch, city, source, notes } = req.body;
 
   try {
@@ -528,7 +528,7 @@ apiRouter.post('/leads', requirePermission('manage:leads'), async (req: Request,
 // Contacts CRM (SRS Section 4 & 5)
 // ==========================================
 apiRouter.get('/contacts', requirePermission('view:inbox'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { search, tag, optInStatus } = req.query;
   try {
     const contacts = await DataService.getContacts(wsId, {
@@ -543,7 +543,7 @@ apiRouter.get('/contacts', requirePermission('view:inbox'), async (req: Request,
 });
 
 apiRouter.post('/contacts', requirePermission('manage:leads'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { name, phone, tags, optInStatus, notes } = req.body;
   if (!name || !phone) {
     return res.status(400).json({ error: 'Name and phone are required' });
@@ -573,7 +573,7 @@ apiRouter.post('/contacts', requirePermission('manage:leads'), async (req: Reque
 });
 
 apiRouter.patch('/contacts/:id/opt-in', requirePermission('manage:leads'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const contactId = req.params.id;
   const { optInStatus } = req.body;
   try {
@@ -597,7 +597,7 @@ apiRouter.patch('/contacts/:id/opt-in', requirePermission('manage:leads'), async
 });
 
 apiRouter.delete('/contacts/:id', requirePermission('manage:leads'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const contactId = req.params.id;
   try {
     await DataService.deleteContact(wsId, contactId);
@@ -620,7 +620,7 @@ apiRouter.delete('/contacts/:id', requirePermission('manage:leads'), async (req:
 // Rule creation/editing is restricted to Owner and Admin only (Agent = No)
 // ==========================================
 apiRouter.get('/automations', requirePermission('view:dashboard'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const rules = await DataService.getAutomationRules(wsId);
     res.json({ rules });
@@ -630,7 +630,7 @@ apiRouter.get('/automations', requirePermission('view:dashboard'), async (req: R
 });
 
 apiRouter.patch('/automations/:id/toggle', requirePermission('manage:rules'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const ruleId = req.params.id;
   try {
     const rule = await DataService.toggleAutomationRule(wsId, ruleId);
@@ -652,7 +652,7 @@ apiRouter.patch('/automations/:id/toggle', requirePermission('manage:rules'), as
 });
 
 apiRouter.post('/automations', requirePermission('manage:rules'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { name, trigger, conditions, actions, priority, stopFlag, enabled } = req.body;
   try {
     const newRule = await DataService.createAutomationRule(wsId, {
@@ -680,7 +680,7 @@ apiRouter.post('/automations', requirePermission('manage:rules'), async (req: Re
 });
 
 apiRouter.put('/automations/:id', requirePermission('manage:rules'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const ruleId = req.params.id;
   try {
     const updated = await DataService.updateAutomationRule(wsId, ruleId, req.body);
@@ -703,7 +703,7 @@ apiRouter.put('/automations/:id', requirePermission('manage:rules'), async (req:
 });
 
 apiRouter.delete('/automations/:id', requirePermission('manage:rules'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const ruleId = req.params.id;
   try {
     await DataService.deleteAutomationRule(wsId, ruleId);
@@ -726,7 +726,7 @@ apiRouter.delete('/automations/:id', requirePermission('manage:rules'), async (r
 // Restricted to Owner and Admin only (Agent = No)
 // ==========================================
 apiRouter.get('/knowledge', requirePermission('view:inbox'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const items = await DataService.getKnowledgeItems(wsId);
     res.json({ knowledgeItems: items });
@@ -737,7 +737,7 @@ apiRouter.get('/knowledge', requirePermission('view:inbox'), async (req: Request
 
 apiRouter.post('/knowledge', requirePermission('manage:knowledge'), async (req: Request, res: Response) => {
   const { type, title, content, fees, batches } = req.body;
-  const workspaceId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const workspaceId = req.workspaceId!;
 
   try {
     const item = await DataService.addKnowledgeItem(workspaceId, {
@@ -774,7 +774,7 @@ apiRouter.post('/knowledge', requirePermission('manage:knowledge'), async (req: 
 
 apiRouter.post('/knowledge/query', requirePermission('view:inbox'), async (req: Request, res: Response) => {
   const { query: queryText, studentName } = req.body;
-  const workspaceId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const workspaceId = req.workspaceId!;
   try {
     const ragResult = await RAGEngine.generateGroundedAnswer(workspaceId, queryText || '', studentName);
     res.json({ success: true, ...ragResult });
@@ -784,7 +784,7 @@ apiRouter.post('/knowledge/query', requirePermission('view:inbox'), async (req: 
 });
 
 apiRouter.delete('/knowledge/:id', requirePermission('manage:knowledge'), async (req: Request, res: Response) => {
-  const workspaceId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const workspaceId = req.workspaceId!;
   const id = req.params.id;
   try {
     await DataService.deleteKnowledgeItem(workspaceId, id);
@@ -804,22 +804,29 @@ apiRouter.delete('/knowledge/:id', requirePermission('manage:knowledge'), async 
 
 apiRouter.post('/tools/execute', requirePermission('view:inbox'), async (req: Request, res: Response) => {
   const { toolName, args = {} } = req.body;
-  const workspaceId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const workspaceId = req.workspaceId!;
+  if (!workspaceId) {
+    return res.status(401).json({ success: false, error: 'Workspace context required' });
+  }
+
+  // Prevent client from overriding workspaceId in tool arguments (multi-tenant security)
+  const safeArgs = { ...args, workspaceId };
+  delete (safeArgs as any).workspace_id;
 
   try {
     let result;
     if (toolName === 'searchCoursesAndFaqs') {
-      result = await CoachingTools.searchCoursesAndFaqs(workspaceId, args.query);
+      result = await CoachingTools.searchCoursesAndFaqs(workspaceId, safeArgs.query);
     } else if (toolName === 'captureOrUpdateLead') {
-      result = await CoachingTools.captureOrUpdateLead({ workspaceId, ...args });
+      result = await CoachingTools.captureOrUpdateLead(safeArgs);
     } else if (toolName === 'checkDemoAvailability') {
-      result = await CoachingTools.checkDemoAvailability(workspaceId, args.targetDate);
+      result = await CoachingTools.checkDemoAvailability(workspaceId, safeArgs.targetDate);
     } else if (toolName === 'reserveDemoBooking') {
-      result = await CoachingTools.reserveDemoBooking({ workspaceId, ...args });
+      result = await CoachingTools.reserveDemoBooking(safeArgs);
     } else if (toolName === 'requestHumanHandoff') {
-      result = await CoachingTools.requestHumanHandoff(workspaceId, args.conversationId, args.reason);
+      result = await CoachingTools.requestHumanHandoff(workspaceId, safeArgs.conversationId, safeArgs.reason);
     } else {
-      result = CoachingTools.executeTool(toolName, args);
+      result = CoachingTools.executeTool(toolName, safeArgs);
     }
     res.json({ success: true, result });
   } catch (err: any) {
@@ -832,7 +839,7 @@ apiRouter.post('/tools/execute', requirePermission('view:inbox'), async (req: Re
 // Slot configuration is restricted to Owner and Admin (Agent = No)
 // ==========================================
 apiRouter.get('/bookings', requirePermission('manage:leads'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const data = await DataService.getBookingsAndSlots(wsId);
     res.json(data);
@@ -842,7 +849,7 @@ apiRouter.get('/bookings', requirePermission('manage:leads'), async (req: Reques
 });
 
 apiRouter.post('/bookings/slots', requirePermission('manage:bookings_config'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { title, startAt, endAt, capacity } = req.body;
   try {
     const newSlot = await DataService.addSlot(wsId, {
@@ -858,7 +865,7 @@ apiRouter.post('/bookings/slots', requirePermission('manage:bookings_config'), a
 });
 
 apiRouter.post('/bookings/appointments', requirePermission('manage:leads'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { slotId, studentName, phone, course } = req.body;
   if (!slotId || !studentName || !phone) {
     return res.status(400).json({ error: 'slotId, studentName, and phone are required' });
@@ -899,7 +906,7 @@ apiRouter.get('/billing', async (req: Request, res: Response) => {
     });
   }
 
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const billing = await DataService.getBilling(wsId);
     res.json({
@@ -912,7 +919,7 @@ apiRouter.get('/billing', async (req: Request, res: Response) => {
 });
 
 apiRouter.post('/billing/upgrade', requirePermission('manage:billing'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { planId } = req.body;
   try {
     await DataService.updatePlan(wsId, planId || 'pro');
@@ -937,7 +944,7 @@ const PLAN_PRICES: Record<string, { amount: number; name: string }> = {
 
 // Razorpay 1: Create Order
 apiRouter.post('/billing/razorpay/order', requirePermission('manage:billing'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { planId = 'pro' } = req.body;
   const planInfo = PLAN_PRICES[planId] || PLAN_PRICES.pro;
   const receipt = `rcpt_${Date.now()}`;
@@ -1002,7 +1009,7 @@ apiRouter.post('/billing/razorpay/order', requirePermission('manage:billing'), a
 
 // Razorpay 2: Verify Payment Signature & Activate Plan
 apiRouter.post('/billing/razorpay/verify', requirePermission('manage:billing'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature, planId = 'pro' } = req.body;
 
   let isValid = false;
@@ -1093,7 +1100,7 @@ apiRouter.post('/support-grants', requirePermission('manage:support_grants'), as
     return res.status(400).json({ error: 'targetUserId and reason are required' });
   }
 
-  const workspaceId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const workspaceId = req.workspaceId!;
   const durationHours = durationMinutes ? durationMinutes / 60 : Number(hoursValid);
 
   try {
@@ -1120,7 +1127,7 @@ apiRouter.post('/support-grants', requirePermission('manage:support_grants'), as
 
 // List Support Grants
 apiRouter.get('/support-grants', async (req: Request, res: Response) => {
-  const workspaceId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const workspaceId = req.workspaceId!;
   try {
     const grants = await DataService.getSupportGrants(workspaceId);
     res.json({ grants });
@@ -1131,7 +1138,7 @@ apiRouter.get('/support-grants', async (req: Request, res: Response) => {
 
 // Revoke Support Grant (Owner Only!)
 apiRouter.delete('/support-grants/:id', requirePermission('manage:support_grants'), async (req: Request, res: Response) => {
-  const workspaceId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const workspaceId = req.workspaceId!;
   const grantId = req.params.id;
   try {
     const grant = await DataService.revokeSupportGrant(workspaceId, grantId, req.user?.id || 'usr-owner-01');
@@ -1154,7 +1161,7 @@ apiRouter.delete('/support-grants/:id', requirePermission('manage:support_grants
 // Audit Logs (SRS Section 3: Owner, Admin, Platform Admin)
 // ==========================================
 apiRouter.get('/audit-logs', requirePermission('view:audit_logs'), async (req: Request, res: Response) => {
-  const workspaceId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const workspaceId = req.workspaceId!;
   try {
     const logs = await DataService.getAuditLogs(workspaceId, 100);
     res.json({ logs });
@@ -1172,7 +1179,7 @@ apiRouter.post('/whatsapp/simulate', async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Message cannot be empty' });
   }
 
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const studentPhone = phone || '+919811234567';
   const studentName = name || 'Prospective Student';
 
@@ -1262,7 +1269,7 @@ apiRouter.post('/webhooks/whatsapp', async (req: Request, res: Response) => {
 // Section 4.1: Onboarding Workflow Checklist
 // ==========================================
 apiRouter.get('/onboarding/status', async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const status = await DataService.getOnboardingStatus(wsId);
     res.json({
@@ -1290,7 +1297,7 @@ apiRouter.get('/onboarding/status', async (req: Request, res: Response) => {
 // WhatsApp Account & Team Settings (SRS §3 & §8)
 // ==========================================
 apiRouter.get('/whatsapp/account', requirePermission('view:dashboard'), async (req: Request, res: Response) => {
-  const wsId = (req.user as any)?.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const row = await DataService.getWhatsAppAccount(wsId);
     if (row) {
@@ -1316,7 +1323,7 @@ apiRouter.post('/whatsapp/connect', requirePermission('view:dashboard'), async (
     return res.status(400).json({ error: 'phoneNumberId and wabaId are required' });
   }
 
-  const wsId = (req.user as any)?.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   let resolvedDisplayNumber = displayNumber;
 
   // Live verification with Meta Graph API if access token is available
@@ -1358,7 +1365,7 @@ apiRouter.post('/whatsapp/connect', requirePermission('view:dashboard'), async (
 });
 
 apiRouter.post('/whatsapp/disconnect', requirePermission('view:dashboard'), async (req: Request, res: Response) => {
-  const wsId = (req.user as any)?.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     await DataService.disconnectWhatsAppAccount(wsId);
   } catch (err) {}
@@ -1371,7 +1378,7 @@ apiRouter.post('/whatsapp/test-message', requirePermission('send:messages'), asy
     return res.status(400).json({ error: 'toPhone is required' });
   }
 
-  const wsId = (req.user as any)?.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const textBody = message || 'Hello from AutoMask! Your WhatsApp automation platform is successfully connected and working.';
 
   const result = await WhatsAppClient.sendTextMessage({
@@ -1415,7 +1422,7 @@ apiRouter.post('/whatsapp/test-message', requirePermission('send:messages'), asy
 });
 
 apiRouter.get('/team', requirePermission('view:dashboard'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const team = await DataService.getTeam(wsId);
     res.json({ team });
@@ -1425,7 +1432,7 @@ apiRouter.get('/team', requirePermission('view:dashboard'), async (req: Request,
 });
 
 apiRouter.post('/team/invite', requirePermission('manage:staff'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { fullName, email, role, phone } = req.body;
   if (!fullName || !email) {
     return res.status(400).json({ error: 'fullName and email are required' });
@@ -1454,7 +1461,7 @@ apiRouter.post('/team/invite', requirePermission('manage:staff'), async (req: Re
 });
 
 apiRouter.patch('/team/:id/status', requirePermission('manage:staff'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const memberId = req.params.id;
   const { status = 'SUSPENDED' } = req.body;
   try {
@@ -1469,7 +1476,7 @@ apiRouter.patch('/team/:id/status', requirePermission('manage:staff'), async (re
 });
 
 apiRouter.delete('/team/:id', requirePermission('manage:staff'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const memberId = req.params.id;
   if (memberId === req.user?.id) {
     return res.status(400).json({ error: 'Cannot remove your own account' });
@@ -1486,7 +1493,7 @@ apiRouter.delete('/team/:id', requirePermission('manage:staff'), async (req: Req
 // WhatsApp Message Templates & Broadcast Campaigns (SRS §5.4 & Appendix C)
 // ==========================================
 apiRouter.get('/whatsapp/templates', requirePermission('view:dashboard'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const templates = await DataService.getMessageTemplates(wsId);
     res.json({ templates });
@@ -1496,7 +1503,7 @@ apiRouter.get('/whatsapp/templates', requirePermission('view:dashboard'), async 
 });
 
 apiRouter.post('/whatsapp/broadcast', requirePermission('send:messages'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { name, templateName, targetSegment, count: requestedCount } = req.body;
   if (!name || !templateName) {
     return res.status(400).json({ error: 'name and templateName are required' });
@@ -1531,7 +1538,7 @@ apiRouter.post('/whatsapp/broadcast', requirePermission('send:messages'), async 
 // Section 4: Workflows Engine & 7-Stage Simulator
 // ==========================================
 apiRouter.get('/workflows', requirePermission('view:dashboard'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const stages = [
     { stage: 1, name: 'Deduplication & HMAC', description: 'Idempotent WAMID and SHA256 signature verification', enabled: true, type: 'SECURITY', handledCount: 1420 },
     { stage: 2, name: 'Human Takeover Gate', description: 'Routes to counselor inbox, pausing automated bot responses', enabled: true, type: 'ROUTING', handledCount: 312 },
@@ -1586,7 +1593,7 @@ apiRouter.post('/workflows/simulate-stage', (req: Request, res: Response) => {
 // Integrations & Ecosystem Webhooks
 // ==========================================
 apiRouter.get('/integrations', requirePermission('view:dashboard'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   let waAccount = null;
   try {
     waAccount = await DataService.getWhatsAppAccount(wsId);
@@ -1657,7 +1664,7 @@ apiRouter.get('/permissions/registry', requirePermission('roles.view'), (req: Re
 });
 
 apiRouter.get('/roles', requirePermission('roles.view'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const roles = await DataService.getRoles(wsId);
     res.json({ roles });
@@ -1667,7 +1674,7 @@ apiRouter.get('/roles', requirePermission('roles.view'), async (req: Request, re
 });
 
 apiRouter.post('/roles', requirePermission('roles.create'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { name, description, permissions } = req.body;
   if (!name || !name.trim()) {
     return res.status(400).json({ error: 'Role name is required' });
@@ -1695,7 +1702,7 @@ apiRouter.post('/roles', requirePermission('roles.create'), async (req: Request,
 });
 
 apiRouter.put('/roles/:id', requirePermission('roles.edit'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { name, description, permissions } = req.body;
   const roleId = req.params.id;
 
@@ -1720,7 +1727,7 @@ apiRouter.put('/roles/:id', requirePermission('roles.edit'), async (req: Request
 });
 
 apiRouter.delete('/roles/:id', requirePermission('roles.edit'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const roleId = req.params.id;
 
   try {
@@ -1758,7 +1765,7 @@ apiRouter.put('/team/:id/permissions', requirePermission('roles.assign'), async 
     });
   }
 
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const memRes = await query(
       `UPDATE workspace_members 
@@ -1783,7 +1790,7 @@ apiRouter.put('/team/:id/permissions', requirePermission('roles.assign'), async 
 });
 
 apiRouter.post('/team/:id/suspend', requirePermission('team.edit'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const memberId = req.params.id;
   if (memberId === req.user!.id) {
     return res.status(400).json({ error: 'Cannot suspend your own account' });
@@ -1858,7 +1865,7 @@ function validateWorkflowGraph(nodes: any[], edges: any[]): { valid: boolean; er
 }
 
 apiRouter.get('/workflows/definitions', requirePermission('workflows.view'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const workflows = await DataService.getWorkflowDefinitions(wsId);
     res.json({ workflows });
@@ -1868,7 +1875,7 @@ apiRouter.get('/workflows/definitions', requirePermission('workflows.view'), asy
 });
 
 apiRouter.get('/workflows/definitions/:id', requirePermission('workflows.view'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const wf = await DataService.getWorkflowById(wsId, req.params.id);
     if (!wf) return res.status(404).json({ error: 'Workflow definition not found' });
@@ -1879,7 +1886,7 @@ apiRouter.get('/workflows/definitions/:id', requirePermission('workflows.view'),
 });
 
 apiRouter.post('/workflows/definitions', requirePermission('workflows.create'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { name, description, nodes, edges } = req.body;
   if (!name || !name.trim()) return res.status(400).json({ error: 'Workflow name is required' });
 
@@ -1906,7 +1913,7 @@ apiRouter.post('/workflows/definitions', requirePermission('workflows.create'), 
 });
 
 apiRouter.put('/workflows/definitions/:id', requirePermission('workflows.edit'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { name, description, nodes, edges } = req.body;
   try {
     const updated = await DataService.updateWorkflowDefinition(wsId, req.params.id, { name, description, nodes, edges });
@@ -1927,7 +1934,7 @@ apiRouter.put('/workflows/definitions/:id', requirePermission('workflows.edit'),
 });
 
 apiRouter.post('/workflows/definitions/:id/publish', requirePermission('workflows.publish'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const wf = await DataService.getWorkflowById(wsId, req.params.id);
     if (!wf) return res.status(404).json({ error: 'Workflow definition not found' });
@@ -1957,7 +1964,7 @@ apiRouter.post('/workflows/definitions/:id/publish', requirePermission('workflow
 });
 
 apiRouter.post('/workflows/definitions/:id/simulate', requirePermission('workflows.view'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const wf = await DataService.getWorkflowById(wsId, req.params.id);
     if (!wf) return res.status(404).json({ error: 'Workflow definition not found' });
@@ -1985,7 +1992,7 @@ apiRouter.post('/workflows/definitions/:id/simulate', requirePermission('workflo
 });
 
 apiRouter.delete('/workflows/definitions/:id', requirePermission('workflows.delete'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     await DataService.deleteWorkflowDefinition(wsId, req.params.id);
     res.json({ success: true, message: 'Workflow deleted' });
@@ -1999,7 +2006,7 @@ apiRouter.delete('/workflows/definitions/:id', requirePermission('workflows.dele
 // ==============================================================================
 
 apiRouter.get('/templates', requirePermission('templates.view'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const templates = await DataService.getMessageTemplates(wsId);
     res.json({ templates });
@@ -2009,7 +2016,7 @@ apiRouter.get('/templates', requirePermission('templates.view'), async (req: Req
 });
 
 apiRouter.post('/templates', requirePermission('templates.create'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { name, category, language, bodyText, headerText, footerText, buttons, variables } = req.body;
   if (!name || !bodyText) return res.status(400).json({ error: 'Template name and bodyText are required' });
 
@@ -2039,7 +2046,7 @@ apiRouter.post('/templates', requirePermission('templates.create'), async (req: 
 });
 
 apiRouter.post('/templates/:id/submit-meta', requirePermission('templates.submit_for_approval'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const dbRes = await query(
       `UPDATE message_templates SET status = 'PENDING_APPROVAL', updated_at = NOW() WHERE id = $1 AND workspace_id = $2 RETURNING *;`,
@@ -2065,7 +2072,7 @@ apiRouter.post('/templates/:id/submit-meta', requirePermission('templates.submit
 });
 
 apiRouter.post('/templates/:id/submit-approval', requirePermission('templates.submit_for_approval'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const dbRes = await query(
       `UPDATE message_templates SET status = 'PENDING_APPROVAL', updated_at = NOW() WHERE id = $1 AND workspace_id = $2 RETURNING *;`,
@@ -2082,7 +2089,7 @@ apiRouter.post('/templates/:id/submit-approval', requirePermission('templates.su
 });
 
 apiRouter.post('/templates/:id/approve', requirePermission('templates.create'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const dbRes = await query(
       `UPDATE message_templates SET status = 'APPROVED', updated_at = NOW() WHERE id = $1 AND workspace_id = $2 RETURNING *;`,
@@ -2099,7 +2106,7 @@ apiRouter.post('/templates/:id/approve', requirePermission('templates.create'), 
 });
 
 apiRouter.delete('/templates/:id', requirePermission('templates.delete'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     await DataService.deleteMessageTemplate(wsId, req.params.id);
     res.json({ success: true, message: 'Template deleted' });
@@ -2113,7 +2120,7 @@ apiRouter.delete('/templates/:id', requirePermission('templates.delete'), async 
 // ==============================================================================
 
 apiRouter.get('/broadcasts/campaigns', requirePermission('broadcasts.view'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const campaigns = await DataService.getBroadcastCampaigns(wsId);
     res.json({ campaigns });
@@ -2123,7 +2130,7 @@ apiRouter.get('/broadcasts/campaigns', requirePermission('broadcasts.view'), asy
 });
 
 apiRouter.post('/broadcasts/campaigns', requirePermission('broadcasts.create'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { 
     name, 
     description, 
@@ -2156,7 +2163,7 @@ apiRouter.post('/broadcasts/campaigns', requirePermission('broadcasts.create'), 
 });
 
 apiRouter.post('/broadcasts/campaigns/:id/send', requirePermission('broadcasts.send'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const dbRes = await query(
       `UPDATE broadcast_campaigns 
@@ -2184,7 +2191,7 @@ apiRouter.post('/broadcasts/campaigns/:id/send', requirePermission('broadcasts.s
 });
 
 apiRouter.post('/broadcasts/campaigns/:id/cancel', requirePermission('broadcasts.cancel'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const dbRes = await query(
       `UPDATE broadcast_campaigns SET status = 'CANCELLED', updated_at = NOW() WHERE id = $1 AND workspace_id = $2 RETURNING *;`,
@@ -2197,7 +2204,7 @@ apiRouter.post('/broadcasts/campaigns/:id/cancel', requirePermission('broadcasts
 });
 
 apiRouter.post('/contacts/import', requirePermission('contacts.import'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { contacts: rawContacts } = req.body;
   if (!Array.isArray(rawContacts) || rawContacts.length === 0) {
     return res.status(400).json({ error: 'contacts array is required' });
@@ -2258,7 +2265,7 @@ apiRouter.post('/contacts/import', requirePermission('contacts.import'), async (
 // ==============================================================================
 
 apiRouter.get('/knowledge/documents', requirePermission('knowledge_base.view'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     const documents = await DataService.getKnowledgeDocuments(wsId);
     res.json({ documents });
@@ -2268,7 +2275,7 @@ apiRouter.get('/knowledge/documents', requirePermission('knowledge_base.view'), 
 });
 
 apiRouter.post('/knowledge/upload', requirePermission('knowledge_base.upload'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { filename, fileType, fileSize, extractedText, title } = req.body;
   if (!filename) return res.status(400).json({ error: 'filename is required' });
 
@@ -2299,7 +2306,7 @@ apiRouter.post('/knowledge/upload', requirePermission('knowledge_base.upload'), 
 });
 
 apiRouter.delete('/knowledge/documents/:id', requirePermission('knowledge_base.delete'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   try {
     await DataService.deleteKnowledgeDocument(wsId, req.params.id);
 
@@ -2334,7 +2341,7 @@ apiRouter.get('/ai-assistant/config', requirePermission('ai_assistant.view'), (r
 });
 
 apiRouter.put('/ai-assistant/config', requirePermission('ai_assistant.configure'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const updates = req.body;
   await DataService.logAudit(
     wsId,
@@ -2356,7 +2363,7 @@ apiRouter.put('/ai-assistant/config', requirePermission('ai_assistant.configure'
 // ==============================================================================
 
 apiRouter.post('/integrations/connect', requirePermission('integrations.connect'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { provider } = req.body;
   await DataService.logAudit(
     wsId,
@@ -2369,7 +2376,7 @@ apiRouter.post('/integrations/connect', requirePermission('integrations.connect'
 });
 
 apiRouter.post('/integrations/disconnect', requirePermission('integrations.disconnect'), async (req: Request, res: Response) => {
-  const wsId = req.workspaceId || '11111111-1111-4111-8111-111111111111';
+  const wsId = req.workspaceId!;
   const { provider } = req.body;
   await DataService.logAudit(
     wsId,

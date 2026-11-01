@@ -338,7 +338,7 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
   return (
     <div className="h-full flex-1 flex overflow-hidden bg-white min-h-0">
       {/* 1. Left: Conversation List (Full width on mobile when in 'LIST' view) */}
-      <div className={`w-full md:w-80 lg:w-88 xl:w-96 border-r border-slate-200 flex flex-col h-full bg-slate-50/50 flex-shrink-0 min-h-0 ${
+      <div className={`w-full md:w-80 lg:w-88 xl:w-96 border-r border-slate-200 flex-col h-full bg-slate-50/50 flex-shrink-0 min-h-0 ${
         mobileView === 'CHAT' ? 'hidden md:flex' : 'flex'
       }`}>
         {/* Inbox Header */}
@@ -445,7 +445,7 @@ export const SharedInboxView: React.FC<SharedInboxViewProps> = ({
 
       {/* 2. Middle: Active Chat Window (Full width on mobile when in 'CHAT' view) */}
       {activeConv ? (
-        <div className={`flex-1 flex flex-col h-full bg-[#f8fafc] border-r border-slate-200 min-w-0 min-h-0 ${
+        <div className={`flex-1 flex-col h-full bg-[#f8fafc] border-r border-slate-200 min-w-0 min-h-0 ${
           mobileView === 'LIST' ? 'hidden md:flex' : 'flex'
         }`}>
           {/* Thread Header */}

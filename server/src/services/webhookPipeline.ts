@@ -47,14 +47,17 @@ export class WebhookPipeline {
   /**
    * Verify Meta HMAC-SHA256 webhook signature
    */
-  public static verifySignature(rawBody: string, signatureHeader?: string, appSecret: string = 'automask_meta_secret_key'): boolean {
-    if (!signatureHeader) return true; // Allow dev/test mode without signature
+  public static verifySignature(rawBody: string, signatureHeader?: string, appSecret?: string): boolean {
+    if (!signatureHeader || !appSecret) return false;
     try {
       const parts = signatureHeader.split('=');
       if (parts.length !== 2 || parts[0] !== 'sha256') return false;
       const expectedHash = parts[1];
       const hmac = crypto.createHmac('sha256', appSecret).update(rawBody).digest('hex');
-      return crypto.timingSafeEqual(Buffer.from(hmac), Buffer.from(expectedHash));
+      const hmacBuffer = Buffer.from(hmac);
+      const expectedBuffer = Buffer.from(expectedHash);
+      if (hmacBuffer.length !== expectedBuffer.length) return false;
+      return crypto.timingSafeEqual(hmacBuffer, expectedBuffer);
     } catch {
       return false;
     }
