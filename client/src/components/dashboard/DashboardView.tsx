@@ -31,7 +31,7 @@ import { AutomationStatusCard } from './AutomationStatusCard';
 import { UsageAndActionsCard } from './UsageAndActionsCard';
 import { OnboardingBanner } from './OnboardingBanner';
 import { WhatsAppConnectivityHero } from './WhatsAppConnectivityHero';
-import { Conversation, AutomationRule, UsageQuota, TabType, User } from '../../types';
+import { Conversation, AutomationRule, UsageQuota, TabType, User, WhatsAppAccount } from '../../types';
 import { IndustryType, INDUSTRIES, getIndustryConfig } from '../../config/industries';
 
 const ICON_MAP: Record<string, any> = {
@@ -71,6 +71,8 @@ interface DashboardViewProps {
   };
   currentUser?: User;
   workspace?: any;
+  whatsappAccount?: WhatsAppAccount | null;
+  onOpenConnectWhatsApp?: () => void;
   onSelectConversation: (conv: Conversation) => void;
   onToggleRule: (ruleId: string) => void;
   onNavigate: (tab: TabType) => void;
@@ -86,6 +88,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   metrics,
   currentUser,
   workspace,
+  whatsappAccount,
+  onOpenConnectWhatsApp,
   onSelectConversation,
   onToggleRule,
   onNavigate,
@@ -109,6 +113,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         onNavigate={onNavigate}
         onOpenSimulator={onOpenSimulator}
         onOpenBroadcast={onOpenBroadcastModal}
+        onOpenConnectWhatsApp={onOpenConnectWhatsApp}
+        whatsappAccount={whatsappAccount}
         activeConversationsCount={conversations.filter(c => c.status === 'OPEN').length || 18}
       />
 
@@ -116,6 +122,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       <OnboardingBanner 
         onOpenSimulator={onOpenSimulator || (() => {})} 
         onNavigate={onNavigate} 
+        whatsappAccount={whatsappAccount}
+        onOpenConnectWhatsApp={onOpenConnectWhatsApp}
       />
 
       {/* Multi-Industry Agency Customization Bar */}
@@ -285,7 +293,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       </div>
 
       {/* Quick Status Row */}
-      <QuickStatusCards onNavigate={onNavigate} />
+      <QuickStatusCards 
+        onNavigate={onNavigate} 
+        whatsappAccount={whatsappAccount}
+        onOpenConnectWhatsApp={onOpenConnectWhatsApp}
+      />
 
       {/* Bottom 3-Column Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">

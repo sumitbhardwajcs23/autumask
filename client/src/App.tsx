@@ -43,8 +43,10 @@ import {
   Appointment,
   User,
   UserRole,
-  Contact
+  Contact,
+  WhatsAppAccount
 } from './types';
+import { ConnectWhatsAppModal } from './components/common/ConnectWhatsAppModal';
 import { 
   dashboardApi, 
   conversationsApi, 
@@ -141,6 +143,8 @@ export const App: React.FC = () => {
   const [isSupportGrantModalOpen, setIsSupportGrantModalOpen] = useState(false);
   const [isBusinessProfileModalOpen, setIsBusinessProfileModalOpen] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isConnectWhatsAppModalOpen, setIsConnectWhatsAppModalOpen] = useState(false);
+  const [whatsappAccount, setWhatsappAccount] = useState<WhatsAppAccount | null>(null);
 
   // Network & Sync status
   const [apiConnected, setApiConnected] = useState<boolean>(true);
@@ -255,6 +259,16 @@ export const App: React.FC = () => {
         if (bookingsRes.appointments) setAppointments(bookingsRes.appointments);
       } catch (err: any) {
         console.warn('Bookings fetch notice:', err?.message);
+      }
+
+      // 8. WhatsApp Account Connectivity (SRS Section 4 / Multi-Tenant WABA)
+      try {
+        const waRes = await whatsappApi.getAccount();
+        if (waRes && waRes.account) {
+          setWhatsappAccount(waRes.account);
+        }
+      } catch (err: any) {
+        console.warn('WhatsApp account fetch notice:', err?.message);
       }
 
       setApiConnected(true);
@@ -634,6 +648,8 @@ export const App: React.FC = () => {
         {/* Top Header: consistent h-16, sticky */}
         <Header
           currentUser={currentUser}
+          whatsappAccount={whatsappAccount}
+          onOpenConnectWhatsApp={() => setIsConnectWhatsAppModalOpen(true)}
           onRoleChange={handleRoleChange}
           onToggleSimulator={() => setIsSimulatorOpen(prev => !prev)}
           isSimulatorOpen={isSimulatorOpen}
@@ -652,6 +668,8 @@ export const App: React.FC = () => {
               metrics={dashboardMetrics}
               currentUser={currentUser}
               workspace={activeWorkspace}
+              whatsappAccount={whatsappAccount}
+              onOpenConnectWhatsApp={() => setIsConnectWhatsAppModalOpen(true)}
               onSelectConversation={(conv) => {
                 setSelectedConversation(conv);
                 setCurrentTab('inbox');
@@ -903,6 +921,17 @@ export const App: React.FC = () => {
         onClose={() => setIsBusinessProfileModalOpen(false)}
         workspace={activeWorkspace}
         onSaveWorkspace={handleUpdateWorkspace}
+      />
+
+      {/* 1-Click Meta Cloud API / Embedded Signup Connect Modal */}
+      <ConnectWhatsAppModal
+        isOpen={isConnectWhatsAppModalOpen}
+        onClose={() => setIsConnectWhatsAppModalOpen(false)}
+        initialAccount={whatsappAccount}
+        onSuccess={(updatedAcc) => {
+          setWhatsappAccount(updatedAcc);
+          fetchAllData();
+        }}
       />
     </div>
   );

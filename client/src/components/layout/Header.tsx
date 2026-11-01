@@ -15,9 +15,10 @@ import {
   Lock, 
   Check, 
   LogOut,
-  Menu
+  Menu,
+  AlertCircle
 } from 'lucide-react';
-import { User, UserRole } from '../../types';
+import { User, UserRole, WhatsAppAccount } from '../../types';
 
 interface HeaderProps {
   currentUser: User;
@@ -27,6 +28,8 @@ interface HeaderProps {
   onOpenSupportGrantModal?: () => void;
   onLogout?: () => void;
   onToggleMobileSidebar?: () => void;
+  whatsappAccount?: WhatsAppAccount | null;
+  onOpenConnectWhatsApp?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -37,6 +40,8 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenSupportGrantModal,
   onLogout,
   onToggleMobileSidebar,
+  whatsappAccount,
+  onOpenConnectWhatsApp,
 }) => {
   const [isRoleDropdownOpen, setIsRoleDropdownOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
@@ -203,6 +208,24 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           )}
         </div>
+
+        {/* WhatsApp Connection Status / Connect Action Button */}
+        {whatsappAccount?.status !== 'CONNECTED' && onOpenConnectWhatsApp ? (
+          <button
+            onClick={onOpenConnectWhatsApp}
+            className="h-10 sm:h-12 flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 rounded-xl text-xs sm:text-sm font-black bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 transition-all shadow-2xs cursor-pointer shrink-0 animate-pulse hover:animate-none"
+            title="Click to connect your WhatsApp Business Number"
+          >
+            <AlertCircle className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-rose-600 shrink-0" />
+            <span className="hidden sm:inline">Connect WhatsApp</span>
+            <span className="sm:hidden">Connect</span>
+          </button>
+        ) : (
+          <div className="hidden xl:flex h-10 sm:h-12 items-center gap-2 px-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs font-bold text-emerald-800 shadow-2xs shrink-0">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>WA Live</span>
+          </div>
+        )}
 
         {/* Interactive WhatsApp Simulator Toggle Button */}
         <button

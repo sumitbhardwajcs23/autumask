@@ -1306,13 +1306,13 @@ apiRouter.get('/whatsapp/account', requirePermission('view:dashboard'), async (r
   } catch (err) {}
   res.json({
     account: {
-      id: 'wa-acc-01',
+      id: '',
       workspaceId: wsId,
-      displayNumber: '+1 555-660-3701',
-      phoneNumberId: '1317971801407031',
-      wabaId: '1789873612251308',
-      status: 'CONNECTED',
-      qualityRating: 'GREEN',
+      displayNumber: '',
+      phoneNumberId: '',
+      wabaId: '',
+      status: 'DISCONNECTED',
+      qualityRating: 'UNKNOWN',
     }
   });
 });
